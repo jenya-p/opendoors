@@ -1,0 +1,25 @@
+h1{font-size: 24px; font-weight: 500; line-height: 1.3em; margin-bottom: 1em}
+h2{font-size: 22px; font-weight: 600; line-height: 1.2em; margin-bottom: 1em}
+h3{font-size: 16px; font-weight: 600; line-height: 1.2em; margin-bottom: 1em}
+h4{font-size: 14px; font-weight: 600; line-height: 1.2em; margin-bottom: 1em}
+p {
+    font-size: 16px; font-weight: 400;
+    margin-bottom: 1.3em;
+    line-height: 1.18em;
+}
+ul li {
+    margin-bottom: 1em;
+    position: relative;
+
+}
+ul li:before{
+    content: "•";
+    margin-left: -16px;
+    position: absolute;
+    line-height: 22px;
+}
+details{
+    summary{
+        margin-bottom: 8px;
+    }
+}

@@ -1,0 +1,38 @@
+$base-color: #1a9bd7;
+$dark-color: darken($base-color, 25);
+$attractive-color: #ed217c;
+$fore-color: #242a2f;
+$light-fore-color: lighten($fore-color, 15);
+$shadow-color: #E7E7E7;
+$dark-shadow-color: darken($shadow-color, 15);
+
+@mixin green-box {
+    background: linear-gradient(0deg, #1994ce 0%, #1ba2e0 100%);
+    box-shadow: 0 7px 10px -5px #1994ce73;
+    color: white;
+}
+
+@mixin scroll{
+    &::-webkit-scrollbar {
+        width: 4px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: $attractive-color;
+        border-radius: 2px;
+    }
+}
+@mixin mobile {
+    @media only screen and (max-width: 980px) {
+        @content;
+    }
+}
+@mixin desktop {
+    @media only screen and (min-width: 980px) {
+        @content;
+    }
+}

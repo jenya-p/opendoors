@@ -1,0 +1,317 @@
+<template>
+    <aside :class="minified ? 'min': 'max'">
+        <a class="minify-btn" @click="toggleMinified"></a>
+        <a href="/" class="logo" target="notter-home"></a>
+
+        <div class="sidebar-menu">
+            <ul class="nav">
+                <li :class="{'active-branch': routeIs('user', 'admin', 'university-user', 'student'), 'hover': curSection=='user'}">
+                    <a @click="toggle('user')">
+                        <i class="fa fa-users"/>
+                        <span>Пользователи
+                            <b class="caret"></b>
+                        </span>
+                    </a>
+                    <transition name="slide-fade">
+                        <ul v-show="curSection=='user'">
+                            <li :class="{active: routeIs('user')}">
+                                <Link :href="route('admin.user.index')">
+                                    <i class="fa fa-key"/>
+                                    <span>Все пользователи</span>
+                                </Link>
+                            </li>
+                            <li :class="{active: routeIs('admin')}">
+                                <Link :href="route('admin.admin.index')">
+                                    <i class="fa fa-user-tie"/>
+                                    <span>Администраторы</span>
+                                </Link>
+                            </li>
+                            <li :class="{active: routeIs('university-user')}">
+                                <Link :href="route('admin.university-user.index')">
+                                    <i class="fa fa-person-chalkboard"/>
+                                    <span>Представители ВУЗ-ов</span>
+                                </Link>
+                            </li>
+                            <li :class="{active: routeIs('student')}">
+                                <Link :href="route('admin.student.index')">
+                                    <i class="fa fa-users"/><span>Соискатели</span>
+                                </Link>
+                            </li>
+                            <li>
+                                <span>
+                                    <i class="fa fa-clock-rotate-left"/>
+                                    <span>Журнал</span>
+                                </span>
+                            </li>
+                        </ul>
+                    </transition>
+                </li>
+
+                <li :class="{'active-branch': routeIs(), 'hover': curSection=='site'}">
+                    <a @click="toggle('site')">
+                        <i class="fa-solid fa-globe"></i>
+                        <span>Сайт<b class="caret"></b></span>
+                    </a>
+                    <transition name="slide-fade">
+                        <ul v-show="curSection=='site'">
+                            <li>
+                                <span>
+                                    <i class="fa fa-list-check"/>
+                                    <span>Страницы</span>
+                                </span>
+                            </li>
+                            <li>
+                                <span>
+                                    <i class="fa fa-user-check"></i>
+                                    <span>Новости</span>
+                                </span>
+                            </li>
+                            <li>
+                                <span>
+                                    <i class="fa fa-check-double"></i>
+                                    <span>Настройки</span>
+                                </span>
+                            </li>
+                        </ul>
+                    </transition>
+                </li>
+
+                <li :class="{'active-branch': routeIs('edu-level', 'university', 'track', 'profile', 'stage'), 'hover': curSection=='opendoors'}">
+                    <a @click="toggle('opendoors')">
+                        <i class="fa fa-door-open"></i>
+                        <span>Open Doors<b class="caret"></b></span>
+                    </a>
+                    <transition name="slide-fade">
+                        <ul v-show="curSection=='opendoors'">
+
+                            <li :class="{'active': routeIs('edu-level')}">
+                                <Link :href="route('admin.edu-level.index')">
+                                    <i class="fa fa-bars"/>
+                                    <span>Уровни образования</span>
+                                </Link>
+                            </li>
+                            <li :class="{'active': routeIs('university')}">
+                                <Link :href="route('admin.university.index')">
+                                    <i class="fa fa-bars"></i>
+                                    <span>Университеты</span>
+                                </Link>
+                            </li>
+                            <li :class="{'active': routeIs('track')}">
+                                <Link :href="route('admin.track.index')">
+                                    <i class="fa fa-bars"></i>
+                                    <span>Треки</span>
+                                </Link>
+                            </li>
+                            <li :class="{'active': routeIs('profile')}">
+                                <Link :href="route('admin.profile.index')">
+                                    <i class="fa fa-bars"></i>
+                                    <span>Профили</span>
+                                </Link>
+                            </li>
+                            <li :class="{'active': routeIs('stage')}">
+                                <Link :href="route('admin.stage.index')">
+                                    <i class="fa fa-bars"></i>
+                                    <span>Этапы</span>
+                                </Link>
+                            </li>
+                        </ul>
+                    </transition>
+                </li>
+
+                <li :class="{'active-branch': routeIs(), 'hover': curSection=='tests'}">
+                    <a @click="toggle('tests')">
+                        <i class="fa-solid fa-spell-check"></i>
+                        <span>Тестирования<b class="caret"></b></span>
+                    </a>
+                    <transition name="slide-fade">
+                        <ul v-show="curSection=='tests'">
+                            <li>
+                                <span>
+                                    <i class="fa fa-list-check"/>
+                                    <span>База вопросов</span>
+                                </span>
+                            </li>
+                            <li>
+                                <span>
+                                    <i class="fa fa-user-check"></i>
+                                    <span>Попытки</span>
+                                </span>
+                            </li>
+                            <li>
+                                <span>
+                                    <i class="fa fa-check-double"></i>
+                                    <span>Проверка</span>
+                                </span>
+                            </li>
+                        </ul>
+                    </transition>
+                </li>
+
+                <li :class="{'active': routeIs('portfolio'), 'hover': curSection=='portfolio'}">
+                    <span @click="toggle('portfolio')">
+                        <i class="fa fa-address-card"></i>
+                        <span>Портфолио</span>
+                    </span>
+                </li>
+
+                <li :class="{'active-branch': routeIs(), 'hover': curSection=='interview'}">
+                    <a @click="toggle('interview')">
+                        <i class="fa-solid fa-comments"></i>
+                        <span>Собеседования<b class="caret"></b></span>
+                    </a>
+                    <transition name="slide-fade">
+                        <ul v-show="curSection=='interview'">
+                            <li :class="{'active': routeIs('')}">
+                                <span>
+                                    <i class="fa fa-clock"/>
+                                    <span>Слоты</span>
+                                </span>
+                            </li>
+                            <li :class="{'active': routeIs('')}">
+                                <span>
+                                    <i class="fa-solid fa-people-arrows"></i>
+                                    <span>Собеседования</span>
+                                </span>
+                            </li>
+                            <li :class="{'active': routeIs('')}">
+                                <span>
+                                    <i class="fa fa-chalkboard-teacher"></i>
+                                    <span>Научные руководители</span>
+                                </span>
+                            </li>
+                            <li :class="{'active': routeIs('')}">
+                                <span>
+                                    <i class="fa fa-users"></i>
+                                    <span>Соискатели</span>
+                                </span>
+                            </li>
+                            <li :class="{'active': routeIs('')}">
+                                <span>
+                                    <i class="fa-solid fa-people-arrows"></i>
+                                    <span>Мои собеседования</span>
+                                </span>
+                            </li>
+                            <li :class="{'active': routeIs('')}">
+                                <span>
+                                    <i class="fa fa-chalkboard-teacher"></i>
+                                    <span>Выбор научного руководителя</span>
+                                </span>
+                            </li>
+                        </ul>
+                    </transition>
+                </li>
+
+            </ul>
+        </div>
+
+        <div class="current-user">
+            <span class="username">{{ $page.props.auth.user.display_name }}</span>
+            <div class="actions">
+                <Link :href="route('admin.user.edit', {user: $page.props.auth.user.id})" class="profile">Профиль</Link>
+                <a :href="route('logout')" class="btn-a logout">Выход</a>
+            </div>
+        </div>
+
+    </aside>
+
+</template>
+
+<script>
+import {Link} from "@inertiajs/vue3";
+
+export default {
+    components: {Link},
+    data() {
+        let minified = false;
+        if (window.innerWidth < 980) {
+            minified = true;
+        } else if (localStorage.hasOwnProperty('sidebar-state')) {
+            minified = localStorage.getItem('sidebar-state') == 'true';
+        }
+        return {
+            curSection: null,
+            minified: minified,
+        }
+    },
+    methods: {
+        toggle(section) {
+            if (section == this.curSection) {
+                this.curSection = null;
+            } else {
+                this.curSection = section;
+            }
+        },
+        routeIs(...args) {
+            for (const arg of args) {
+                if (route().current().startsWith('admin.' + arg + '.')) {
+                    console.log(route().current(), args);
+                    return true;
+                }
+            }
+            return false;
+        },
+        toggleMinified() {
+            this.minified = !this.minified;
+            if (window.innerWidth > 980) {
+                localStorage.setItem('sidebar-state', this.minified);
+                if(this.minified){
+                    this.curSection = null;
+                } else {
+
+                }
+            }
+        }
+
+    },
+    computed: {
+        backfeeds() {
+            return this.$page.props.notifications.backfeed;
+        }
+    },
+    created() {
+        this.curRoute = route().current().split('.')[1];
+        if (['user', 'admin', 'university-user', 'student', 'history'].indexOf(this.curRoute) !== -1) {
+            this.curSection = 'user';
+        } else if(this.routeIs('edu-level', 'university', 'track', 'profile', 'stage')){
+            this.curSection = 'opendoors';
+        }
+
+    },
+    mounted() {
+        let $v = this;
+        let lis = this.$el.querySelectorAll('.sidebar-menu>ul>li');
+
+        let opened = null;
+        for (const li of lis) {
+            let doer = function () {
+                let tmOut = null;
+                let cs = null;
+                li.addEventListener('mouseleave', function () {
+                    if (window.innerWidth > 980 && $v.minified) {
+                        cs = $v.curSection;
+                        tmOut = setTimeout(function () {
+                            if(cs == $v.curSection){
+                                $v.curSection = null;
+                            }
+                            tmOut = null;
+                        }, 500);
+                    }
+                });
+                li.addEventListener('mouseenter', function () {
+                    if (window.innerWidth > 980 && $v.minified) {
+                        if(tmOut){
+                            clearTimeout(tmOut);
+                            tmOut = null;
+                        }
+                    }
+                });
+            }
+            doer();
+
+        }
+
+    }
+
+}
+
+</script>
