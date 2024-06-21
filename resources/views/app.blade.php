@@ -6,7 +6,7 @@
 
         <title inertia>{{ config('app.name', 'Notter') }}</title>
 
-        <link rel="icon" type="image/svg+xml" href="/images/logo-s.svg">
+        <link rel="icon" type="image/svg+xml" href="/images/logo-s.png">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com">

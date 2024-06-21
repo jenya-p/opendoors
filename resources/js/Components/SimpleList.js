@@ -36,7 +36,7 @@ export function SimpleList(vueComponent, options) {
                 }
                 return true;
             })
-            ./*sort((itm1, itm2) => {
+            .sort((itm1, itm2) => {
                 let desc = 1;
                 if (that.sort !== null) {
                     if (that.sort.dir == 'desc') {
@@ -53,7 +53,7 @@ export function SimpleList(vueComponent, options) {
                     }
                 }
                 return (itm1.id - itm2.id) * desc;
-            }).*/map(function (itm) {
+            }).map(function (itm) {
                 that.items.push(itm);
             });
     };

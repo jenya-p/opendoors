@@ -56,6 +56,9 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth', 'c
     Route::resource('profile', \App\Http\Controllers\Admin\ProfileController::class)->except(['show']);
     Route::resource('stage', \App\Http\Controllers\Admin\StageController::class)->except(['show', 'create', 'store']);
 
+    Route::resource('quiz-group', \App\Http\Controllers\Admin\QuizGroupController::class)->except([]);
+    Route::resource('quiz-question', \App\Http\Controllers\Admin\QuizQuestionController::class)->except([]);
+
     Route::resource('backfeed', \App\Http\Controllers\Admin\BackfeedController::class)
         ->except(['show', 'create', 'store']);
 

@@ -77,11 +77,6 @@ export default {
 <style lang="scss">
 @import "resources/css/admin-vars.scss";
 
-table.table{
-    @include mobile{
-        td.count .ttd-label {width: 150px}
-    }
-}
 
 </style>
 

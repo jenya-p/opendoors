@@ -1100,7 +1100,13 @@ button.btn-a {
     .no-border-radius+.no-border-radius,
     .no-border-radius+.no-left-border-radius{border-left: none;}
 
+    &-short{width: 500px}
+
 }
+
+
+
+
 
 .input {
     font-size: inherit;
@@ -1455,11 +1461,16 @@ h5.tabs-header{    margin-top: -4px;
 body {
     --ck-color-base-border: #E7E7E7;
     --ck-color-toolbar-border: #E7E7E7;
-    --ck-focus-ring: 1px solid #17a985;
-    --ck-inner-shadow: 2px 3px 5px -2px rgb(0 181 142 / 52%);
+    --ck-focus-ring: 1px solid #1a9bd7;
+    --ck-inner-shadow: 2px 3px 5px -2px #1994ce73;
     --ck-border-radius: 4px
+
 }
 
+.ck.ck-editor__editable_inline.ck-blurred{
+    border: 1px solid $shadow-color;
+    cursor: text;
+}
 .ck.ck-editor__main > .ck-editor__editable {
     transition: border-color 200ms ease
 }
@@ -1591,3 +1602,5 @@ body {
     font-family: Raleway, sans-serif, serif;
     padding-top: 3px;
 }
+
+

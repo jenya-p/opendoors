@@ -1,16 +1,12 @@
 <template>
-    <AdminLayout :title="item.id ? item.name : 'Новый профиль'"
-                 :breadcrumb="[{link: route('admin.profile.index'), label: 'Профили'}, item.id ? item.name: 'Новый']">
+    <AdminLayout :title="item.id ? item.name : 'Новая группа'"
+                 :breadcrumb="[{link: route('admin.quiz-group.index'), label: 'Группы вопросов'}, item.id ? item.name: 'Новая']">
 
 
             <form method="post" @submit.prevent="submit" class="block" v-field-container>
                 <h2>Основная информация</h2>
                 <field :errors="form.errors" for="name" label="Название">
                     <input class="input" v-model="form.name"/>
-                </field>
-
-                <field :errors="form.errors" for="title" label="Название (EN)">
-                    <input class="input" v-model="form.name_en"/>
                 </field>
 
                 <div class="block-footer">
@@ -36,7 +32,6 @@ import TextareaAutosize from "@/Components/TextareaAutosize.vue";
 
 export default {
     components: {
-        TextareaAutosize,
         AdminLayout,
         Field
     },
@@ -48,18 +43,11 @@ export default {
     },
 
     data() {
-        if (this.item.description === null) {
-            this.item.description = '';
-        }
         return {
             form: useForm(_extend({
                 name: null,
-                name_en: null,
                 url: null
             }, this.item)),
-            tabErrors: {
-                info: false, questions: false
-            }
         }
     },
     watch: {
@@ -70,9 +58,9 @@ export default {
         submit() {
             this.form.errors = [];
             if (this.item.id) {
-                this.form.put(route('admin.profile.update', {profile: this.item.id}));
+                this.form.put(route('admin.quiz-group.update', {quiz_group: this.item.id}));
             } else {
-                this.form.post(route('admin.profile.store'));
+                this.form.post(route('admin.quiz-group.store'));
             }
         }
     }

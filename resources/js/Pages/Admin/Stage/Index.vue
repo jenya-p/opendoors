@@ -62,6 +62,7 @@
             <table-bottom>
                 <pagination :item-count="total" v-model="page" :ipp="perPage"></pagination>
             </table-bottom>
+
         </div>
     </AdminLayout>
 </template>

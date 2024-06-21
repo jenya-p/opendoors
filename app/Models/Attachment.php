@@ -55,10 +55,14 @@ class Attachment extends Model {
 
     const ITEM_TYPE_UNIVERSITY_LOGO = 'university_logo';
     const ITEM_TYPE_USERPICK = 'userpick';
+    const ITEM_TYPE_QUESTION = 'question';
+    const ITEM_TYPE_QUESTION_EN = 'question_en';
 
     const ITEM_CLASSES = [
         self::ITEM_TYPE_USERPICK => User::class,
         self::ITEM_TYPE_UNIVERSITY_LOGO => University::class,
+        self::ITEM_TYPE_QUESTION => QuizQuestion::class,
+        self::ITEM_TYPE_QUESTION_EN => QuizQuestion::class,
     ];
 
     /**

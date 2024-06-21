@@ -69,11 +69,6 @@ export default {
     methods: {
         submit() {
             this.form.errors = [];
-            if (this.form.questions) {
-                for (const index in this.form.questions) {
-                    this.form.questions[index].order = parseInt(index) + 1;
-                }
-            }
             if (this.item.id) {
                 this.form.put(route('admin.track.update', {track: this.item.id}));
             } else {

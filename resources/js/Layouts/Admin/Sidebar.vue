@@ -118,18 +118,24 @@
                     </transition>
                 </li>
 
-                <li :class="{'active-branch': routeIs(), 'hover': curSection=='tests'}">
+                <li :class="{'active-branch': routeIs('quiz-group','quiz-question'), 'hover': curSection=='tests'}">
                     <a @click="toggle('tests')">
                         <i class="fa-solid fa-spell-check"></i>
                         <span>Тестирования<b class="caret"></b></span>
                     </a>
                     <transition name="slide-fade">
                         <ul v-show="curSection=='tests'">
-                            <li>
-                                <span>
+                            <li :class="{'active': routeIs('quiz-group')}">
+                                <Link :href="route('admin.quiz-group.index')">
                                     <i class="fa fa-list-check"/>
-                                    <span>База вопросов</span>
-                                </span>
+                                    <span>Группы вопросов</span>
+                                </Link>
+                            </li>
+                            <li :class="{'active': routeIs('quiz-question')}">
+                                <Link :href="route('admin.quiz-question.index')">
+                                    <i class="fa fa-list-check"/>
+                                    <span>Вопросы</span>
+                                </Link>
                             </li>
                             <li>
                                 <span>
@@ -244,7 +250,6 @@ export default {
         routeIs(...args) {
             for (const arg of args) {
                 if (route().current().startsWith('admin.' + arg + '.')) {
-                    console.log(route().current(), args);
                     return true;
                 }
             }
@@ -274,6 +279,8 @@ export default {
             this.curSection = 'user';
         } else if(this.routeIs('edu-level', 'university', 'track', 'profile', 'stage')){
             this.curSection = 'opendoors';
+        } else if(this.routeIs('quiz-group', 'quiz-question')){
+            this.curSection = 'tests';
         }
 
     },
@@ -311,7 +318,5 @@ export default {
         }
 
     }
-
 }
-
 </script>

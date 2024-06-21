@@ -1,0 +1,171 @@
+<template>
+    <AdminLayout title="Задания" :breadcrumb="[{label: 'Задания'}]">
+
+        <div class="block">
+
+            <div class="simple-list-filter-wrp">
+                <input type="text" class="input" placeholder="Поиск по тексту вопроса"
+                       v-model="filter">
+                <Link :href="route('admin.quiz-question.create')" class="btn btn-sm btn-primary ">
+                    <i class="fa fa-plus" style="font-size: 0.8em; margin-right: 8px"></i>Добавить
+                </Link>
+            </div>
+
+            <table class="table">
+                <thead class="m-hide">
+                <tr>
+                    <th class="group"><sort name="group" v-model="sort" >Группа</sort></th>
+                    <th class="type"><sort name="type" v-model="sort" >Тип</sort></th>
+                    <th class="order"><sort name="order" v-model="sort" >Порядок</sort></th>
+                    <th class="weight"><sort name="weight" v-model="sort" >Вес</sort></th>
+                    <th class="text">Текст вопроса</th>
+                    <th class="options">Варианты</th>
+                    <th class="buttons"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="item of items.data" @click="itemClick(item)" class="cursor-pointer">
+                    <td class="group">
+                        {{item.group.name}}
+                    </td>
+                    <td class="type" :title="item.type_name">
+                        <img :src="'/images/quiz/' + item.type + '.svg'" />
+                    </td>
+                    <td class="order">
+                        {{item.order}}
+                    </td>
+                    <td class="weight">
+                        {{item.weight}}
+                    </td>
+                    <td class="text">
+                        {{ item.snippet }}
+                    </td>
+                    <td class="options">
+                        {{item.option_count}}
+                    </td>
+                    <td class="buttons">
+                        <a class="fa fa-times btn-remove" @click.stop="remove(item)"></a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <table-bottom>
+                <paginator :item-count="items.total" v-model="page" :ipp="items.per_page"></paginator>
+            </table-bottom>
+        </div>
+    </AdminLayout>
+</template>
+
+<script>
+import AdminLayout from "@/Layouts/AdminLayout.vue";
+import {Link} from "@inertiajs/vue3";
+import {SimpleList} from "@/Components/SimpleList.js";
+import Ttd from "@/Components/table-td.vue";
+import _isArray from "lodash/isArray.js";
+import _debounce from "lodash/debounce.js";
+import Sort from "@/Components/Sort.vue";
+
+
+
+export default {
+    components: {Sort, Ttd, Link, AdminLayout},
+    props: {
+        items: Array
+    },
+    data() {
+        let u = new URLSearchParams(document.location.search);
+        let page = u.get('page');
+        if(page == null){
+            page = 1;
+        }
+        let filter = u.get('filter');
+        let sort = u.get('sort');
+
+        if(sort != null){
+            sort = sort.split(':');
+            if(_isArray(sort) && sort.length == 2){
+                sort = {name: sort[0], dir: sort[1]};
+            } else {
+                sort = null;
+            }
+        }
+
+        return{
+            page: 1,
+            sort: sort,
+            filter: filter
+        };
+    },
+    methods: {
+        itemClick: function (item) {
+            this.$inertia.visit(route('admin.quiz-question.edit', {quiz_question: item.id}))
+        },
+        refreshPage: _debounce(function(){
+            var $v = this;
+            let sort = this.sort ? (this.sort.name + ':' + this.sort.dir) : '';
+            this.$inertia.reload({
+                method: 'get',
+                replace: true,
+                only: ['items'],
+                data: {
+                    page: this.page,
+                    filter: this.filter,
+                    sort: sort
+                }
+            });
+        }),
+        async remove(item) {
+            let index = this.items.findIndex(itm => itm.id === item.id);
+            let result = await axios.delete(route('admin.quiz-question.destroy', {quiz_question: item.id}));
+            if (result.data.result == 'ok') {
+                this.items.splice(index, 1);
+            } else {
+                alert('Что-то пошло не так. Обновите страницу, пожалуйста, или обратитесь к администратору');
+            }
+        }
+    },
+    watch: {
+        page(){
+            this.refreshPage();
+        },
+        filter(){
+            this.page = 1;
+            this.refreshPage();
+        },
+        sort(){
+            this.page = 1;
+            this.refreshPage();
+        },
+    },
+
+}
+</script>
+
+<style lang="scss">
+@import "resources/css/admin-vars.scss";
+
+table.table{
+    @include desktop{
+        td, th {
+            &.type{
+                img{
+                    width: 25px;
+                }
+                width: 80px; text-align: center}
+            &.order{width: 80px; text-align: center}
+            &.weight{
+                width: 50px;
+                text-align: center;
+                padding-right: 30px;
+            }
+            &.options{
+                width: 80px; text-align: center
+            }
+        }
+    }
+
+
+}
+
+</style>
+

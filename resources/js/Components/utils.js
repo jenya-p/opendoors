@@ -8,12 +8,39 @@ import _isObject from "lodash/isObject";
 
 
 export function findByIds (options, ids) {
-    if (_isArray(ids) && _isArray(options)) {
+    if (ids !== null && options !== null &&
+        typeof ids.findIndex == 'function' && typeof options.filter == 'function') {
         return options.filter(itm => ids.findIndex(id => itm.id == id) !== -1);
     } else {
         return [];
     }
 };
+
+export function selectable(options, container, field){
+    return {
+        get() {
+            return this[options].find(itm => itm.id == this[container][field]);
+        },
+        set(value) {
+            if (value) {
+                this[container][field] = value.id;
+            } else {
+                this[container][field] = null;
+            }
+        }
+    }
+}
+
+export function selectables(options, container, field){
+    return {
+        get() {
+            return findByIds(this[options], this[container][field]);
+        },
+        set(value) {
+            this[container][field] = value.map(itm => itm.id);
+        }
+    }
+}
 
 export function highlight(domEl){
     domEl.classList.add("highlighted");
