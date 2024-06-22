@@ -29,7 +29,7 @@ import _isNumber from "lodash/isNumber";
 
 
 export default {
-    name: "quiz-edit-one",
+    name: "quiz-edit-number",
     components: {InputError, Field, draggable},
     props: {
         errors: {

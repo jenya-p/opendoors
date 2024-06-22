@@ -1100,12 +1100,9 @@ button.btn-a {
     .no-border-radius+.no-border-radius,
     .no-border-radius+.no-left-border-radius{border-left: none;}
 
-    &-short{width: 500px}
+    &-short{max-width: 500px}
 
 }
-
-
-
 
 
 .input {

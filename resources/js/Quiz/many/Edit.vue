@@ -53,7 +53,7 @@ import Checkbox from "@/Components/Checkbox.vue";
 let _counter = 0;
 
 export default {
-    name: "quiz-edit-one",
+    name: "quiz-edit-many",
     components: {Checkbox, InputError, TextareaAutosize, Field, draggable, Radio, ckeditor: CKEditor.component},
     props: {
         errors: {
