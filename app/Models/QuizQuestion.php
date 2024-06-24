@@ -50,13 +50,15 @@ class QuizQuestion extends Model
 
     const TYPE_ONE =    'one';
     const TYPE_MANY =   'many';
+    const TYPE_MULTI =  'multi';
     const TYPE_WORDS =  'words';
     const TYPE_NUMBER = 'number';
     const TYPE_FREE =   'free';
 
     const TYPE_NAMES = [
         self::TYPE_ONE => 'Выбор одного варианта',
-        self::TYPE_MANY => 'Множественный выбор',
+        self::TYPE_MANY => 'Выбор нескольких вариантов',
+        self::TYPE_MULTI => 'Множественный выбор',
         self::TYPE_WORDS => 'С эталонными ответами',
         self::TYPE_NUMBER => 'Числовой',
         self::TYPE_FREE => 'C развернутым ответом'
@@ -97,8 +99,12 @@ class QuizQuestion extends Model
     }
 
     public function getOptionCountAttribute(){
-        if(($this->type == self::TYPE_ONE || $this->type == self::TYPE_MANY) && is_array($this->options)){
-            return count($this->options);
+        if(($this->type == self::TYPE_ONE || $this->type == self::TYPE_MANY || $this->type == self::TYPE_MULTI)
+            && is_array($this->options)
+            && array_key_exists('options', $this->options)
+            && is_array($this->options['options'])
+        ){
+            return count($this->options['options']);
         } else {
             return null;
         }

@@ -29,20 +29,36 @@ class QuizQuestionRequest extends FormRequest {
 
         if($this->type == QuizQuestion::TYPE_ONE){
             $rules += [
-                'options' => 'required|array|min:2|max:100',
-                'options.*' => 'required|array',
-                'options.*.text' => 'required|string',
-                'options.*.text_en' => 'required|string',
+                'options' => 'required|array',
+                'options.options' => 'required|array|min:2|max:100',
+                'options.options.*' => 'required|array',
+                'options.options.*.text' => 'required|string',
+                'options.options.*.text_en' => 'required|string',
                 'verification' => 'required|integer',
             ];
         } else if($this->type == QuizQuestion::TYPE_MANY){
             $rules += [
-                'options' => 'required|array|min:2|max:100',
-                'options.*' => 'required|array',
-                'options.*.text' => 'required|string',
-                'options.*.text_en' => 'required|string',
+                'options' => 'required|array',
+                'options.options' => 'required|array|min:2|max:100',
+                'options.options.*' => 'required|array',
+                'options.options.*.text' => 'required|string',
+                'options.options.*.text_en' => 'required|string',
                 'verification' => 'required|array',
                 'verification.*' => 'required|integer',
+            ];
+        } else if($this->type == QuizQuestion::TYPE_MULTI){
+            $rules += [
+                'options' => 'required|array',
+                'options.options' => 'required|array|min:2|max:100',
+                'options.options.*' => 'required|array',
+                'options.options.*.text' => 'required|string',
+                'options.options.*.text_en' => 'required|string',
+                'verification' => 'required|array',
+                'verification.correct' => 'required|array',
+                'verification.correct.*' => 'required|integer',
+                'verification.weightsTable' => 'required|array',
+                'verification.weightsTable.*' => 'required|array',
+                'verification.weightsTable.*.*' => 'required|integer',
             ];
         } else if($this->type == QuizQuestion::TYPE_NUMBER){
             $rules += [

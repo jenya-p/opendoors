@@ -48,6 +48,8 @@ import InputError from "@/Components/InputError.vue";
 import CKEditor from "@ckeditor/ckeditor5-vue";
 import Editor from '@ckeditor/ckeditor5-build-inline';
 import _isArray from "lodash/isArray";
+import _isObject from "lodash/isObject.js";
+import _isNumber from "lodash/isNumber";
 
 let _counter = 0;
 
@@ -59,12 +61,8 @@ export default {
             default: null,
             type: Object
         },
-        options: {
-            type: Object
-        },
-        verification: {
-            type: Object
-        },
+        options: {},
+        verification: {},
     },
     emits: ['update:options', 'update:verification',],
 
@@ -106,7 +104,7 @@ export default {
                     text: itm.text, text_en: itm.text_en
                 };});
             }
-            this.$emit('update:options', options);
+            this.$emit('update:options', {options: options});
             this.$emit('update:verification', verification);
         }
 
@@ -124,19 +122,20 @@ export default {
     },
     created() {
         _counter = 0;
-        if(_isArray(this.options)){
-            this.lOptions = this.options.map(function(itm){
+        if(_isObject(this.options) && _isArray(this.options.options)){
+            this.lOptions = this.options.options.map(function(itm){
                 itm.index = _counter++;
                 return itm;
             });
         } else {
             this.lOptions = [];
         }
-        // if(_isArray(this.verification) && this.verification.length > 0){
-        //     this.right = this.verification[0];
-        // } else {
+        this.right = null;
+        if (_isArray(this.verification) && this.verification.length > 0) {
+            this.right = Math.min.apply(null,this.verification);
+        } else if (_isNumber(this.verification)) {
             this.right = this.verification;
-        //}
+        }
     }
 }
 </script>

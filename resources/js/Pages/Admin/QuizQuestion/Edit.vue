@@ -28,7 +28,7 @@
                     }"/>
             </field>
 
-            <field :errors="form.errors" for="text_en" label="Текст вопроса (Англ.)">
+            <field :errors="form.errors" for="text_en" label="Текст вопроса (Англ. )">
                 <ckeditor v-model="form.text_en" :editor="editor" :config="{
                         width: '100%'
                     }"/>
@@ -61,6 +61,11 @@
                 :errors="form.errors"/>
             <QuizEditMany
                 v-else-if="form.type == 'many'"
+                v-model:options="form.options"
+                v-model:verification="form.verification"
+                :errors="form.errors"/>
+            <QuizEditMulti
+                v-else-if="form.type == 'multi'"
                 v-model:options="form.options"
                 v-model:verification="form.verification"
                 :errors="form.errors"/>
@@ -115,10 +120,12 @@ import QuizEditWords from "@/Quiz/words/Edit.vue";
 import QuizEditOne from "@/Quiz/one/Edit.vue";
 import QuizEditMany from "@/Quiz/many/Edit.vue";
 import QuizEditFree from "@/Quiz/free/Edit.vue";
+import QuizEditMulti from "@/Quiz/multi/Edit.vue";
 
 
 export default {
     components: {
+        QuizEditMulti,
         QuizEditOne,
         QuizEditWords,
         QuizEditNumber,
