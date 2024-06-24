@@ -34,7 +34,7 @@
         </template>
     </draggable>
     <a class="btn btn-primary btn-xs add-option" @click="addOption">Добавить</a>
-    <input-error :errors="errors" for="options,verification"/>
+    <input-error :errors="errors" for="options,verification,verification.*,verification.*.*"/>
 
 </template>
 
@@ -93,9 +93,9 @@ export default {
         },
 
         update(){
-            let verification = this.lOptions.findIndex(itm => itm.index == this.right);
-            if (verification == -1) {
-                verification = null;
+            let correct = this.lOptions.findIndex(itm => itm.index == this.right);
+            if (correct == -1) {
+                correct = null;
             }
 
             let options = null;
@@ -105,7 +105,7 @@ export default {
                 };});
             }
             this.$emit('update:options', {options: options});
-            this.$emit('update:verification', verification);
+            this.$emit('update:verification', {correct: correct});
         }
 
     },
@@ -131,10 +131,13 @@ export default {
             this.lOptions = [];
         }
         this.right = null;
-        if (_isArray(this.verification) && this.verification.length > 0) {
-            this.right = Math.min.apply(null,this.verification);
-        } else if (_isNumber(this.verification)) {
-            this.right = this.verification;
+        if (_isObject(this.verification) &&
+            this.verification.hasOwnProperty('correct')) {
+            if (_isArray(this.verification.correct) && this.verification.correct.length > 0) {
+                this.right = Math.min.apply(null, this.verification.correct);
+            } else if (_isNumber(this.verification.correct)) {
+                this.right = this.verification.correct;
+            }
         }
     }
 }

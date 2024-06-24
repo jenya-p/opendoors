@@ -34,7 +34,8 @@ class QuizQuestionRequest extends FormRequest {
                 'options.options.*' => 'required|array',
                 'options.options.*.text' => 'required|string',
                 'options.options.*.text_en' => 'required|string',
-                'verification' => 'required|integer',
+                'verification' => 'required|array',
+                'verification.correct' => 'required|integer',
             ];
         } else if($this->type == QuizQuestion::TYPE_MANY){
             $rules += [
@@ -44,7 +45,8 @@ class QuizQuestionRequest extends FormRequest {
                 'options.options.*.text' => 'required|string',
                 'options.options.*.text_en' => 'required|string',
                 'verification' => 'required|array',
-                'verification.*' => 'required|integer',
+                'verification.correct' => 'required|array',
+                'verification.correct.*' => 'required|integer',
             ];
         } else if($this->type == QuizQuestion::TYPE_MULTI){
             $rules += [

@@ -1,5 +1,6 @@
 <template>
     <h2>Варианты</h2>
+
     <draggable
         v-if="lOptions.length"
         v-model="lOptions"
@@ -34,7 +35,8 @@
         </template>
     </draggable>
     <a class="btn btn-primary btn-xs add-option" @click="addOption">Добавить</a>
-    <input-error :errors="errors" for="options,verification"/>
+
+    <input-error :errors="errors" for="options,verification,verification.*,verification.*.*"/>
 
 </template>
 
@@ -94,14 +96,12 @@ export default {
         },
 
         update(){
-            let verification = [];
+            let correct = [];
             for (const index in this.lOptions) {
-
                 if(this.right.indexOf(this.lOptions[index].index) !== -1){
-                    verification.push(parseInt(index));
+                    correct.push(parseInt(index));
                 }
             }
-
             let options = null;
             if(this.lOptions.length){
                 options = this.lOptions.map(function(itm){ return {
@@ -109,7 +109,7 @@ export default {
                 };});
             }
             this.$emit('update:options', {options: options});
-            this.$emit('update:verification', verification);
+            this.$emit('update:verification', {correct: correct});
         }
 
     },
@@ -135,12 +135,17 @@ export default {
             this.lOptions = [];
         }
 
+
         this.right = [];
-        if(_isArray(this.verification)){
-            this.right = this.verification;
-        } else if(_isNumber(this.verification)){
-            this.right = [this.verification];
+        if (_isObject(this.verification) &&
+            this.verification.hasOwnProperty('correct')) {
+            if(_isArray(this.verification.correct)){
+                this.right = this.verification.correct;
+            } else if(_isNumber(this.verification.correct)){
+                this.right = [this.verification.correct];
+            }
         }
+
     }
 }
 </script>
