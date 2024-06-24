@@ -91,13 +91,13 @@
                          :errors="form.errors"
             ></component> -->
 
-            <div class="block-footer">
+
+            <table-bottom align="left">
                 <button type="submit" class="btn btn-primary">Сохранить</button>
                 <!--                <History type="user"/>-->
-            </div>
+            </table-bottom>
 
         </form>
-
 
     </AdminLayout>
 </template>
@@ -121,10 +121,12 @@ import QuizEditOne from "@/Quiz/one/Edit.vue";
 import QuizEditMany from "@/Quiz/many/Edit.vue";
 import QuizEditFree from "@/Quiz/free/Edit.vue";
 import QuizEditMulti from "@/Quiz/multi/Edit.vue";
+import TableBottom from "@/Components/TableBottom.vue";
 
 
 export default {
     components: {
+        TableBottom,
         QuizEditMulti,
         QuizEditOne,
         QuizEditWords,
