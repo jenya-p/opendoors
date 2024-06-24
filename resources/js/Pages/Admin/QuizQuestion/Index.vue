@@ -50,7 +50,7 @@
                 </tbody>
             </table>
             <table-bottom>
-                <paginator :item-count="items.total" v-model="page" :ipp="items.per_page"></paginator>
+                <pagination :item-count="items.total" v-model="page" :ipp="items.per_page"></pagination>
             </table-bottom>
         </div>
     </AdminLayout>
@@ -64,11 +64,13 @@ import Ttd from "@/Components/table-td.vue";
 import _isArray from "lodash/isArray.js";
 import _debounce from "lodash/debounce.js";
 import Sort from "@/Components/Sort.vue";
+import Pagination from "@/Components/Paginator.vue";
+import TableBottom from "@/Components/TableBottom.vue";
 
 
 
 export default {
-    components: {Sort, Ttd, Link, AdminLayout},
+    components: {TableBottom, Pagination, Sort, Ttd, Link, AdminLayout},
     props: {
         items: Array
     },
