@@ -41,12 +41,12 @@ class AttachmentController extends Controller
 
 		$file = $request->file('file');
 
+        if(empty($file)){
+            throw new \Exception('upload failed');
+        }
+
 		if(empty($name)){
 			$name = $file->getClientOriginalName();
-		}
-
-		if(empty($file)){
-			throw new \Exception('upload failed');
 		}
 
 		$itemType = $request->get('item_type');
