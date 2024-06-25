@@ -1,5 +1,5 @@
 <template>
-    <h2>Варианты</h2>
+    <h2>Варианты ответов</h2>
     <draggable
         v-if="lOptions.length"
         v-model="lOptions"

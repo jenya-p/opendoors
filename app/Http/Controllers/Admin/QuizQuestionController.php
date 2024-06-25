@@ -8,6 +8,7 @@ use App\Models\Attachment;
 use App\Models\QuizGroup;
 use App\Models\QuizQuestion;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Inertia\Inertia;
@@ -25,7 +26,16 @@ class QuizQuestionController extends Controller
         $filter = trim($request->filter);
         if(!empty($filter)){
             $lcQuery = '%' . mb_strtolower(trim($filter)) . '%';
-            $query->whereRaw('text like ? or text_en like ?', [$lcQuery,$lcQuery]);
+            if(is_numeric($filter)){
+                $query->where(function(Builder $query) use ($filter, $lcQuery){
+                    $query->where('id', $filter)
+                        ->orWhereRaw('text like ? or text_en like ?', [$lcQuery,$lcQuery])
+                        ->orderByRaw('id = ? DESC', $filter);
+                });
+            } else {
+                $query
+                    ->whereRaw('text like ? or text_en like ?', [$lcQuery,$lcQuery]);
+            }
         }
 
         if(!empty($request->sort)){

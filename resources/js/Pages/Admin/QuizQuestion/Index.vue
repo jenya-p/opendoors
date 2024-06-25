@@ -4,7 +4,7 @@
         <div class="block">
 
             <div class="simple-list-filter-wrp">
-                <input type="text" class="input" placeholder="Поиск по тексту задания"
+                <input type="text" class="input" placeholder="Поиск по номеру и тексту задания"
                        v-model="filter">
                 <Link :href="route('admin.quiz-question.create')" class="btn btn-sm btn-primary ">
                     <i class="fa fa-plus" style="font-size: 0.8em; margin-right: 8px"></i>Добавить
@@ -14,6 +14,7 @@
             <table class="table">
                 <thead class="m-hide">
                 <tr>
+                    <th class="code"><sort name="id" v-model="sort" >№</sort></th>
                     <th class="group"><sort name="group" v-model="sort" >Группа</sort></th>
                     <th class="type"><sort name="type" v-model="sort" >Тип</sort></th>
                     <th class="text">Текст задания</th>
@@ -25,8 +26,9 @@
                 </thead>
                 <tbody>
                 <tr v-for="item of items.data" @click="itemClick(item)" class="cursor-pointer">
+                    <td class="code">{{item.id}}</td>
                     <td class="group">
-                        {{item.group.name}}
+                        {{item.group?.name}}
                     </td>
                     <td class="type" :title="item.type_name">
                         <img :src="'/images/quiz/' + item.type + '.svg'" />

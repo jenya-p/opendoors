@@ -10,11 +10,11 @@
     </field>
 
     <field :errors="errors" for="options.step" label="Шаг ввода" class="field-short">
-        <input type="number" class="input" v-model="lOptions.step">
+        <input type="number" class="input" v-model="lOptions.step" step="any">
     </field>
 
     <field :errors="errors" for="verification" label="Верный ответ" class="field-short">
-        <input type="number" class="input" v-model="lVerification">
+        <input type="number" class="input" v-model="lVerification" :min="lOptions.min" :max="lOptions.max" :step="lOptions.step">
     </field>
 
 </template>

@@ -14,13 +14,15 @@
                 <VueMultiselect :options="type_options" v-model="type" trackBy="id" label="name" :allow-empty="false"/>
             </field>
 
-            <field :errors="form.errors" for="order" label="Номер задания в билете" class="field-short">
-                <input type="number" class="input" v-model="form.order" step="1" min="1">
-            </field>
+            <div class="field-row">
+                <field :errors="form.errors" for="order" label="Номер задания в билете" class="field-short">
+                    <input type="number" class="input" v-model="form.order" step="1" min="1">
+                </field>
 
-            <field :errors="form.errors" for="weight" label="Вес задания" class="field-short">
-                <input type="number" class="input" v-model="form.weight">
-            </field>
+                <field :errors="form.errors" for="weight" label="Вес задания" class="field-short">
+                    <input type="number" class="input" v-model="form.weight">
+                </field>
+            </div>
 
             <field :errors="form.errors" for="text" label="Текст задания">
                 <ckeditor v-model="form.text" :editor="editor" :config="{
@@ -41,19 +43,18 @@
             <field :errors="form.errors" for="images_en" label="Файлы (Англ.)">
                 <Attachments :items="form.images_en" :item_id="item.id" item_type="question_en"/>
             </field>
-
+<!--
             <field :errors="form.errors" for="description" label="Расшифровка ответа">
                 <ckeditor v-model="form.description" :editor="editor" :config="{
                         width: '100%'
                     }"/>
             </field>
-
             <field :errors="form.errors" for="description_en" label="Расшифровка ответа (Англ.)">
                 <ckeditor v-model="form.description_en" :editor="editor" :config="{
                         width: '100%'
                     }"/>
             </field>
-
+-->
             <QuizEditOne
                 v-if="form.type == 'one'"
                 v-model:options="form.options"
@@ -122,10 +123,12 @@ import QuizEditMany from "@/Quiz/many/Edit.vue";
 import QuizEditFree from "@/Quiz/free/Edit.vue";
 import QuizEditMulti from "@/Quiz/multi/Edit.vue";
 import TableBottom from "@/Components/TableBottom.vue";
+import InputLabel from "@/Components/InputLabel.vue";
 
 
 export default {
     components: {
+        InputLabel,
         TableBottom,
         QuizEditMulti,
         QuizEditOne,
@@ -169,7 +172,7 @@ export default {
                 description: '',
                 description_en: '',
                 order: null,
-                weight: null,
+                weight: 1,
                 group_id: null,
                 type: 'one',
                 options: [],
@@ -214,6 +217,25 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+
+
+:deep(form){
+    &:not(.vertical) .field-row{
+        display: flex;
+        gap: 40px;
+        .input{
+            width: 190px;
+        }
+        .field{margin: 0}
+        .field:not(:first-child) .input-label{text-align: right; width: auto;}
+    }
+    &.vertical .field-row .field{
+        flex-direction: column;
+        align-items: stretch;
+    }
+}
+
+
 
 </style>
 
