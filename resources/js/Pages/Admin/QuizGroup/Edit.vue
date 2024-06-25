@@ -24,11 +24,8 @@
 import {Link, useForm} from '@inertiajs/vue3';
 import Field from "@/Components/Field.vue";
 import AdminLayout from "@/Layouts/AdminLayout.vue";
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
-import _isObject from "lodash/isObject";
 import _extend from "lodash/extend";
-import TextareaAutosize from "@/Components/TextareaAutosize.vue";
 
 export default {
     components: {
