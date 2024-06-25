@@ -1,5 +1,5 @@
 <template>
-    <AdminLayout title="Группы вопросов" :breadcrumb="[{label: 'Группы вопросов'}]">
+    <AdminLayout title="Группы заданий" :breadcrumb="[{label: 'Группы заданий'}]">
 
         <div class="block">
 
@@ -15,7 +15,7 @@
                 <thead class="m-hide">
                 <tr>
                     <th><sort name="name" v-model="lItems.sort">Название</sort></th>
-                    <th><sort name="question_count" v-model="lItems.sort" strategy="numeric">Вопросов</sort></th>
+                    <th><sort name="question_count" v-model="lItems.sort" strategy="numeric">Заданий</sort></th>
                     <th class="buttons"></th>
                 </tr>
                 </thead>

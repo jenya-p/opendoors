@@ -4,7 +4,7 @@
         <div class="block">
 
             <div class="simple-list-filter-wrp">
-                <input type="text" class="input" placeholder="Поиск по тексту вопроса"
+                <input type="text" class="input" placeholder="Поиск по тексту задания"
                        v-model="filter">
                 <Link :href="route('admin.quiz-question.create')" class="btn btn-sm btn-primary ">
                     <i class="fa fa-plus" style="font-size: 0.8em; margin-right: 8px"></i>Добавить
@@ -16,9 +16,9 @@
                 <tr>
                     <th class="group"><sort name="group" v-model="sort" >Группа</sort></th>
                     <th class="type"><sort name="type" v-model="sort" >Тип</sort></th>
+                    <th class="text">Текст задания</th>
                     <th class="order"><sort name="order" v-model="sort" >Порядок</sort></th>
                     <th class="weight"><sort name="weight" v-model="sort" >Вес</sort></th>
-                    <th class="text">Текст вопроса</th>
                     <th class="options">Варианты</th>
                     <th class="buttons"></th>
                 </tr>
@@ -31,14 +31,15 @@
                     <td class="type" :title="item.type_name">
                         <img :src="'/images/quiz/' + item.type + '.svg'" />
                     </td>
+
+                    <td class="text">
+                        {{ item.snippet }}
+                    </td>
                     <td class="order">
                         {{item.order}}
                     </td>
                     <td class="weight">
                         {{item.weight}}
-                    </td>
-                    <td class="text">
-                        {{ item.snippet }}
                     </td>
                     <td class="options">
                         {{item.option_count}}
@@ -149,19 +150,25 @@ export default {
 table.table{
     @include desktop{
         td, th {
+            &.group {
+                width: 150px;
+            }
             &.type{
                 img{
                     width: 25px;
                 }
-                width: 80px; text-align: center}
+                width: 80px; text-align: center
+            }
             &.order{width: 80px; text-align: center}
             &.weight{
                 width: 50px;
                 text-align: center;
-                padding-right: 30px;
             }
             &.options{
                 width: 80px; text-align: center
+            }
+            &.buttons {
+                width: 50px;
             }
         }
     }

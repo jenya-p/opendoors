@@ -5,30 +5,30 @@
         <form method="post" @submit.prevent="submit" class="block" v-field-container>
             <h2>Основная информация</h2>
 
-            <field :errors="form.errors" for="group_id" label="Группа вопросов">
+            <field :errors="form.errors" for="group_id" label="Группа заданий">
                 <VueMultiselect :options="group_options" v-model="group" trackBy="id" label="name"
                                 :allow-empty="false"/>
             </field>
 
-            <field :errors="form.errors" for="type" label="Тип вопроса">
+            <field :errors="form.errors" for="type" label="Тип задания">
                 <VueMultiselect :options="type_options" v-model="type" trackBy="id" label="name" :allow-empty="false"/>
             </field>
 
-            <field :errors="form.errors" for="order" label="Номер вопроса в билете" class="field-short">
+            <field :errors="form.errors" for="order" label="Номер задания в билете" class="field-short">
                 <input type="number" class="input" v-model="form.order" step="1" min="1">
             </field>
 
-            <field :errors="form.errors" for="weight" label="Вес вопроса" class="field-short">
+            <field :errors="form.errors" for="weight" label="Вес задания" class="field-short">
                 <input type="number" class="input" v-model="form.weight">
             </field>
 
-            <field :errors="form.errors" for="text" label="Текст вопроса">
+            <field :errors="form.errors" for="text" label="Текст задания">
                 <ckeditor v-model="form.text" :editor="editor" :config="{
                         width: '100%'
                     }"/>
             </field>
 
-            <field :errors="form.errors" for="text_en" label="Текст вопроса (Англ. )">
+            <field :errors="form.errors" for="text_en" label="Текст задания (Англ. )">
                 <ckeditor v-model="form.text_en" :editor="editor" :config="{
                         width: '100%'
                     }"/>

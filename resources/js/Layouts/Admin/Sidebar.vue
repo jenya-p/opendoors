@@ -128,13 +128,13 @@
                             <li :class="{'active': routeIs('quiz-group')}">
                                 <Link :href="route('admin.quiz-group.index')">
                                     <i class="fa fa-list-check"/>
-                                    <span>Группы вопросов</span>
+                                    <span>Группы заданий</span>
                                 </Link>
                             </li>
                             <li :class="{'active': routeIs('quiz-question')}">
                                 <Link :href="route('admin.quiz-question.index')">
                                     <i class="fa fa-list-check"/>
-                                    <span>Вопросы</span>
+                                    <span>Задания</span>
                                 </Link>
                             </li>
                             <li>

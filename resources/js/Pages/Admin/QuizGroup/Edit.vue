@@ -1,6 +1,6 @@
 <template>
     <AdminLayout :title="item.id ? item.name : 'Новая группа'"
-                 :breadcrumb="[{link: route('admin.quiz-group.index'), label: 'Группы вопросов'}, item.id ? item.name: 'Новая']">
+                 :breadcrumb="[{link: route('admin.quiz-group.index'), label: 'Группы заданий'}, item.id ? item.name: 'Новая']">
 
 
             <form method="post" @submit.prevent="submit" class="block" v-field-container>
