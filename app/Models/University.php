@@ -2,12 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\Ordered;
-use App\Models\Quiz\Question;
-use App\Models\Test\Test;
-use App\Models\Test\Ticket;
 use Carbon\Carbon;
-use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;

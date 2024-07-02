@@ -1,8 +1,7 @@
 <?php
 
-use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Profile\InfoController;
-use \App\Http\Controllers\Profile\PaymentController;
+use App\Http\Controllers\Profile\PaymentController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [\App\Http\Controllers\HomeController::class, 'home']);
@@ -56,11 +55,21 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth', 'c
     Route::resource('profile', \App\Http\Controllers\Admin\ProfileController::class)->except(['show']);
     Route::resource('stage', \App\Http\Controllers\Admin\StageController::class)->except(['show', 'create', 'store']);
 
-    Route::resource('quiz-group', \App\Http\Controllers\Admin\QuizGroupController::class)->except([]);
-    Route::resource('quiz-question', \App\Http\Controllers\Admin\QuizQuestionController::class)->except([]);
+    Route::resource('quiz', \App\Http\Controllers\Admin\Quiz\QuizController::class)->except([]);
+    Route::resource('quiz-question', \App\Http\Controllers\Admin\Quiz\QuestionController::class)
+        ->parameters(['quiz-question' => 'question'])
+        ->except([]);
 
-    Route::resource('backfeed', \App\Http\Controllers\Admin\BackfeedController::class)
-        ->except(['show', 'create', 'store']);
+    Route::get('quiz-question/{question}/probe', [\App\Http\Controllers\Admin\Quiz\ProbeController::class, 'probe'])
+        ->name('quiz-question.probe');
+
+    Route::get('quiz-probe/show',       [\App\Http\Controllers\Admin\Quiz\ProbeController::class, 'show'])->name('quiz-probe.show');
+    Route::get('quiz-probe/{question}', [\App\Http\Controllers\Admin\Quiz\ProbeController::class, 'probe'])->name('quiz-probe.probe');
+    Route::post('quiz-probe',           [\App\Http\Controllers\Admin\Quiz\ProbeController::class, 'check'])->name('quiz-probe.check');
+
+
+//    Route::resource('backfeed', \App\Http\Controllers\Admin\BackfeedController::class)
+//        ->except(['show', 'create', 'store']);
 
 
 });

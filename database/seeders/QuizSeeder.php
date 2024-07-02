@@ -2,35 +2,29 @@
 
 namespace Database\Seeders;
 
-use App\Models\Admin;
-use App\Models\Attachment;
-use App\Models\EduLevel;
 use App\Models\Profile;
-use App\Models\QuizGroup;
-use App\Models\QuizQuestion;
-use App\Models\Stage;
-use App\Models\Track;
-use App\Models\University;
-use App\Models\UniversityUser;
-use App\Models\User;
+use App\Models\Quiz\Question;
+use App\Models\Quiz\Quiz;
+use Illuminate\Database\Seeder;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Faker\Factory;
-use GuzzleHttp\Client;
-use Heriw\LaravelSimpleHtmlDomParser\HtmlDomParser;
-use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
 
 class QuizSeeder extends Seeder {
 
-    public function run(): void {
+    public function run() {
+        $this->base();
+    }
 
-        $qg = QuizGroup::firstOrCreate([
-            'name' => 'Арифметика',
-        ]);
+
+    public function arifm($qg): void {
+
 
         $qg->questions()->forceDelete();
-        for ($i = 0; $i < 20; $i++) {
+        $qg->groups()->forceDelete();
+
+        $group = $qg->groups()->create(['weight' => 5]);
+
+        for ($i = 0; $i < 5; $i++) {
             $c = rand(10, 100);
             $a = rand(1, $c - 1);
             $b = $c - $a;
@@ -42,13 +36,12 @@ class QuizSeeder extends Seeder {
             $vars = \Arr::shuffle($vars);
             $correct = array_search($c . ' *', $vars);
 
-            $q = QuizQuestion::create([
-                'group_id' => $qg->id,
-                'weight' => 1,
-                'order' => 1,
+            $q = Question::create([
+                'quiz_id' => $qg->id,
+                'group_id' => $group->id,
                 'text' => 'Сколько будет ' . $a . ' + ' . $b . '?',
                 'text_en' => 'How much is ' . $a . ' + ' . $b . '?',
-                'type' => QuizQuestion::TYPE_ONE,
+                'type' => Question::TYPE_ONE,
                 'options' => [
                     'options' => array_map(fn($itm) => [
                         'text' => '<p>' . $itm . '</p>',
@@ -62,8 +55,9 @@ class QuizSeeder extends Seeder {
             ]);
         }
 
+        $group = $qg->groups()->create(['weight' => 15]);
 
-        for ($i = 0; $i < 20; $i++) {
+        for ($i = 0; $i < 5; $i++) {
             $c = rand(10, 100);
 
             $vars = [];
@@ -80,13 +74,12 @@ class QuizSeeder extends Seeder {
                 }
             }
 
-            $q = QuizQuestion::create([
-                'group_id' => $qg->id,
-                'weight' => 1,
-                'order' => 2,
+            $q = Question::create([
+                'quiz_id' => $qg->id,
+                'group_id' => $group->id,
                 'text' => 'Как получить ' . $c . '?',
                 'text_en' => 'How to get ' . $c . '?',
-                'type' => QuizQuestion::TYPE_MANY,
+                'type' => Question::TYPE_MANY,
                 'options' => [
                     'options' => array_map(fn($itm) => [
                         'text' => '<p>' . $itm . '</p>',
@@ -99,8 +92,9 @@ class QuizSeeder extends Seeder {
             ]);
         }
 
+        $group = $qg->groups()->create(['weight' => 30]);
 
-        for ($i = 0; $i < 20; $i++) {
+        for ($i = 0; $i < 5; $i++) {
             $c = rand(10, 100);
 
             $vars = [];
@@ -121,13 +115,12 @@ class QuizSeeder extends Seeder {
                     $weights[$r][$w] = max(0, $r - $w);
                 }
             }
-            $q = QuizQuestion::create([
-                'group_id' => $qg->id,
-                'weight' => 1,
-                'order' => 3,
+            $q = Question::create([
+                'quiz_id' => $qg->id,
+                'group_id' => $group->id,
                 'text' => 'Укажите все числа меньше ' . $c . '?',
                 'text_en' => 'Specify all numbers less than ' . $c . '?',
-                'type' => QuizQuestion::TYPE_MULTI,
+                'type' => Question::TYPE_MULTI,
                 'options' => [
                     'options' => array_map(fn($itm) => [
                         'text' => '<p>' . $itm . '</p>',
@@ -142,10 +135,47 @@ class QuizSeeder extends Seeder {
 
         }
 
-
-
-
     }
 
+
+    public function base(): void {
+        /** @var Profile $profile */
+        foreach (Profile::all() as $profile) {
+
+            $qg = Quiz::firstOrCreate([
+                'name' => $profile->name . '. Бакалавриат. Вступительный тест',
+                'profile_id' =>  $profile->id,
+                'track' => Quiz::TRACK_B,
+                'stage' => Quiz::STAGE_1,
+            ]);
+
+            if ($profile->name == 'Арифметика') {
+                $this->arifm($qg);
+                continue;
+            }
+
+            $qg = Quiz::firstOrCreate([
+                'name' => $profile->name . '. Бакалавриат. Тестирование II Этапа',
+                'profile_id' =>  $profile->id,
+                'track' => Quiz::TRACK_B,
+                'stage' => Quiz::STAGE_2,
+            ]);
+
+
+            $qg = Quiz::firstOrCreate([
+                'name' => $profile->name . '. Магистратура и Аспирантура. Вступительный тест',
+                'profile_id' =>  $profile->id,
+                'track' => Quiz::TRACK_MA,
+                'stage' => Quiz::STAGE_1,
+            ]);
+
+            $qg = Quiz::firstOrCreate([
+                'name' => $profile->name . '. Магистратура и Аспирантура. Тестирование II Этапа',
+                'profile_id' =>  $profile->id,
+                'track' => Quiz::TRACK_MA,
+                'stage' => Quiz::STAGE_2,
+            ]);
+        }
+    }
 
 }

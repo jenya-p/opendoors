@@ -13,6 +13,7 @@ import plural from "@/Filters/plural.js";
 import htmlize from "@/Filters/htmlize.js";
 import date from "@/Filters/date";
 import phone from "@/Filters/phone";
+import ntl from "@/Filters/ntl.js";
 
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
@@ -22,7 +23,7 @@ createInertiaApp({
     resolve: (name) => resolvePageComponent(`./Pages/${name}.vue`, import.meta.glob('./Pages/**/*.vue')),
     setup({ el, App, props, plugin }) {
         let app = createApp({ render: () => h(App, props) });
-        app.config.globalProperties.$filters = {currency: currency, plural: plural, htmlize: htmlize, date: date, phone: phone };
+        app.config.globalProperties.$filters = {currency: currency, plural: plural, htmlize: htmlize, date: date, phone: phone, ntl: ntl};
         app.use(plugin)
             .use(ZiggyVue)
             .use(vClickOutside)

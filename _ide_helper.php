@@ -18494,6 +18494,36 @@ namespace Spatie\LaravelIgnition\Facades {
             }
     }
 
+namespace Illuminate\Support {
+            /**
+     * 
+     *
+     */        class Arr {
+                    /**
+         * 
+         *
+         * @see \App\Providers\AppServiceProvider::boot()
+         * @param mixed $src
+         * @static 
+         */        public static function assocToOptions($src)
+        {
+                        return \Illuminate\Support\Arr::assocToOptions($src);
+        }
+                    /**
+         * 
+         *
+         * @see \App\Providers\AppServiceProvider::boot()
+         * @param mixed $src
+         * @param mixed $key
+         * @param mixed $null
+         * @static 
+         */        public static function iif($src, $key, $null = null)
+        {
+                        return \Illuminate\Support\Arr::iif($src, $key, $null);
+        }
+            }
+    }
+
 namespace Illuminate\Http {
             /**
      * 

@@ -36,5 +36,18 @@ class AppServiceProvider extends ServiceProvider
             return $options;
         });
 
+
+        Arr::macro('iif', function ($src, $key, $empty = null) {
+            if(array_key_exists($key, $src)){
+                return $src[$key];
+            } else {
+                if(empty($key) && !empty($empty)){
+                    return $empty;
+                } else {
+                    return $key;
+                }
+            }
+        });
+
     }
 }

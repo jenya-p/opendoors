@@ -31,7 +31,7 @@ return new class extends Migration {
 
             $table->unsignedMediumInteger('order')->nullable();
             $table->float('weight')->nullable();
-            $table->enum('type', array_keys(\App\Models\QuizQuestion::TYPE_NAMES));
+            $table->enum('type', array_keys(\App\Models\Quiz\Question::TYPE_NAMES));
             $table->text('text');
             $table->text('text_en');
             $table->text('description')->nullable();

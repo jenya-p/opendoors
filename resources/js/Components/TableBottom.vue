@@ -15,17 +15,24 @@ export default {
     methods: {
         refresh() {
             if (this.$refs.margin.offsetTop > window.scrollY + window.innerHeight - this.$refs.panel.clientHeight) {
+                let panel = window.panel = this.$refs.panel;
                 if (p) {
                     this.$refs.margin.classList.add('fixed');
-                    this.$refs.panel.classList.add('fixed');
+                    panel.classList.add('fixed');
                     p = false;
                 }
+                let rect = panel.parentElement.getBoundingClientRect();
+                panel.style.left = rect.left + 'px';
+                panel.style.width = panel.parentElement.offsetWidth - 42 + 'px';
             } else {
                 if (!p) {
                     p = true;
                     this.$refs.margin.classList.remove('fixed');
                     this.$refs.panel.classList.remove('fixed');
+                    this.$refs.panel.style.left = '';
+                    this.$refs.panel.style.width = '';
                 }
+
             }
         },
         cls(){

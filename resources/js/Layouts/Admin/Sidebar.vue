@@ -34,7 +34,7 @@
                             </li>
                             <li :class="{active: routeIs('student')}">
                                 <Link :href="route('admin.student.index')">
-                                    <i class="fa fa-users"/><span>Соискатели</span>
+                                    <i class="fa fa-users"/><span>Участники</span>
                                 </Link>
                             </li>
                             <li>
@@ -118,15 +118,15 @@
                     </transition>
                 </li>
 
-                <li :class="{'active-branch': routeIs('quiz-group','quiz-question'), 'hover': curSection=='tests'}">
-                    <a @click="toggle('tests')">
+                <li :class="{'active-branch': routeIs('quiz','quiz-question'), 'hover': curSection=='quiz'}">
+                    <a @click="toggle('quiz')">
                         <i class="fa-solid fa-spell-check"></i>
                         <span>Тестирования<b class="caret"></b></span>
                     </a>
                     <transition name="slide-fade">
-                        <ul v-show="curSection=='tests'">
-                            <li :class="{'active': routeIs('quiz-group')}">
-                                <Link :href="route('admin.quiz-group.index')">
+                        <ul v-show="curSection=='quiz'">
+                            <li :class="{'active': routeIs('quiz')}">
+                                <Link :href="route('admin.quiz.index')">
                                     <i class="fa fa-list-check"/>
                                     <span>Группы заданий</span>
                                 </Link>
@@ -188,7 +188,7 @@
                             <li :class="{'active': routeIs('')}">
                                 <span>
                                     <i class="fa fa-users"></i>
-                                    <span>Соискатели</span>
+                                    <span>Участники</span>
                                 </span>
                             </li>
                             <li :class="{'active': routeIs('')}">
@@ -279,8 +279,8 @@ export default {
             this.curSection = 'user';
         } else if(this.routeIs('edu-level', 'university', 'track', 'profile', 'stage')){
             this.curSection = 'opendoors';
-        } else if(this.routeIs('quiz-group', 'quiz-question')){
-            this.curSection = 'tests';
+        } else if(this.routeIs('quiz', 'quiz-question')){
+            this.curSection = 'quiz';
         }
 
     },

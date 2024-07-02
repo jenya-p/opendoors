@@ -1,5 +1,5 @@
 <template>
-    <AdminLayout title="Соискатели" :breadcrumb="['Администраторы']">
+    <AdminLayout title="Участники" :breadcrumb="['Участники']">
 
         <div class="block">
 

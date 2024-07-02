@@ -5,7 +5,7 @@
         <input type="number"  class="input" v-model="lOptions.max">
     </field>
 
-    <field :errors="errors" for="verification.guide" label="Для проверяющего"
+    <field :errors="errors" for="verification.guide" label="Методические указания"
         description="Инструкция по проверке этого задания">
         <textarea-autosize v-model="lVerification.guide" class="input"></textarea-autosize>
     </field>

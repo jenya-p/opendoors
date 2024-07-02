@@ -33,7 +33,9 @@ export default {
             }
             if (isArray(lFor) && isObject(errors)) {
                 for (const filter of lFor) {
-                    let reg = '^' + filter.replaceAll('.?', '(.\\w+)?')
+                    let reg = '^' + filter
+                        .replaceAll('.**', '(.\\w+)*')
+                        .replaceAll('.?', '(.\\w+)?')
                         .replaceAll('*', '\\w+')
                         .replaceAll('.', '\\.') + '$';
                     reg = new RegExp(reg);

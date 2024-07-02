@@ -3,10 +3,10 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Builder;
 
 
 /**
@@ -47,12 +47,12 @@ class Stage extends Model {
     ];
 
     const TYPE_PORTFOLIO = 'portfolio';
-    const TYPE_TEST = 'test';
+    const TYPE_QUIZ = 'quiz';
     const TYPE_INTERVIEW = 'interview';
 
     const TYPES = [
         self::TYPE_PORTFOLIO => 'Портфолио',
-        self::TYPE_TEST => 'Тестирование',
+        self::TYPE_QUIZ => 'Тестирование',
         self::TYPE_INTERVIEW => 'Собеседование',
     ];
 

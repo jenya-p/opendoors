@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\Backfeed;
+use App\Models\Quiz\Question;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
 use Illuminate\Database\Eloquent\Model;
@@ -61,8 +61,8 @@ class Attachment extends Model {
     const ITEM_CLASSES = [
         self::ITEM_TYPE_USERPICK => User::class,
         self::ITEM_TYPE_UNIVERSITY_LOGO => University::class,
-        self::ITEM_TYPE_QUESTION => QuizQuestion::class,
-        self::ITEM_TYPE_QUESTION_EN => QuizQuestion::class,
+        self::ITEM_TYPE_QUESTION => Question::class,
+        self::ITEM_TYPE_QUESTION_EN => Question::class,
     ];
 
     /**

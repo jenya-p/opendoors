@@ -201,11 +201,6 @@ export default {
 
 }
 
-.lang-label {
-    font-size: 0.8em;
-    margin-bottom: 5px;
-    margin-top: 5px;
-}
 </style>
 <style lang="scss">
 .ghost {

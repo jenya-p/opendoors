@@ -26,8 +26,9 @@ class DatabaseSeeder extends Seeder {
     public function run(): void {
         // User::factory(10)->create();
 
-        $this->testUsers();
 
+        $this->trackAndStages();
+        $this->universities();
 
 
 
@@ -104,17 +105,29 @@ class DatabaseSeeder extends Seeder {
     }
 
     public function trackAndStages(){
-        $track1 = Track::firstOrCreate([
+        $tracks = [];
+        $tracks[] = Track::firstOrCreate([
+            'name' => 'Бакалавриат', 'name_en' => 'Bachelor'
+        ]);
+
+        $tracks[] = Track::firstOrCreate([
             'name' => 'Магистратура', 'name_en' => 'Master'
         ]);
 
-        $track2 = Track::firstOrCreate([
+        $tracks[] = Track::firstOrCreate([
             'name' => 'Аспирантура', 'name_en' => 'Postgraduate'
         ]);
 
         $client = new Client([
             'base_uri' => 'https://od.globaluni.ru',
         ]);
+
+
+        $profile = Profile::firstOrCreate([
+            'name' => 'Арифметика',
+            'name_en' => 'Arithmetic',
+        ]);
+        $this->stages($profile, $tracks);
 
 
         $resp = $client->get('/?needRussian=1');
@@ -130,38 +143,55 @@ class DatabaseSeeder extends Seeder {
                 'name' => trim($item->text()),
                 'name_en' => trim($htmlNamesEn[$index]->text()),
             ]);
-
-            Stage::create([
-                'track_id' => $track1->id,
-                'profile_id' => $profile->id,
-                'type' => 'portfolio',
-            ]);
-
-            Stage::create([
-                'track_id' => $track1->id,
-                'profile_id' => $profile->id,
-                'type' => 'test',
-            ]);
-
-            Stage::create([
-                'track_id' => $track2->id,
-                'profile_id' => $profile->id,
-                'type' => 'portfolio',
-            ]);
-
-            Stage::create([
-                'track_id' => $track2->id,
-                'profile_id' => $profile->id,
-                'type' => 'test',
-            ]);
-
-            Stage::create([
-                'track_id' => $track2->id,
-                'profile_id' => $profile->id,
-                'type' => 'interview',
-            ]);
+            $this->stages($profile, $tracks);
 
         }
+    }
+
+
+    public function stages($profile, $tracks){
+
+        Stage::create([
+            'track_id' => $tracks[0]->id,
+            'profile_id' => $profile->id,
+            'type' => 'portfolio',
+        ]);
+
+        Stage::create([
+            'track_id' => $tracks[0]->id,
+            'profile_id' => $profile->id,
+            'type' => 'quiz',
+        ]);
+
+        Stage::create([
+            'track_id' => $tracks[1]->id,
+            'profile_id' => $profile->id,
+            'type' => 'portfolio',
+        ]);
+
+        Stage::create([
+            'track_id' => $tracks[1]->id,
+            'profile_id' => $profile->id,
+            'type' => 'quiz',
+        ]);
+
+        Stage::create([
+            'track_id' => $tracks[2]->id,
+            'profile_id' => $profile->id,
+            'type' => 'portfolio',
+        ]);
+
+        Stage::create([
+            'track_id' => $tracks[2]->id,
+            'profile_id' => $profile->id,
+            'type' => 'quiz',
+        ]);
+
+        Stage::create([
+            'track_id' => $tracks[2]->id,
+            'profile_id' => $profile->id,
+            'type' => 'interview',
+        ]);
     }
 
     public function testUsers(){

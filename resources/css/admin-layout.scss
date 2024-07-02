@@ -647,8 +647,10 @@ aside {
 
 main {
     position: relative;
-    float: right;
-    transition: 0.33s ease;
+    aside + &{
+        float: right;
+        transition: 0.33s ease;
+    }
 
     .page-title {
         @include green-box();
@@ -659,12 +661,10 @@ main {
         border-radius: 5px;
         padding: 10px 20px;
     }
-
 }
 
 @include desktop{
-
-    main {
+    aside + main {
         padding: 0 20px 0 30px;
         width: calc(100% - 300px);
     }
@@ -674,7 +674,7 @@ main {
 }
 
 @include mobile{
-    main {
+    aside + main {
         padding: 0 10px 0 10px;
         width: 100%;
     }
@@ -888,6 +888,11 @@ table.table {
         cursor: pointer
     }
 
+    tfoot th{
+        border-bottom: none;
+        border-top: 2px solid #E5E7EB
+    }
+
     .secondary {
         color: $light-fore-color;
         font-size: 0.8em;
@@ -956,7 +961,7 @@ table.table {
     border-radius: 4px;
     padding: 12.8px 20px;
     cursor: pointer;
-    transition: background-color 200ms ease;
+    transition: background 200ms ease;
     display: inline-block;
     width: 200px;
     text-align: center;
@@ -976,9 +981,8 @@ table.table {
 
     &:focus {
         outline-offset: -1px;
-        outline: 1px dashed #3eceaa;
-
-        box-shadow: 2px 3px 5px -2px rgb(0 181 142 / 52%);
+        outline: 1px dashed #d2d9fc;
+        box-shadow: 2px 3px 5px -2px rgba(122, 170, 232, 0.52);
         //text-decoration: underline ;
         //text-decoration-thickness: 1px;
         //text-decoration-style: dashed ;
@@ -988,8 +992,12 @@ table.table {
     &:hover {
         text-decoration: none;
     }
-
-    &:active {
+    &:disabled,&.disabled{
+        background: #e7e7e7;
+        color: #b5b5b5;
+        cursor: default;
+    }
+    &:not(:disabled,.disabled):active {
         transform: translate(-0.5px, 0.5px);
     }
 
@@ -1015,18 +1023,30 @@ button.btn-a {
 
 
 .btn-primary {
-    background: linear-gradient(0deg, #1994ce 0%, #1ba2e0 100%);
+    background-color: $base-color;
+    background-image: linear-gradient(0deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.3) 100%);
     color: white;
+    &:not(:disabled,.disabled):hover {
+        background-color: darken($base-color, 5);
+    }
 }
 
-.btn-primary:hover {
-    background-color: #007562;
+.btn-default {
+    background: #f7f7f7;
+    color: $light-fore-color;
+    &:hover {
+
+    }
+    &:not(:disabled,.disabled):hover {
+        background: #f0f0f0;
+        color: $fore-color;
+    }
 }
 
 .btn-gray {
     color: #444;
     transition: color 200ms ease, background-color 200ms ease;
-    &:hover {
+    &:not(:disabled,.disabled):hover {
         background-color: #f5f5f5;
         // color: $dark-shadow-color;
     }
@@ -1051,6 +1071,11 @@ button.btn-a {
     &:hover {
         color: darken($attractive-color, 10);
         text-decoration: none;
+    }
+    &[disabled], &.disabled {
+        pointer-events: none;
+        color: $dark-shadow-color;
+        cursor: default;
     }
 }
 
@@ -1134,7 +1159,7 @@ button.btn-a {
     }
 
 
-    &:disabled, &:disabled, &.disabled {
+    &:disabled, &.disabled {
         background-color: #DBDBDB20;
         box-shadow: none;
     }

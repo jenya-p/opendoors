@@ -1,10 +1,10 @@
 <template>
-    <AdminLayout :title="item ? ('Соискатель ' + item.user.name) : 'Новый соискатель'"
-                 :breadcrumb="[{link: route('admin.student.index'), label: 'Соискатели'}, item ? item.user.name : 'Новый соискатель']">
+    <AdminLayout :title="item ? ('Участник ' + item.user.name) : 'Новый участник'"
+                 :breadcrumb="[{link: route('admin.student.index'), label: 'Участники'}, item ? item.user.name : 'Новый участник']">
 
         <div class="block-wrapper">
         <form method="post" @submit.prevent="submit" class="block" v-field-container>
-            <h2>Карточка соискателя</h2>
+            <h2>Карточка участника</h2>
 
             <field label="Аккаунт" class="field-display" v-if="item">
                 <Link :href="route('admin.user.edit', {user: item.user.id})">{{item.user.name}} ({{item.user.email}})</Link>
