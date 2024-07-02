@@ -9,9 +9,9 @@ class HomeController extends Controller {
 
     public function home() {
 
-        return Inertia::render('Public/Home', [
-            'content' => \App\Models\Content::find('home')
-        ]);
+
+
+        return view('home');
 
     }
 
