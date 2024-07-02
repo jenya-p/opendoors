@@ -124,6 +124,14 @@ class Question extends Model
             && is_array($this->options['options'])
         ){
             return count($this->options['options']);
+        } else if($this->type == self::TYPE_MATCH
+            && is_array($this->options)
+            && array_key_exists('options', $this->options)
+            && is_array($this->options['options'])
+            && array_key_exists('categories', $this->options)
+            && is_array($this->options['categories'])
+        ){
+            return count($this->options['options']) . ' + ' . count($this->options['categories']);
         } else {
             return null;
         }
