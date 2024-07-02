@@ -75,7 +75,7 @@ import TableBottom from "@/Components/TableBottom.vue";
 export default {
     components: {TableBottom, Pagination, Sort, Ttd, Link, AdminLayout},
     props: {
-        items: Array
+        items: Object
     },
     data() {
         let u = new URLSearchParams(document.location.search);

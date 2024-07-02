@@ -1,94 +1,104 @@
 <template>
-    <h2>Варианты на сопоставление
-        <span v-if="lCategories.length">({{ lCategories.length }})</span>
-    </h2>
 
-    <draggable
-        v-if="lCategories.length"
-        v-model="lCategories"
-        handle=".option-counter"
-        group="categories"
-        item-key="index"
-        ghost-class="ghost"
-        animation="200"
-    >
-        <template #item="{element, index}">
-            <div>
-                <div class="option" v-field-container>
-                    <span class="option-counter">{{ index + 1 }}</span>
-                    <field :errors="errors"
-                           label="Русский текст"
-                           :for="'options.' + element.index + '.text'" class="field-option">
-                        <input type="text" v-model="element.text" class="input" ref="categoryTextInput">
-                    </field>
-                    <field :errors="errors"
-                           label="Английский текст"
-                           :for="'options.' + element.index + '.text_en'" class="field-option">
-                        <input type="text" v-model="element.text_en" class="input">
-                    </field>
-                    <field class="field-remove">
-                        <a class="btn-remove" title="Удалить вариант" @click="removeCategory(index)">Удалить <i
-                            class="fa fa-times"></i></a>
-                    </field>
-                </div>
-            </div>
-        </template>
-    </draggable>
-    <a class="btn btn-primary btn-xs add-option" @click="addCategory">Добавить вариант</a>
-    <div style="height: 50px"></div>
+    <div class="options-columns">
+        <div class="options-column" >
 
-    <h2>Категории <span v-if="lOptions.length">({{ lOptions.length }})</span></h2>
-    <field label="Настройка категорий" class="field-checkboxes">
-        <checkbox v-model="multiple">Разрешить множественный выбор</checkbox>
-        <checkbox v-model="allowEmpty">Разрешить пустые ответы</checkbox>
-    </field>
-
-    <draggable
-        v-if="lOptions.length"
-        v-model="lOptions"
-        handle=".option-counter"
-        group="options"
-        item-key="index"
-        ghost-class="ghost"
-        animation="200"
-    >
-        <template #item="{element, index}">
-            <div><div class="option" v-field-container>
-                <span class="option-counter">{{ $filters.ntl(index + 1) }}</span>
-                <field :errors="errors"
-                       label="Русский текст"
-                       :for="'options.' + element.index + '.text'" class="field-option">
-                    <ckeditor v-model="element.text" :editor="editor" ref="optionTextInput" :config="{
+            <h2>Категории <span v-if="lOptions.length">({{ lOptions.length }})</span></h2>
+            <draggable
+                v-if="lOptions.length"
+                v-model="lOptions"
+                handle=".option-counter"
+                group="categories"
+                item-key="index"
+                ghost-class="ghost"
+                animation="200"
+            >
+                <template #item="{element, index}">
+                    <div>
+                        <div class="option" v-field-container>
+                            <span class="option-counter">{{ index + 1 }}</span>
+                            <field :errors="errors"
+                                   label="Русский текст"
+                                   :for="'options.options.' + element.index + '.text'" class="field-option">
+                                <ckeditor v-model="element.text" :editor="editor" ref="optionTextInput" :config="{
                             width: '100%'
                         }"/>
-                </field>
-                <field :errors="errors"
-                       label="Английский текст"
-                       :for="'options.' + element.index + '.text_en'" class="field-option">
-                    <ckeditor v-model="element.text_en" :editor="editor" :config="{
+                            </field>
+                            <field :errors="errors"
+                                   label="Английский текст"
+                                   :for="'options.options.' + element.index + '.text_en'" class="field-option">
+                                <ckeditor v-model="element.text_en" :editor="editor" :config="{
                             width: '100%'
                         }"/>
-                </field>
-                <field :errors="errors"
-                       label="Варианты"
-                       :for="'matches.' + element.index" class="field-option">
-                    <vue-multiselect :options="lCategories" v-model="element.matches"
-                                     track-by="index" label="text"
-                                     :multiple="true"
-                                     :max="multiple ? null : 1"
-                    />
-                </field>
-                <field class="field-remove">
-                    <a class="btn-remove" title="Удалить вариант" @click="removeOption(index)">Удалить <i
-                        class="fa fa-times"></i></a>
-                </field>
-            </div></div>
-        </template>
-    </draggable>
-    <a class="btn btn-primary btn-xs add-option" @click="addOption">Добавить категорию</a>
-    <input-error :errors="errors" for="options,verification,verification.*,verification.*.*"/>
+                            </field>
+                            <field class="field-remove">
+                                <a class="btn-remove" title="Удалить вариант" @click="removeOption(index)">Удалить <i
+                                    class="fa fa-times"></i></a>
+                            </field>
+                        </div>
+                    </div>
+                </template>
+            </draggable>
+            <a class="btn btn-primary btn-xs add-option" @click="addOption">Добавить категорию</a>
+            <input-error :errors="errors" for="options.options"/>
+        </div>
+        <div class="options-column" >
+            <h2>Варианты <span v-if="lOptions.length">({{ lOptions.length }})</span></h2>
+            <draggable
+                v-if="lCategories.length"
+                v-model="lCategories"
+                handle=".option-counter"
+                group="options"
+                item-key="index"
+                ghost-class="ghost"
+                animation="200"
+            >
+                <template #item="{element, index}">
+                    <div><div class="option" v-field-container>
+                        <span class="option-counter">{{ $filters.ntl(index + 1) }}</span>
+                        <field :errors="errors"
+                               label="Русский текст"
+                               :for="'options.categories.' + element.index + '.text'" class="field-option">
+                            <ckeditor v-model="element.text" :editor="editor" ref="categoryTextInput" :config="{
+                            width: '100%'
+                        }"/>
+                        </field>
+                        <field :errors="errors"
+                               label="Английский текст"
+                               :for="'options.categories.' + element.index + '.text_en'" class="field-option">
+                            <ckeditor v-model="element.text_en" :editor="editor" :config="{
+                            width: '100%'
+                        }"/>
+                        </field>
+
+                        <field class="field-remove">
+                            <a class="btn-remove" title="Удалить вариант" @click="removeCategory(index)">Удалить <i
+                                class="fa fa-times"></i></a>
+                        </field>
+                    </div></div>
+                </template>
+            </draggable>
+            <a class="btn btn-primary btn-xs add-option" @click="addCategory">Добавить вариант</a>
+            <input-error :errors="errors" for="options.categories"/>
+        </div>
+    </div>
     <div style="height: 70px"></div>
-
+    <h2>Соответствие</h2>
+    <table class="compliance-table" style="font-size: 1.2em">
+        <tr>
+            <th v-for="(option, index) in lOptions">{{index + 1}}</th>
+        </tr>
+        <tr>
+            <td v-for="option in lOptions" style="width: 80px">
+                <vue-multiselect
+                    :options="categoryOptions" v-model="option.match" track-by="index" label="label"
+                    placeholder=""
+                    :show-labels="false"
+                />
+            </td>
+        </tr>
+    </table>
+    <input-error :errors="errors" for="verification,verification.*,verification.*.*"/>
 
 </template>
 
@@ -106,6 +116,8 @@ import Checkbox from "@/Components/Checkbox.vue";
 import _isObject from "lodash/isObject";
 import _isNumber from "lodash/isNumber";
 import VueMultiselect from "vue-multiselect";
+import _throttle from "lodash/throttle";
+import _debounce from "lodash/debounce";
 
 let _optionCounter = 0;
 let _categoryCounter = 0;
@@ -136,8 +148,8 @@ export default {
         return {
             lOptions: [],
             lCategories: [],
-            multiple: true,
-            allowEmpty: true,
+            categoryOptions: [],
+            matches: [],
             editor: Editor
         }
     },
@@ -158,10 +170,6 @@ export default {
             }, 100);
         },
         removeCategory(index) {
-            let categoryIndex = this.lCategories[index].index;
-            for (let option of this.lOptions) {
-                option.matches = option.matches.filter(itm => itm.index !== categoryIndex);
-            }
             this.lCategories.splice(index, 1);
         },
         addCategory() {
@@ -172,24 +180,65 @@ export default {
             });
             let $v = this;
             setTimeout(function () {
-                $v.$refs.categoryTextInput.focus();
+                $v.$refs.categoryTextInput.$el.ckeditorInstance.editing.view.focus();
             }, 100);
         },
 
-        update() {
-            if(!this.multiple){
-                for (let option of this.lOptions) {
-                    option.matches.splice(1);
-                }
-            }
+        update: _debounce(function() {
             let $v = this;
             let options = this.lOptions.map((itm) => {return {text: itm.text, text_en: itm.text_en};});
             let categories = this.lCategories.map((itm) => {return {text: itm.text, text_en: itm.text_en};});
-            let matches = this.lOptions.map(itm => itm.matches.map(function(match){
-                return $v.lCategories.findIndex(option => option.index == match.index);
-            }).filter(itm => itm != -1));
-            this.$emit('update:options', {options: options, categories: categories, allowEmpty: this.allowEmpty, multiple: this.multiple});
+            let matches = this.lOptions.map(function(option){
+                if(option.match != null){
+                    let index = $v.lCategories.findIndex(category => category.index == option.match.index);
+                    if (index == -1) {
+                        index = null;
+                    }
+                    return index;
+                } else {
+                    return null;
+                }
+            });
+            this.$emit('update:options', {options: options, categories: categories});
             this.$emit('update:verification', {matches: matches});
+        }, 100),
+
+        init(){
+            _optionCounter = 0;
+            _categoryCounter = 0;
+            let $v = this;
+            if (_isObject(this.options) && _isArray(this.options.categories)) {
+                this.lCategories = this.options.categories.map(function (itm) {
+                    itm.index = _categoryCounter++;
+                    return itm;
+                });
+            } else {
+                this.lCategories = [];
+            }
+
+            if (_isObject(this.options) && _isArray(this.options.options)) {
+                this.lOptions = this.options.options.map(function (itm) {
+                    itm.index = _optionCounter++;
+                    itm.match = null;
+                    return itm;
+                });
+            } else {
+                this.lOptions = [];
+            }
+
+            if (_isObject(this.verification) &&
+                this.verification.hasOwnProperty('matches')) {
+                for (const m1 in this.verification.matches) {
+                    let index = $v.lCategories.findIndex(category => category.index == this.verification.matches[m1] )
+                    if(index != -1) {
+                        this.lOptions[m1].match = {
+                            index: index,
+                            label: this.$filters.ntl(index + 1)
+                        }
+                    }
+
+                }
+            }
         }
 
     },
@@ -203,50 +252,27 @@ export default {
         lCategories: {
             deep: true,
             handler() {
+                this.categoryOptions.length = 0;
+                for (let i = 0; i < this.lCategories.length; i++) {
+                    this.categoryOptions.push({
+                        index: this.lCategories[i].index,
+                        label: this.$filters.ntl(i + 1)
+                    })
+                }
+                for (let option of this.lOptions) {
+                    if(option.match != null){
+                        option.match = this.categoryOptions.find(itm => itm.index == option.match.index);
+                    }
+                }
                 this.update();
             }
         },
-        multiple(value) {
-            this.update();
-        },
-        allowEmpty(){
-            this.update();
+        errors(){
+            this.init()
         }
     },
     created() {
-        _optionCounter = 0;
-        _categoryCounter = 0;
-        if (_isObject(this.options) && _isArray(this.options.options)) {
-            this.lOptions = this.options.options.map(function (itm) {
-                itm.index = _optionCounter++;
-                itm.matches = [];
-                return itm;
-            });
-        } else {
-            this.lOptions = [];
-        }
-
-
-        if (_isObject(this.options) && _isArray(this.options.categories)) {
-            this.lCategories = this.options.categories.map(function (itm) {
-                itm.index = _categoryCounter++;
-                return itm;
-            });
-        } else {
-            this.lCategories = [];
-        }
-
-
-        if (_isObject(this.verification) &&
-            this.verification.hasOwnProperty('matches')) {
-
-            for (const m1 in this.verification.matches) {
-                for (const m2 of this.verification.matches[m1]) {
-                    this.lOptions[m1].matches.push(this.lCategories[m2]);
-                }
-            }
-        }
-
+        this.init()
     }
 }
 </script>
@@ -254,14 +280,30 @@ export default {
 <style lang="scss" scoped>
 @import "resources/css/admin-vars";
 
+@media screen and (min-width: 1000px){
+    .options-columns{
+        display: flex;
+        gap: 50px;
+        .options-column{
+            flex-basis: 0;
+            flex-grow: 1;
+        }
+    }
+}
+@media screen and (max-width: 1000px){
+    .options-columns{
+        display: flex;
+        flex-direction: column;
+        gap: 50px;
+
+    }
+}
+
+
 :deep(.option) {
-    //border-radius: 5px;
-    //padding-left: 10px;
-    //position: relative;
-    //border-left: 2px solid $shadow-color;
     border-radius: 11px;
-    padding-left: 10px;
-    margin-left: 30px;
+    padding-left: 15px;
+    margin-left: 25px;
     margin-bottom: 20px;
     position: relative;
     border-left: 2px solid #e9e9e9;
@@ -273,7 +315,7 @@ export default {
     .option-counter {
         font-size: 1.2em;
         position: absolute;
-        left: -35px;
+        left: -30px;
         bottom: 0;
         width: 35px;
         padding-left: 5px;
@@ -322,6 +364,45 @@ export default {
 .add-option {
     width: 200px;
 }
+
+.compliance-table {
+
+    margin: 0 0 10px 0;
+    td, th {
+
+        vertical-align: middle;
+    }
+
+    th {
+        padding: 5px 5px 5px 20px;
+        text-align: left;
+    }
+    td{
+        padding: 5px;
+    }
+
+    :deep(.multiselect){
+        height: 47px;
+        .multiselect__tags{
+            height: 47px;
+        }
+        .multiselect__single{
+            font-size: 1.2em;
+            padding-left: 5px;
+        }
+         .multiselect__select{
+            width: 32px;
+             height: 44px;
+        }
+        .multiselect__input {
+            min-height: 28px;
+        }
+    }
+
+
+}
+
+
 
 </style>
 <style lang="scss">

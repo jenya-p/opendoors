@@ -77,7 +77,7 @@ class QuestionRequest extends FormRequest {
                 'options.max' => 'nullable|numeric',
                 'verification.guide' => 'nullable|string'
             ];
-        } if($this->type == Question::TYPE_MATCH){
+        } else if($this->type == Question::TYPE_MATCH){
             $rules += [
                 'options' => 'required|array',
                 'options.options' => 'required|array|min:2|max:100',
@@ -90,11 +90,20 @@ class QuestionRequest extends FormRequest {
                 'options.categories.*.text_en' => 'required|string',
                 'verification' => 'required|array',
                 'verification.matches' => 'required|array',
-                'verification.matches.*' => 'nullable|array',
-                'verification.matches.*.*' => 'required|integer',
+                'verification.matches.*' => 'required|integer',
             ];
         }
 
         return  $rules;
     }
+
+    public function messages() {
+        $ret = parent::messages();
+
+        if($this->type == Question::TYPE_MATCH) {
+
+        }
+        return $ret;
+    }
+
 }

@@ -79,7 +79,7 @@ export default {
     methods: {
         removeOption(index) {
             if (this.right == this.lOptions[index].index) {
-                this.right = null;
+                this.right = [];
             }
             this.lOptions.splice(index, 1);
         },
