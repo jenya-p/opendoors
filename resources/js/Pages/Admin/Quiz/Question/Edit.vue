@@ -10,26 +10,22 @@
                                 :allow-empty="false"/>
             </field>
 
-            <field :errors="form.errors" for="group_id" label="Номер в билете">
-                <VueMultiselect :options="group_options" v-model="group" trackBy="id" label="order"
-                                :allow-empty="false"/>
-            </field>
+            <div class="field-row" v-if="quiz">
+                <field :errors="form.errors" for="order" label="Номер задания в билете" class="field-short">
+                    <VueMultiselect :options="group_options" v-model="group" trackBy="id" label="order"
+                                    :allow-empty="false"/>
+                </field>
+
+                <field :errors="form.errors" for="weight" label="Максимальный бал за задание" class="field-short" v-if="group">
+                    <input class="input" disabled :value="group.weight" />
+                </field>
+            </div>
+
 
             <field :errors="form.errors" for="type" label="Тип задания">
                 <VueMultiselect :options="type_options" v-model="type" trackBy="id" label="name" :allow-empty="false"/>
             </field>
 
-            <!--
-            <div class="field-row">
-                <field :errors="form.errors" for="order" label="Номер задания в билете" class="field-short">
-                    <input type="number" class="input" v-model="form.order" step="1" min="1">
-                </field>
-
-                <field :errors="form.errors" for="weight" label="Вес задания" class="field-short">
-                    <input type="number" class="input" v-model="form.weight">
-                </field>
-            </div>
--->
 
             <field :errors="form.errors" for="text" label="Текст задания">
                 <ckeditor v-model="form.text" :editor="editor" :config="{
@@ -170,10 +166,6 @@ export default {
             type: Array,
             default: null
         },
-        group_options: {
-            type: Array,
-            default: null
-        },
         item: {
             type: Object,
             default: null
@@ -206,9 +198,17 @@ export default {
     watch: {},
 
     computed: {
+        group_options(){
+            if(this.quiz){
+                return this.quiz.groups;
+            } else {
+                return []
+            }
+        },
         type: selectable('type_options', 'form', 'type'),
-        group: selectable('group_options', 'form', 'group_id'),
         quiz: selectable('quiz_options', 'form', 'quiz_id'),
+        group: selectable('group_options', 'form', 'group_id'),
+
         // typeEditor () {
         //     if(this.type && this.type.id){
         //
@@ -248,11 +248,15 @@ export default {
         }
         .field{margin: 0}
         .field:not(:first-child) .input-label{text-align: right; width: auto;}
+        .field-short.field-display{
+            &>div, &>label {line-height: 43px;}
+        }
     }
     &.vertical .field-row .field{
         flex-direction: column;
         align-items: stretch;
     }
+
 }
 
 

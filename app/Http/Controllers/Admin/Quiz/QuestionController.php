@@ -71,8 +71,7 @@ class QuestionController extends Controller
     public function create() {
         return Inertia::render('Admin/Quiz/Question/Edit', [
             'type_options' => Arr::assocToOptions(Question::TYPE_NAMES),
-            'quiz_options' => Quiz::all('id', 'name')->toArray(),
-            'group_options' => Group::all('id', 'quiz_id', 'order', 'weight')->toArray(),
+            'quiz_options' => Quiz::with('groups')->get(['id', 'name'])->toArray(),
             'item' => new Question()
 
         ]);
@@ -92,8 +91,7 @@ class QuestionController extends Controller
         $question->load(['images','images_en']);
         return Inertia::render('Admin/Quiz/Question/Edit', [
             'type_options' => \Arr::assocToOptions(Question::TYPE_NAMES),
-            'quiz_options' => Quiz::all('id', 'name')->toArray(),
-            'group_options' => Group::all('id', 'quiz_id', 'order', 'weight')->toArray(),
+            'quiz_options' => Quiz::with('groups')->get(['id', 'name'])->toArray(),
             'item' => $question,
         ]);
     }
