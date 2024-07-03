@@ -2,7 +2,7 @@
     <AdminLayout :title="item.id ? 'Задание № ' + item.id : 'Новое задание'"
                  :breadcrumb="[{link: route('admin.quiz-question.index'), label: 'Задания'}, item.id ? '№ ' + item.id: 'Новое']">
 
-        <form method="post" @submit.prevent="submit" class="block" v-field-container>
+        <form method="post" @submit.prevent="submit(false)" class="block" v-field-container>
             <h2>Основная информация</h2>
 
             <field :errors="form.errors" for="quiz_id" label="Группа заданий">
@@ -72,7 +72,8 @@
                 v-else-if="form.type == 'multi'"
                 v-model:options="form.options"
                 v-model:verification="form.verification"
-                :errors="form.errors"/>
+                :errors="form.errors"
+            />
             <QuizEditNumber
                 v-else-if="form.type == 'number'"
                 v-model:options="form.options"
@@ -103,10 +104,9 @@
 
 
             <table-bottom align="left">
-
                 <button type="submit" class="btn btn-primary">Сохранить</button>
 
-                <Link v-if="item.id" :href="route('admin.quiz-probe.probe', {question: item.id})" class="btn btn-gray" style="margin-left: auto; margin-right: 0">Предпросмотр</Link>
+                <a v-if="item.id" @click="submit(true)" class="btn btn-gray" style="margin-left: auto; margin-right: 0">Предпросмотр</a>
                 <!--                <History type="user"/>-->
             </table-bottom>
 
@@ -225,11 +225,11 @@ export default {
     },
 
     methods: {
-        submit() {
+        submit(preview = false) {
             if (this.item.id) {
-                this.form.put(route('admin.quiz-question.update', {question: this.item.id}));
+                this.form.put(route('admin.quiz-question.update', {question: this.item.id, preview: preview ? 1 : 0}));
             } else {
-                this.form.post(route('admin.quiz-question.store'));
+                this.form.post(route('admin.quiz-question.store',{preview: preview ? 1 : 0}));
             }
         }
     }

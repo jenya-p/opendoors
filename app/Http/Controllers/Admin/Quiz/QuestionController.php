@@ -84,7 +84,12 @@ class QuestionController extends Controller
         Attachment::updateItemId($request->get('images'), $question->id);
         Attachment::updateItemId($request->get('images_en'), $question->id);
 
-        return \Redirect::route('admin.quiz-question.index');
+        if(request('preview')){
+            return \Redirect::route('admin.quiz-probe.probe', ['question' => $question]);
+        } else {
+            return \Redirect::route('admin.quiz-question.index');
+        }
+
     }
 
     public function edit(Question $question) {
@@ -99,7 +104,11 @@ class QuestionController extends Controller
 
     public function update(QuestionRequest $request, Question $question) {
         $question->update($request->validated());
-        return \Redirect::route('admin.quiz-question.index');
+        if(request('preview')){
+            return \Redirect::route('admin.quiz-probe.probe', ['question' => $question]);
+        } else {
+            return \Redirect::route('admin.quiz-question.index');
+        }
     }
 
 
