@@ -91,6 +91,8 @@ class QuestionRequest extends FormRequest {
                 'verification' => 'required|array',
                 'verification.matches' => 'required|array',
                 'verification.matches.*' => 'required|integer',
+                'verification.weights' => 'required|array',
+                'verification.weights.*' => 'required|integer',
             ];
         }
 

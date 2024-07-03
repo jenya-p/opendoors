@@ -88,12 +88,16 @@
                 v-else-if="form.type == 'free'"
                 v-model:options="form.options"
                 v-model:verification="form.verification"
-                :errors="form.errors"/>
+                :errors="form.errors"
+                :max-weight="group?.weight"
+            />
             <QuizEditMatch
                 v-else-if="form.type == 'match'"
                 v-model:options="form.options"
                 v-model:verification="form.verification"
-                :errors="form.errors"/>
+                :errors="form.errors"
+                :max-weight="group?.weight"
+            />
 
             <div style="height: 70px"></div>
             <!-- <component :is="typeEditor"

@@ -83,7 +83,7 @@
         </div>
     </div>
     <div style="height: 70px"></div>
-    <h2>Соответствие</h2>
+    <h2>Верный ответ</h2>
     <table class="compliance-table" style="font-size: 1.2em">
         <tr>
             <th v-for="(option, index) in lOptions">{{index + 1}}</th>
@@ -100,6 +100,25 @@
     </table>
     <input-error :errors="errors" for="verification,verification.*,verification.*.*"/>
 
+    <h2 style="margin-top: 2em">Распределение баллов</h2>
+    <br/>
+    <checkbox v-model="auto">Заполнить автоматически</checkbox>
+    <br><br>
+    <table class="weight-table">
+        <tr>
+            <th :colspan="this.lOptions.length  + 1" style="font-size: 0.8em">Правильные ответы</th>
+        </tr>
+        <tr>
+            <th v-for="w in this.lOptions.length + 1" :class="{'wrong':w == 1, 'right': w != 1}">
+                {{ w - 1 }}
+            </th>
+        </tr>
+        <tr>
+            <td v-for="w in this.lOptions.length + 1">
+                <input type="number" v-model="weights[w - 1]" class="input" style="width: 100px">
+            </td>
+        </tr>
+    </table>
 </template>
 
 <script>
@@ -141,6 +160,7 @@ export default {
         },
         options: {},
         verification: {},
+        maxWeight: 0,
     },
     emits: ['update:options', 'update:verification',],
 
@@ -150,6 +170,8 @@ export default {
             lCategories: [],
             categoryOptions: [],
             matches: [],
+            auto: true,
+            weights: [],
             editor: Editor
         }
     },
@@ -200,7 +222,7 @@ export default {
                 }
             });
             this.$emit('update:options', {options: options, categories: categories});
-            this.$emit('update:verification', {matches: matches});
+            this.$emit('update:verification', {matches: matches, weights: this.weights});
         }, 100),
 
         init(){
@@ -239,19 +261,34 @@ export default {
 
                 }
             }
+        },
+        updateWeights(){
+            let mw = this.maxWeight ? this.maxWeight : this.lOptions.length;
+            if(this.auto){
+                for (let w = 0; w <= this.lOptions.length; w++) {
+                    this.weights[w] = this.auto ? Math.ceil(w * mw / this.lOptions.length) : 0;
+                }
+            } else {
+                for (let w = 0; w <= this.lOptions.length; w++) {
+                    if(w >= this.weights.length) {
+                        this.weights[w] = 0;
+                    }
+                }
+            }
         }
-
     },
     watch: {
         lOptions: {
             deep: true,
             handler() {
+                this.updateWeights();
                 this.update();
             }
         },
         lCategories: {
             deep: true,
             handler() {
+                this.updateWeights();
                 this.categoryOptions.length = 0;
                 for (let i = 0; i < this.lCategories.length; i++) {
                     this.categoryOptions.push({
@@ -264,6 +301,21 @@ export default {
                         option.match = this.categoryOptions.find(itm => itm.index == option.match.index);
                     }
                 }
+                this.update();
+            }
+        },
+        weights: {
+            deep: true,
+            handler(n, o){
+                this.update();
+            }
+        },
+        maxWeight(){
+            this.updateWeights();
+        },
+        auto(value){
+            if(value){
+                this.updateWeights();
                 this.update();
             }
         },
@@ -402,7 +454,36 @@ export default {
 
 }
 
+.weight-table {
+    td, th {
+        width: 100px;
+        text-align: center;
+        border: 1px solid $shadow-color;
+        vertical-align: middle
+    }
 
+    td {
+    }
+
+    th {
+        font-weight: bold;
+        padding: 5px 0;
+    }
+
+    .wrong {background-color: #ffecec}
+    .right {background-color: #ecffed}
+
+    input {
+        margin: 0px;
+        border-radius: 0;
+        padding: 0 5px 0 20px;
+        text-align: center;
+
+        &:not(:focus) {
+            border-color: transparent
+        }
+    }
+}
 
 </style>
 <style lang="scss">

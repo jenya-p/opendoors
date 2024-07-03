@@ -88,6 +88,7 @@ export default {
         },
         options: {},
         verification: {},
+        maxWeight: 0,
     },
     emits: ['update:options', 'update:verification',],
 
