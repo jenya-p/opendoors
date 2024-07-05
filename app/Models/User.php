@@ -14,11 +14,13 @@ use Illuminate\Notifications\Notifiable;
  * @property Carbon $email_verified_at      Email порверен
  * @property string $password               пароль
  * @property string $remember_token
+ * @property string $locale                 Язык
  * @property Carbon $created_at
  * @property Carbon $updated_at
  *
  * @property-read $display_name
  * @property-read $role_names
+
  *
  * @property-read Admin $admin
  * @property-read UniversityUser[] $universityUsers
