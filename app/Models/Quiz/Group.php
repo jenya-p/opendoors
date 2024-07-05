@@ -25,7 +25,7 @@ class Group extends Model
 
     protected $table = 'quiz_groups';
 
-    protected $fillable = ['quiz_id', 'order', 'weight'];
+    protected $fillable = ['quiz_id', 'theme_id', 'order', 'weight'];
 
     public function quiz(){
         return $this->belongsTo(Quiz::class);
@@ -33,6 +33,10 @@ class Group extends Model
 
     public function questions(){
         return $this->hasMany(Question::class);
+    }
+
+    public function theme(){
+        return $this->belongsTo(Theme::class);
     }
 
     public function getQuestionCountAttribute(){

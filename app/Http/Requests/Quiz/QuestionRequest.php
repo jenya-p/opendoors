@@ -65,8 +65,15 @@ class QuestionRequest extends FormRequest {
                 'options.min' => 'nullable|numeric',
                 'options.max' => 'nullable|numeric',
                 'options.step' => 'nullable|numeric',
-                'verification' => 'required|numeric',
-            ];
+                'options.type' => ['required', Rule::in(['single', 'range'])]
+                ];
+            if($this->type == 'range'){
+                $rules['verification'] = ['required|array|min:2|max:2'];
+                $rules['verification.*'] = ['required|numeric'];
+            } else if($this->type == 'single'){
+                $rules['verification'] = ['required|numeric'];
+            }
+
         } else if($this->type == Question::TYPE_WORDS){
             $rules += [
                 'verification.pattern' => 'required|string',
@@ -75,6 +82,7 @@ class QuestionRequest extends FormRequest {
         } else if($this->type == Question::TYPE_FREE){
             $rules += [
                 'options.max' => 'nullable|numeric',
+                'options.uploads' => 'required|boolean',
                 'verification.guide' => 'nullable|string'
             ];
         } else if($this->type == Question::TYPE_MATCH){

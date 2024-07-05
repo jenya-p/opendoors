@@ -74,13 +74,13 @@ class Question extends Model
     const TYPE_MATCH =   'match';
 
     const TYPE_NAMES = [
-        self::TYPE_ONE => 'Выбор одного варианта',
-        self::TYPE_MANY => 'Выбор нескольких вариантов',
-        self::TYPE_MULTI => 'Множественный выбор',
-        self::TYPE_WORDS => 'С эталонными ответами',
-        self::TYPE_NUMBER => 'Числовой',
-        self::TYPE_FREE => 'C развернутым ответом',
-        self::TYPE_MATCH => 'Соответствие',
+        self::TYPE_ONE => 'Задание на выбор одного варианта',
+        self::TYPE_MANY => 'Задание на выбор нескольких вариантов',
+        self::TYPE_MULTI => 'Задание на множественный выбор',
+        self::TYPE_WORDS => 'Задание с эталонным ответом (слово)',
+        self::TYPE_NUMBER => 'Задание с эталонным ответом (число/числовой диапазон)',
+        self::TYPE_FREE => 'Задание с развёрнутым ответом',
+        self::TYPE_MATCH => 'Задание на соответствие',
     ];
 
     public function quiz(){
@@ -136,5 +136,7 @@ class Question extends Model
             return null;
         }
     }
+
+
 
 }

@@ -3,6 +3,8 @@
     <textarea-autosize class="input" rows="5"
            v-model="value" placeholder="Введите ваш ответ" />
 
+    <Attachments :items="attachments" :item_id="$page.props.auth.user.id" item_type="question_probe"/>
+
     <input-error :errors="errors" for="solution.**"/>
 
 </template>
@@ -13,10 +15,11 @@ import InputError from "@/Components/InputError.vue";
 import _isArray from "lodash/isArray";
 import Checkbox from "@/Components/Checkbox.vue";
 import TextareaAutosize from "@/Components/TextareaAutosize.vue";
+import Attachments from "@/Components/Attachments.vue";
 
 export default {
     name: "quiz-solve-free",
-    components: {TextareaAutosize, InputError},
+    components: {Attachments, TextareaAutosize, InputError},
     props: {
         errors: {
             default: null,
@@ -32,7 +35,12 @@ export default {
         solution: {
             default: null,
             type: Object
-        },
+        }
+    },
+    data(){
+        return {
+            attachments: []
+        }
     },
     emits: ['update:solution', 'update:valid'],
     computed: {

@@ -24,6 +24,7 @@ export default {
 
 
     methods: {
+
         submit() {
             let $v = this;
             this.form.put(route('users.password'), {

@@ -5,6 +5,10 @@
         <input type="number"  class="input" v-model="lOptions.max">
     </field>
 
+    <field :errors="errors" for="options.uploads" class="field-checkboxes" label="">
+        <checkbox v-model="lOptions.uploads">Разрешить загрузку файлов участником</checkbox>
+    </field>
+
     <field :errors="errors" for="verification.guide" label="Методические указания"
         description="Инструкция по проверке этого задания">
         <textarea-autosize v-model="lVerification.guide" class="input"></textarea-autosize>
@@ -18,9 +22,10 @@ import Field from "@/Components/Field.vue";
 import TextareaAutosize from "@/Components/TextareaAutosize.vue";
 import InputError from "@/Components/InputError.vue";
 import _extend from "lodash/extend";
+import Checkbox from "@/Components/Checkbox.vue";
 export default {
     name: "quiz-edit-free",
-    components: {InputError, TextareaAutosize, Field},
+    components: {Checkbox, InputError, TextareaAutosize, Field},
     props: {
         errors: {
             default: null,
@@ -37,7 +42,7 @@ export default {
 
     data(){
         return {
-            lOptions: {max: null},
+            lOptions: {max: null, uploads: false},
             lVerification: {guide: null},
         }
     },
@@ -64,7 +69,7 @@ export default {
         }
     },
     created() {
-        this.lOptions = _extend({max: null}, this.options);
+        this.lOptions = _extend({max: null, uploads: false}, this.options);
         this.lVerification = _extend({guide: null}, this.verification);
     }
 }

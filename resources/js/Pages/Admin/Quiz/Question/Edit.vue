@@ -11,16 +11,21 @@
             </field>
 
             <div class="field-row" v-if="quiz">
-                <field :errors="form.errors" for="order" label="Номер задания в билете" class="field-short">
+                <field :errors="form.errors" for="order" label="Номер задания в тесте" class="field-short">
                     <VueMultiselect :options="group_options" v-model="group" trackBy="id" label="order"
                                     :allow-empty="false"/>
                 </field>
-
-                <field :errors="form.errors" for="weight" label="Максимальный бал за задание" class="field-short" v-if="group">
-                    <input class="input" disabled :value="group.weight" />
-                </field>
             </div>
 
+            <div v-if="group">
+                <field :errors="form.errors" for="weight" label="Максимальный бал за задание" class="field-display">
+                    {{group.weight}}
+                </field>
+                <field label="Тематика вопроса" class="field-display">
+                    <template  v-if="group && group.theme">{{group.theme.name}}</template>
+                    <i v-else>не указана</i>
+                </field>
+            </div>
 
             <field :errors="form.errors" for="type" label="Тип задания">
                 <VueMultiselect :options="type_options" v-model="type" trackBy="id" label="name" :allow-empty="false"/>

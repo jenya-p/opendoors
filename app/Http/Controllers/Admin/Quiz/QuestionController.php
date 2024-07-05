@@ -70,8 +70,8 @@ class QuestionController extends Controller
 
     public function create() {
         return Inertia::render('Admin/Quiz/Question/Edit', [
-            'type_options' => Arr::assocToOptions(Question::TYPE_NAMES),
-            'quiz_options' => Quiz::with('groups')->get(['id', 'name'])->toArray(),
+            'type_options' => $this->getAvailableTypeOptions(),
+            'quiz_options' => Quiz::with('groups', 'groups.theme')->get(['id', 'name'])->toArray(),
             'item' => new Question()
 
         ]);
@@ -95,8 +95,8 @@ class QuestionController extends Controller
     public function edit(Question $question) {
         $question->load(['images','images_en']);
         return Inertia::render('Admin/Quiz/Question/Edit', [
-            'type_options' => \Arr::assocToOptions(Question::TYPE_NAMES),
-            'quiz_options' => Quiz::with('groups')->get(['id', 'name'])->toArray(),
+            'type_options' => $this->getAvailableTypeOptions(),
+            'quiz_options' => Quiz::with('groups', 'groups.theme')->get(['id', 'name'])->toArray(),
             'item' => $question,
         ]);
     }
@@ -116,4 +116,16 @@ class QuestionController extends Controller
         $question->delete();
         return ['result' => 'ok'];
     }
+
+    public function getAvailableTypeOptions(){
+
+        return Arr::assocToOptions(array_intersect_key(Question::TYPE_NAMES, [
+            Question::TYPE_MULTI => 1,
+            Question::TYPE_WORDS => 1,
+            Question::TYPE_NUMBER => 1,
+            Question::TYPE_FREE => 1,
+        ]));
+
+    }
+
 }

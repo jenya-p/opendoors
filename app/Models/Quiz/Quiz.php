@@ -48,7 +48,7 @@ class Quiz extends Model
     const STAGE_1 = '1';
     const STAGE_2 = '2';
     const STAGE_NAMES = [
-        self::STAGE_1 => 'Вступительный тест',
+        self::STAGE_1 => 'Входное тестирование',
         self::STAGE_2 => 'II этап'
     ];
 

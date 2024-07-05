@@ -9,16 +9,15 @@
                 <field class="field-display" label="Профиль">{{item.profile?.name}}</field>
                 <field class="field-display" label="Трек(и)">{{item.track_name}}</field>
                 <field class="field-display" label="Этап">{{item.stage_name}}</field>
-
                 <h2>Наборы заданий и распределение баллов</h2>
                 <field :errors="form.errors" for="groups">
-
                     <table class="table weight-table" v-if="form.groups.length">
                         <tr>
                             <th></th>
                             <th class="number">Номер</th>
                             <th class="weight" style="padding-left: 20px">Макс. балл</th>
                             <th class="count">Задания</th>
+                            <th class="theme">Тематика</th>
                             <th class="remove"></th>
                             <th class="errors"></th>
                         </tr>
@@ -43,6 +42,14 @@
                                     </td>
                                     <td class="count">
                                         {{element.question_count}}
+                                    </td>
+                                    <td class="theme">
+                                        <vue-multiselect :options="theme_options" v-model="element.theme"
+                                            :taggable="true"
+                                            track-by="name"
+                                            label="name"
+                                            @tag="addTheme($event, element)"
+                                        />
                                     </td>
                                     <td class="remove">
                                         <a @click="removeGroup(index)" v-if="!element.question_count" class="fa fa-times btn-remove"></a>
@@ -92,11 +99,12 @@ import _isObject from "lodash/isObject.js";
 import _isArray from "lodash/isArray.js";
 import InputError from "@/Components/InputError.vue";
 import _isNumber from "lodash/isNumber";
-
+import VueMultiselect from "vue-multiselect";
 let _counter = 0;
 
 export default {
     components: {
+        VueMultiselect,
         InputError,
         draggable,
         TableBottom,
@@ -107,6 +115,10 @@ export default {
         item: {
             type: Object,
             default: null
+        },
+        theme_options: {
+            type: Array,
+            default: []
         }
     },
 
@@ -127,8 +139,16 @@ export default {
         }
     },
     methods: {
+        addTheme(value, element){
+            console.log(value, element);
+            let opt = {
+                'name': value
+            };
+            this.theme_options.push(opt);
+            element.theme = opt;
+        },
         addGroup(){
-            this.form.groups.push({weight:1});
+            this.form.groups.push({weight:1, theme: null});
         },
         removeGroup(index){
             this.form.groups.splice(index, 1);
@@ -140,9 +160,9 @@ export default {
                 itm.index = _counter++;
             });
             if (this.item.id) {
-                this.form.put(route('admin.quiz.update', {quiz: this.item.id}));
+                this.form.put(route('admin.quiz.update', {quiz: this.item.id}), {only: ['errors']},);
             } else {
-                this.form.post(route('admin.quiz.store'));
+                this.form.post(route('admin.quiz.store'), {only: ['errors']},);
             }
         }
     },
@@ -164,7 +184,7 @@ export default {
 .table.weight-table {
 
     margin: 0 0 10px 0;
-    td, th {
+    :deep(td, th) {
 
         text-align: left;
         vertical-align: middle;
@@ -178,14 +198,27 @@ export default {
         &.number{width: 100px}
         &.weight{width: 150px}
         &.count{width: 100px}
+        &.theme{width: 500px;
+
+            .multiselect .multiselect__tags{
+                border-radius: 0;
+            }
+            .multiselect:not(.multiselect--active) .multiselect__tags{
+                box-shadow: none;
+                border-color: transparent;
+            }
+        }
+
+
+
         &:first-child{
             padding-left: 15px;
             width: 30px
         }
     }
 
-    th {
-
+    th.theme {
+        padding-left: 10px;
     }
     td{
         padding: 0 5px;

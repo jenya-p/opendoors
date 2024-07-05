@@ -143,7 +143,7 @@ class QuizSeeder extends Seeder {
         foreach (Profile::all() as $profile) {
 
             $qg = Quiz::firstOrCreate([
-                'name' => $profile->name . '. Бакалавриат. Вступительный тест',
+                'name' => $profile->name . '. Бакалавриат. Входное тестирование',
                 'profile_id' =>  $profile->id,
                 'track' => Quiz::TRACK_B,
                 'stage' => Quiz::STAGE_1,
@@ -163,7 +163,7 @@ class QuizSeeder extends Seeder {
 
 
             $qg = Quiz::firstOrCreate([
-                'name' => $profile->name . '. Магистратура и Аспирантура. Вступительный тест',
+                'name' => $profile->name . '. Магистратура и Аспирантура. Входное тестирование',
                 'profile_id' =>  $profile->id,
                 'track' => Quiz::TRACK_MA,
                 'stage' => Quiz::STAGE_1,
