@@ -38,13 +38,13 @@ class DatabaseSeeder extends Seeder {
         // $this->trackAndStages();
 
 
-//         $this->universities();
-//
-//         $this->schedule();
-//         $this->news();
-//         $this->faq();
-//         $this->profiles();
-//         $this->partners();
+         $this->universities();
+
+         $this->schedule();
+         $this->news();
+         $this->faq();
+         $this->profiles();
+         $this->partners();
          $this->pages();
 
     }
