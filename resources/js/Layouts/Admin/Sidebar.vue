@@ -47,31 +47,56 @@
                     </transition>
                 </li>
 
-                <li :class="{'active-branch': routeIs(), 'hover': curSection=='site'}">
+                <li :class="{'active-branch': routeIs('content','news','profile-file','widget'), 'hover': curSection=='site'}">
                     <a @click="toggle('site')">
                         <i class="fa-solid fa-globe"></i>
                         <span>Сайт<b class="caret"></b></span>
                     </a>
                     <transition name="slide-fade">
                         <ul v-show="curSection=='site'">
-                            <li>
-                                <span>
-                                    <i class="fa fa-list-check"/>
-                                    <span>Страницы</span>
-                                </span>
+
+                            <li :class="{'active': routeIs('widget')}">
+                                <Link :href="route('admin.widget.index')">
+                                    <i class="fa fa-icons"/>
+                                    <span>Виджеты</span>
+                                </Link>
                             </li>
-                            <li>
-                                <span>
-                                    <i class="fa fa-user-check"></i>
+
+                            <li :class="{'active': routeIs('news')}">
+                                <Link :href="route('admin.news.index')">
+                                    <i class="fa fa-newspaper"/>
                                     <span>Новости</span>
-                                </span>
+                                </Link>
                             </li>
+
+
+                            <li :class="{'active': routeIs('schedule')}">
+                                <Link :href="route('admin.schedule.index')">
+                                    <i class="fa fa-calendar"/>
+                                    <span>График</span>
+                                </Link>
+                            </li>
+
+                            <li :class="{'active': routeIs('faq')}">
+                                <Link :href="route('admin.faq.index')">
+                                    <i class="fa fa-question-circle"/>
+                                    <span>FAQ</span>
+                                </Link>
+                            </li>
+
                             <li>
                                 <span>
-                                    <i class="fa fa-check-double"></i>
-                                    <span>Настройки</span>
+                                    <i class="fa fa-file-pdf"/>
+                                    <span>Файлы</span>
                                 </span>
                             </li>
+
+<!--                            <li :class="{'active': routeIs('profile-file')}">-->
+<!--                                <Link :href="route('admin.profile-file.index')">-->
+<!--                                    <i class="fa fa-file-pdf"/>-->
+<!--                                    <span>Файлы</span>         -->
+<!--                                </Link>-->
+<!--                            </li>-->
                         </ul>
                     </transition>
                 </li>
@@ -281,6 +306,8 @@ export default {
             this.curSection = 'opendoors';
         } else if(this.routeIs('quiz', 'quiz-question')){
             this.curSection = 'quiz';
+        } else if(this.routeIs('news', 'profile-file', 'widget', 'schedule', 'faq')){
+            this.curSection = 'site';
         }
 
     },

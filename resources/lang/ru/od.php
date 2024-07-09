@@ -8,5 +8,11 @@ return [
     'Universities' => 'Университеты',
     'Tracks' => 'Треки',
     'Subjects' => 'Профили',
-    'Schedule' => 'Расписание',
+    'Schedule' => 'График проведения олимпиады',
+    'Open detailed schedule' => 'Открыть подробное расписание',
+    'Close detailed schedule' => 'Закрыть подробное расписание',
+
+    'FAQ' => 'Часто задаваемые вопросы'
+
+
 ];

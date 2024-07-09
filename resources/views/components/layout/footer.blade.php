@@ -18,28 +18,31 @@
 
                 <div class="flex flex-col gap-6">
                     <h4 class="text-[1.25rem] font-semibold leading-7">
-                        Organizing Committee
+                        {{__('Organizing Committee')}}
                     </h4>
 
                     <ul class="flex flex-col gap-2 text-[0.875rem] leading-6">
-                        <li>Moscow, 11 Pokrovsky Bulvar, Building 10, D-714</li>
-
-                        <li>
-                            <a
-                                href="mailto:opendoors@globaluni.ru"
-                                title=""
-                                class="hover:underline"
-                            >
-                                opendoors@globaluni.ru
-                            </a>
-                        </li>
+                        @if($address)
+                            <li>{{$address}}</li>
+                        @endif
+                        @if($email)
+                            <li>
+                                <a
+                                    href="mailto:{{$email}}"
+                                    title=""
+                                    class="hover:underline"
+                                >
+                                    {{$email}}
+                                </a>
+                            </li>
+                        @endif
                     </ul>
                 </div>
             </div>
 
             <div class="flex gap-1">
                 <a
-                    href="#!"
+                    href="{{ $vk  }}"
                     title=""
                     target="_blank"
                     class="flex h-12 w-12 items-center justify-center transition-opacity hover:opacity-50"
@@ -60,7 +63,7 @@
                 </a>
 
                 <a
-                    href="#!"
+                    href="{{ $telegram  }}"
                     title=""
                     target="_blank"
                     class="flex h-12 w-12 items-center justify-center transition-opacity hover:opacity-50"
@@ -83,7 +86,7 @@
 
     <div class="flex h-[2.25rem] items-center bg-black px-4">
         <div class="mx-auto w-full max-w-content md:text-right">
-            <span class="text-xs text-blue-light">2024</span>
+            <span class="text-xs text-blue-light">{{ date('Y') }}</span>
         </div>
     </div>
 </footer>

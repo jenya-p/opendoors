@@ -20,9 +20,6 @@ class QuestionRequest extends FormRequest {
             'text_en' => 'required|string',
             'description' => 'nullable|string',
             'description_en' => 'nullable|string',
-
-
-
         ];
 
         if($this->type == Question::TYPE_ONE){

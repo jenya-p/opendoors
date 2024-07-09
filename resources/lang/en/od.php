@@ -7,6 +7,7 @@ return [
     'Русский' => 'Русский',
     'Ру' => 'Ру',
 
+
     'News' => 'News',
     'About' => 'О About',
     'Rules' => 'Rules',
@@ -14,4 +15,7 @@ return [
     'Tracks' => 'Tracks',
     'Subjects' => 'Subjects',
     'Schedule' => 'Schedule',
+    'Open detailed schedule' => 'Open detailed schedule',
+    'Close detailed schedule' => 'Close detailed schedule',
+    'FAQ' => 'FAQ'
 ];

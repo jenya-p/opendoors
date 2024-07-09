@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string $name       Название
  * @property string $name_en    Название (En)
  * @property string $url        УРЛ
+ * @property string $url_en     УРЛ (En)
  *
  * @property Carbon $created_at
  * @property Carbon $updated_at
@@ -20,15 +21,20 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *
  * @property-read UniversityProfile[] $universityProfiles
  * @property-read UniversityUser[] $universityUsers
+ * @property-read Profile[] $coordinatedProfiles
+ *
  * @property-read Attachment $logo
+
  * @mixin \Eloquent
  */
 class University extends Model {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, Translable;
 
     protected $table = 'universities';
 
-    protected $fillable = ['name','name_en', 'url', 'created_at', 'updated_at'];
+    protected $fillable = ['name','name_en', 'url', 'url_en', 'created_at', 'updated_at'];
+
+    public $translable = ['name', 'url'];
 
     protected $casts = [
         'created_at' => 'datetime',
@@ -47,6 +53,10 @@ class University extends Model {
     public function logo(){
         return $this->hasOne(Attachment::class, 'item_id')
             ->where('item_type', '=', Attachment::ITEM_TYPE_UNIVERSITY_LOGO);
+    }
+
+    public function coordinatedProfiles(){
+        return $this->hasMany(Profile::class, 'coordinator_id');
     }
 
 }

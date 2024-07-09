@@ -3,9 +3,11 @@
 namespace App\Models\Quiz;
 
 use App\Models\Attachment;
+use App\Models\Translable;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Validation\Rule;
 
 /**
  * @property int $id
@@ -37,7 +39,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class Question extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, Translable;
+
+    protected $translable = [
+        'text', 'description', 'options.*', 'verification.*'
+    ];
 
     protected $table = 'quiz_questions';
 

@@ -27,6 +27,10 @@ export default {
         modelValue: {
             required: false,
             type: String
+        },
+        nobr: {
+            type: Boolean,
+            default: false
         }
     },
     methods: {
@@ -45,7 +49,6 @@ export default {
             $el.style.height = 'auto'
             $el.style.height = `${$el.scrollHeight + 3}px`
         },50);
-
     }
 }
 

@@ -17,7 +17,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property Carbon $updated_at
  * @property Carbon $deleted_at
  *
- * @property-read UniversityProfile[] $universityProfiles
  * @property-read StudentProfile[] $studentProfiles
  *
  * @mixin \Eloquent
@@ -35,9 +34,6 @@ class Track extends Model {
         'deleted_at' => 'datetime'
     ];
 
-    public function universityProfiles(){
-        return $this->hasMany(UniversityProfile::class, 'track_id', 'id');
-    }
 
     public function studentProfiles(){
         return $this->hasMany(StudentProfile::class, 'student_id', 'id');

@@ -1,27 +1,22 @@
 <template>
-    <AdminLayout title="Контент" :breadcrumb="[{label: 'Контент'}]">
+    <AdminLayout title="Виджеты" :breadcrumb="[{label: 'Виджеты'}]">
 
         <div class="block">
 
-            <div class="simple-list-filter-wrp">
-                <input type="text" class="input" placeholder="Поиск по названию"
-                       v-model="lItems.filter">
-            </div>
-
-            <table class="table">
+           <table class="table">
                 <thead class="m-hide">
                 <tr>
-                    <th>id</th>
-                    <th>Заголовок</th>
+                    <th>Код</th>
+                    <th>Название</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr v-for="item of lItems.items" @click="itemClick(item)" class="cursor-pointer">
-                    <ttd label="id">
-                        {{ item.id }}
-                    </ttd>
-                    <td class="m-title">
-                        {{ item.title }}
+                    <td>
+                        {{ item.key }}
+                    </td>
+                    <td>
+                        {{ item.name }}
                     </td>
                 </tr>
                 </tbody>
@@ -33,7 +28,7 @@
 <script>
 import AdminLayout from "@/Layouts/AdminLayout.vue";
 import {Link} from "@inertiajs/vue3";
-import {SimpleList} from "@/Components/SimpleList";
+import {SimpleList} from "@/Components/SimpleList.js";
 import Ttd from "@/Components/table-td.vue";
 
 
@@ -45,12 +40,12 @@ export default {
     },
     data() {
         return{
-            lItems: new SimpleList(this, {search: ['name', 'title']}),
+            lItems: new SimpleList(this, {search: ['id']}),
         };
     },
     methods: {
         itemClick: function (item) {
-            this.$inertia.visit(route('admin.content.edit', {content: item.id}))
+            this.$inertia.visit(route('admin.widget.edit', {widget: item.id}))
         }
     },
     created() {
@@ -61,7 +56,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import "resources/css/admin-vars";
+@import "resources/css/admin-vars.scss";
 @include mobile{
     .m-title{order: -1}
 }

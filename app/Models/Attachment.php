@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use App\Models\Content\Content;
+use App\Models\Content\News;
+use App\Models\Content\Widget;
 use App\Models\Quiz\Question;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
@@ -57,12 +60,22 @@ class Attachment extends Model {
     const ITEM_TYPE_USERPICK = 'userpick';
     const ITEM_TYPE_QUESTION = 'question';
     const ITEM_TYPE_QUESTION_EN = 'question_en';
+    const ITEM_TYPE_PROFILE_FILE = 'profile_file';
+    const ITEM_TYPE_PROFILE_FILE_EN = 'profile_file_en';
+    const ITEM_TYPE_WIDGET = 'widget';
+    const ITEM_TYPE_NEWS = 'news';
+    const ITEM_TYPE_CONTENT = 'content';
 
     const ITEM_CLASSES = [
         self::ITEM_TYPE_USERPICK => User::class,
         self::ITEM_TYPE_UNIVERSITY_LOGO => University::class,
         self::ITEM_TYPE_QUESTION => Question::class,
         self::ITEM_TYPE_QUESTION_EN => Question::class,
+        self::ITEM_TYPE_PROFILE_FILE => ProfileFile::class,
+        self::ITEM_TYPE_PROFILE_FILE_EN => ProfileFile::class,
+        self::ITEM_TYPE_WIDGET => Widget::class,
+        self::ITEM_TYPE_NEWS => News::class,
+        self::ITEM_TYPE_CONTENT => Content::class,
     ];
 
     /**

@@ -11,6 +11,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 /**
  * @property int $id
  * @property int $order
+ * @property int $coordinator_id
+ *
  * @property string $name          Название
  * @property string $name_en       Название (En)
  * @property string $icon          Иконка
@@ -25,11 +27,13 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @mixin \Eloquent
  */
 class Profile extends Model {
-    use HasFactory, SoftDeletes, Ordered;
+    use HasFactory, SoftDeletes, Ordered, Translable;
 
     protected $table = 'profiles';
 
-    protected $fillable = ['order', 'name', 'name_en', 'icon', 'created_at', 'updated_at'];
+    protected $fillable = ['order', 'coordinator_id', 'name', 'name_en', 'icon', 'created_at', 'updated_at'];
+
+    protected $translable = ['name'];
 
     protected $casts = [
         'created_at' => 'datetime',
@@ -39,6 +43,10 @@ class Profile extends Model {
 
     public function stages(){
         return $this->hasMany(Stage::class);
+    }
+
+    public function coordinator(){
+        return $this->belongsTo(University::class);
     }
 
     public function universityProfiles(){

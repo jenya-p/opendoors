@@ -7,13 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 
 
 /**
- * @property int $track_id          // Трек
  * @property int $profile_id        // Профиль
  * @property int $university_id     // Университет
+ * @property int $program_id        // Направление
  *
- * @property-read Track $track
  * @property-read Profile $profile
- * @property-read Track $university
+ * @property-read University $university
+ * @property-read StudyProgram $program
  *
  * @mixin \Eloquent
  */
@@ -21,23 +21,23 @@ class UniversityProfile extends Model {
     use HasFactory;
     public $timestamps = false;
 
-    protected $primaryKey = ['profile_id', 'track_id', 'university_id'];
+    public $incrementing = false;
+
+    protected $primaryKey = ['profile_id', 'university_id', 'program_id'];
 
     protected $table = 'university_profiles';
 
-    protected $fillable = ['profile_id', 'track_id', 'university_id'];
-
-    protected $casts = [];
+    protected $fillable = ['profile_id', 'university_id', 'program_id'];
 
     public function profile(){
         return $this->belongsTo(Profile::class);
     }
 
-    public function track(){
-        return $this->belongsTo(Track::class);
-    }
-
     public function university(){
         return $this->belongsTo(University::class);
+    }
+
+    public function program(){
+        return $this->belongsTo(StudyProgram::class);
     }
 }

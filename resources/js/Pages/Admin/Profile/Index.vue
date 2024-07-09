@@ -6,7 +6,7 @@
             <div class="simple-list-filter-wrp">
                 <input type="text" class="input" placeholder="Поиск по названию"
                        v-model="lItems.filter">
-                <Link :href="route('admin.track.create')" class="btn btn-sm btn-primary ">
+                <Link :href="route('admin.profile.create')" class="btn btn-sm btn-primary ">
                     <i class="fa fa-plus" style="font-size: 0.8em; margin-right: 8px"></i>Добавить
                 </Link>
             </div>

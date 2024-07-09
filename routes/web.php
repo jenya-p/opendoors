@@ -4,24 +4,29 @@ use App\Http\Controllers\Profile\InfoController;
 use App\Http\Controllers\Profile\PaymentController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/set-locale/{locale}', function ($locale)  {
-        Session::put('locale', $locale);
-        if(session()->has('locale_changed')){
-            return redirect('/')->with('locale_changed', $locale);
-        } else {
-            return redirect()->back()->with('locale_changed', $locale);
-        }
-    })->whereIn('locale', ['en', 'ru'])
+Route::get('/set-locale/{locale}', function ($locale) {
+    Session::put('locale', $locale);
+    if (session()->has('locale_changed')) {
+        return redirect('/')->with('locale_changed', $locale);
+    } else {
+        return redirect()->back()->with('locale_changed', $locale);
+    }
+})->whereIn('locale', ['en', 'ru'])
     ->name('set-locale');
 
 Route::group(['as' => 'public.', 'middleware' => [\App\Http\Middleware\LocaleMiddleware::class]], function () {
     Route::get('/', [\App\Http\Controllers\HomeController::class, 'home'])->name('home');
-    Route::get('/news', [\App\Http\Controllers\HomeController::class, 'home'])->name('news.index');
-    Route::get('/news/{news}', [\App\Http\Controllers\HomeController::class, 'home'])->name('news.show');
+    Route::get('/about', [\App\Http\Controllers\HomeController::class, 'about'])->name('about');
+    Route::get('/rules', [\App\Http\Controllers\HomeController::class, 'rules'])->name('rules');
+    Route::get('/olympiad', [\App\Http\Controllers\HomeController::class, 'olympiad'])->name('olympiad');
+    Route::get('/subject/{profile}', [\App\Http\Controllers\HomeController::class, 'profile'])->name('profile.show');
+    Route::get('/news', [\App\Http\Controllers\NewsController::class, 'index'])->name('news.index');
+    Route::get('/news/{news}', [\App\Http\Controllers\NewsController::class, 'show'])->name('news.show');
+
 });
 
 
-Route::get('/dashboard', function(){
+Route::get('/dashboard', function () {
     return redirect()->route('admin.user.index');
 })->name('dashboard');
 
@@ -43,7 +48,7 @@ Route::middleware('auth')->group(function () {
 
 Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth', 'can:admin']], function () {
 
-    Route::any('/', function(){
+    Route::any('/', function () {
         return redirect()->route('admin.user.index');
     })->name('dashboard');
 
@@ -58,8 +63,12 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth', 'c
         ->except(['show']);
 
 
-    Route::resource('content', \App\Http\Controllers\Admin\ContentController::class)
-        ->only(['index', 'edit', 'update']);
+    Route::resource('news', \App\Http\Controllers\Admin\Content\NewsController::class)->except(['show']);
+    Route::resource('widget', \App\Http\Controllers\Admin\Content\WidgetController::class)->except(['show', 'create', 'store', 'delete']);
+    Route::resource('profile-file', \App\Http\Controllers\Admin\Content\ProfileFileController::class)->except(['show']);
+    Route::resource('schedule', \App\Http\Controllers\Admin\Content\ScheduleController::class)->except(['show']);
+    Route::resource('faq', \App\Http\Controllers\Admin\Content\FaqController::class)->except(['show']);
+
 
     Route::resource('edu-level', \App\Http\Controllers\Admin\EduLevelController::class)->except(['show']);
     Route::resource('university', \App\Http\Controllers\Admin\UniversityController::class)->except(['show']);
@@ -75,9 +84,9 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth', 'c
     Route::get('quiz-question/{question}/probe', [\App\Http\Controllers\Admin\Quiz\ProbeController::class, 'probe'])
         ->name('quiz-question.probe');
 
-    Route::get('quiz-probe/show',       [\App\Http\Controllers\Admin\Quiz\ProbeController::class, 'show'])->name('quiz-probe.show');
+    Route::get('quiz-probe/show', [\App\Http\Controllers\Admin\Quiz\ProbeController::class, 'show'])->name('quiz-probe.show');
     Route::get('quiz-probe/{question}', [\App\Http\Controllers\Admin\Quiz\ProbeController::class, 'probe'])->name('quiz-probe.probe');
-    Route::post('quiz-probe',           [\App\Http\Controllers\Admin\Quiz\ProbeController::class, 'check'])->name('quiz-probe.check');
+    Route::post('quiz-probe', [\App\Http\Controllers\Admin\Quiz\ProbeController::class, 'check'])->name('quiz-probe.check');
 
 
 //    Route::resource('backfeed', \App\Http\Controllers\Admin\BackfeedController::class)
@@ -86,5 +95,5 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth', 'c
 
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
 

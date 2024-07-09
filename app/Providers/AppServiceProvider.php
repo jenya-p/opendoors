@@ -4,7 +4,9 @@ namespace App\Providers;
 
 use App\Models\Stage;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -26,6 +28,12 @@ class AppServiceProvider extends ServiceProvider
     {
         \Gate::define('admin', function ($user) {
             return $user instanceof User && true;
+        });
+
+        Blade::directive('translate', function (string $expression) {
+            return '<?php if(' . $expression . ' instanceof \Illuminate\Database\Eloquent\Model && method_exists(' . $expression . ', \'translate\')){
+                ' . $expression . '->translate();
+            } ?>';
         });
 
         Arr::macro('assocToOptions', function ($src) {
