@@ -51,20 +51,27 @@ trait Translable {
             }
         };
 
+
+
         foreach ($this->translable as $translable) {
+
             if (Str::endsWith($translable, '.*')) {
                 $realTranslable = substr($translable, 0, -2);
                 $values = $this->getAttribute($realTranslable);
                 $translateArray($values);
                 $this->setAttribute($realTranslable, $values);
             } else {
-                if ($locale == 'en' && !empty($value = $this->getAttribute($translable . '_en'))) {
-                    $this->setAttribute($translable, $value);
+                if ($locale == 'en') {
+                    if($this->relationLoaded($translable . '_en')){
+                        $this->setRelation($translable, $this->getRelation($translable . '_en'));
+                    } else if(!empty($value = $this->getAttribute($translable . '_en'))){
+                        $this->setAttribute($translable, $value);
+                    }
                 }
                 $this->makeHidden($translable . '_en');
+
             }
         }
-
         return $this;
     }
 

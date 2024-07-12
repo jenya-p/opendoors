@@ -8,7 +8,7 @@ import _isObject from "lodash/isObject";
 
 
 export function findByIds (options, ids) {
-    if (ids !== null && options !== null &&
+    if (ids != null && options !== null &&
         typeof ids.findIndex == 'function' && typeof options.filter == 'function') {
         return options.filter(itm => ids.findIndex(id => itm.id == id) !== -1);
     } else {

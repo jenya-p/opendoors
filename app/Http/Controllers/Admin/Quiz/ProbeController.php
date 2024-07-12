@@ -12,7 +12,8 @@ use Inertia\Inertia;
 class ProbeController extends Controller {
 
     public function probe(Request $request, Question $question) {
-
+        $question->load('images', 'images_en');
+        $question->translate();
         return Inertia::render('Admin/Quiz/Probe/Probe', [
             'question' => $question,
             'time' => now()->addHour()
@@ -20,7 +21,7 @@ class ProbeController extends Controller {
     }
 
     public function check(ProbeRequest $request){
-echo 1; die;
+
         $question = Question::find($request->question);
 
         $solution = $request->solution;

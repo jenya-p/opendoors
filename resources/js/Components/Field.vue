@@ -19,9 +19,13 @@ export default {
             }
             if (isArray(lFor) && isObject(errors)) {
                 for (const filter of lFor) {
-                    let reg = '^' + filter.replaceAll('.?', '(.\\w+)?')
-                        .replaceAll('*', '\\w+')
-                        .replaceAll('.', '\\.') + '$';
+                    let reg = '^' + filter
+                            .replaceAll('.**', '(.\\w+)@@@@')
+                            .replaceAll('.?', '(.\\w+)?')
+                            .replaceAll('*', '\\w+')
+                            .replaceAll('@@@@', '*')
+                            .replaceAll('.', '\\.')
+                        + '$';
                     reg = new RegExp(reg);
                     for (const key in errors) {
                         if (reg.test(key) && !isEmpty(errors[key])) {

@@ -1,21 +1,48 @@
 <template>
-    <span v-if="locale == 'ru'">RU</span>
-    <a v-else @click="set('ru')">RU</a>
-    <span v-if="locale == 'en'">RU</span>
-    <a v-else @click="set('en')">RU</a>
+    <div>
+        <span v-if="locale == 'ru'">Ру</span>
+        <a v-else @click="set('ru')">Ру</a>
+        <span v-if="locale == 'en'">En</span>
+        <a v-else @click="set('en')">En</a>
+    </div>
 </template>
 
 <script>
 
-
 export default {
+    data(){
+        return {
+            locale: this.$page.props.locale
+        }
+    },
+    methods:{
+      set(v){
+          this.locale = v;
+          this.$i18n.locale = v;
+          let $v = this;
 
+          axios.get(route('set-locale', v)).then(function(){
+              $v.$inertia.reload();
+          });
+
+      }
+    }
 }
 </script>
 
 <style scoped lang="scss">
 @import "resources/css/admin-vars";
-span{background: $attractive-color}
-a{background-color: $base-color}
+div{display: flex; gap: 10px}
+span{color: $base-color; padding: 5px;}
+a{
+    color: $dark-shadow-color;
+    text-decoration: none;
+    transition: color 200ms ease;
+
+    &:hover{
+        color: $fore-color
+    }
+    padding: 5px;
+}
 
 </style>

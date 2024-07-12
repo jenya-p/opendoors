@@ -2,9 +2,7 @@
 
     <input type="number" class="input"
            v-model="value"
-           :min="question.options.min"
-           :max="question.options.max"
-           :step="question.options.step"
+           step="0.001"
             placeholder="Введите ваш ответ">
 
     <input-error :errors="errors" for="solution.**"/>

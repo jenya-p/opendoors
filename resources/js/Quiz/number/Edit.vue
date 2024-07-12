@@ -20,12 +20,12 @@
     </field>
     <field :errors="errors" for="verification,verification.*" label="Диапазон верного ответа"  v-if="lOptions.type=='range'">
         <div class="input-group">
-            <input type="number" class="input" v-model="lVerification[0]" placeholder="От"><span> - </span>
-            <input type="number" class="input" v-model="lVerification[1]" placeholder="До">
+            <input type="number" class="input" v-model="lVerification[0]" placeholder="От" step="0.001"><span> - </span>
+            <input type="number" class="input" v-model="lVerification[1]" placeholder="До" step="0.001">
         </div>
     </field>
     <field :errors="errors" for="verification" label="Верный ответ" class="field-short" v-else>
-        <input type="number" class="input" v-model="lVerification">
+        <input type="number" class="input" v-model="lVerification" step="0.001">
     </field>
 </template>
 

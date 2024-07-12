@@ -1,9 +1,10 @@
 <template>
 
     <textarea-autosize class="input" rows="5"
+                       :class="{'has-error': isExceed}"
            v-model="value" placeholder="Введите ваш ответ" />
 
-    <Attachments :items="attachments" :item_id="$page.props.auth.user.id" item_type="question_probe"/>
+    <Attachments v-if="question.options.uploads" :items="attachments" :item_id="$page.props.auth.user.id" item_type="question_probe"/>
 
     <input-error :errors="errors" for="solution.**"/>
 
@@ -35,11 +36,13 @@ export default {
         solution: {
             default: null,
             type: Object
-        }
+        },
+
     },
     data(){
         return {
-            attachments: []
+            attachments: [],
+            isExceed: false,
         }
     },
     emits: ['update:solution', 'update:valid'],
@@ -59,7 +62,16 @@ export default {
                     this.$emit('update:valid', false);
                 } else {
                     this.$emit('update:solution', {value: value});
-                    this.$emit('update:valid', true);
+                    if(this.question.options.max && value.length > this.question.options.max){
+                        this.isExceed = true;
+                        this.$emit('update:valid', false);
+                    } else {
+                        this.isExceed = false;
+                        this.$emit('update:valid', true);
+                    }
+
+
+
                 }
             }
         }

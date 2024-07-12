@@ -27,7 +27,7 @@
                 </field>
                 <field label="" class="field-right">
                     <checkbox v-model="right" :value="element.index">Верный ответ</checkbox>
-                    <a class="btn-remove" title="Удалить вариант" @click="removeOption(index)">Удалить <i
+                    <a class="btn-remove" title="Удалить вариант" @click="removeOption(element.index)">Удалить <i
                         class="fa fa-times"></i></a>
                 </field>
 
@@ -40,26 +40,28 @@
     <h2 style="margin-top: 2em">Распределение баллов</h2>
     <br/>
     <checkbox v-model="auto">Заполнить автоматически</checkbox>
-    <br><br>
-    <table class="weight-table">
-        <tr>
-            <th rowspan="2" style="font-size: 0.8em">Правильные<br/>ответы</th>
-            <th :colspan="this.lOptions.length - this.right.length  + 1" style="font-size: 0.8em">Неправильные ответы
-            </th>
-        </tr>
-        <tr>
-            <th v-for="w in this.lOptions.length - this.right.length  + 1" style="background-color: #ffecec">
-                {{ w - 1 }}
-            </th>
-        </tr>
-        <tr v-for="r in this.right.length + 1">
-            <th style="background-color: #ecffed">{{ r - 1 }}</th>
-            <td v-for="w in this.lOptions.length - this.right.length + 1">
-                <input type="number" v-model="weights[r - 1][w - 1]" class="input" style="width: 100px">
-            </td>
-        </tr>
-    </table>
-    <input-error :errors="errors" for="verification.weightsTable.*,verification.weightsTable.*.*"/>
+
+    <field :errors="errors" for="verification.weightsTable.**" >
+        <table class="weight-table">
+            <tr>
+                <th rowspan="2" style="font-size: 0.8em">Правильные<br/>ответы</th>
+                <th :colspan="this.lOptions.length - this.right.length  + 1" style="font-size: 0.8em">Неправильные ответы
+                </th>
+            </tr>
+            <tr>
+                <th v-for="w in this.lOptions.length - this.right.length  + 1" style="background-color: #ffecec">
+                    {{ w - 1 }}
+                </th>
+            </tr>
+            <tr v-for="r in this.right.length + 1">
+                <th style="background-color: #ecffed">{{ r - 1 }}</th>
+                <td v-for="w in this.lOptions.length - this.right.length + 1">
+                    <input type="number" v-model="weights[r - 1][w - 1]" class="input" style="width: 100px">
+                </td>
+            </tr>
+        </table>
+    </field>
+
 </template>
 
 <script>
@@ -75,6 +77,7 @@ import _isArray from "lodash/isArray";
 import Checkbox from "@/Components/Checkbox.vue";
 import _isObject from "lodash/isObject";
 import _isNumber from "lodash/isNumber";
+import _debounce from "lodash/debounce";
 
 let _counter = 0;
 
@@ -103,10 +106,14 @@ export default {
     },
     methods: {
         removeOption(index) {
-            if (this.right == this.lOptions[index].index) {
-                this.right = null;
+            let rIndex = this.right.indexOf(index);
+            if(rIndex !== -1){
+                this.right.splice(rIndex, 1);
             }
-            this.lOptions.splice(index, 1);
+            let oIndex = this.lOptions.findIndex(itm => itm.index === index);
+            if(oIndex !== -1){
+                this.lOptions.splice(oIndex, 1);
+            }
         },
         addOption() {
             this.lOptions.push({
@@ -120,7 +127,7 @@ export default {
             }, 100);
         },
 
-        update(updateWeights = false) {
+        update: function(force) {
             let correct = [];
             let options = [];
             let weights = [];
@@ -139,6 +146,9 @@ export default {
                 });
             }
 
+            if(force){
+                this.weights = [];
+            }
             for (let r = 0; r <= correct.length; r++) {
                 if(r >= this.weights.length) {
                     this.weights[r] = [];
@@ -146,40 +156,53 @@ export default {
                 weights[r] = [];
                 for (let w = 0; w <= options.length - correct.length; w++) {
                     if(w >= this.weights[r].length) {
-                        this.weights[r][w] = this.auto ? Math.max(0, r - w) : 0;
+                        this.weights[r][w] = this.auto ? this.getAutoWeight(r,w) : 0;
                     } else {
-                        if(this.weights[r][w] != Math.max(0, r - w)){
+                        if(this.weights[r][w] != this.getAutoWeight(r,w)){
                             this.auto = false;
                         }
                     }
                     weights[r][w] = this.weights[r][w];
                 }
             }
+
             this.$emit('update:options', {options: options});
             this.$emit('update:verification', {correct: correct, weightsTable: weights});
+        },
+        getAutoWeight(r, w){
+
+            let mw = 1;
+
+            if(this.maxWeight && this.right.length != 0){
+                mw = this.maxWeight / this.right.length;
+            }
+
+            return Math.round(Math.max(0, (r - w) * mw));
         }
     },
     watch: {
         lOptions: {
             deep: true,
             handler(n, o) {
-                this.update();
+                this.update(this.auto);
             }
         },
         right(n, o) {
-            this.update();
+            this.update(this.auto);
         },
         weights: {
             deep: true,
             handler(n, o){
-                this.update();
+                this.update(false);
             }
         },
         auto(value){
             if(value){
-                this.weights = [];
-                this.update();
+                this.update(true);
             }
+        },
+        maxWeight(value){
+            this.update(this.auto);
         }
     },
     created() {
@@ -214,9 +237,9 @@ export default {
             }
             for (let w = 0; w < this.lOptions.length - this.right.length + 1; w++) {
                 if(w >= weights[r].length){
-                    weights[r][w] = this.auto ? Math.max(0, r - w) : 0;
+                    weights[r][w] = this.auto ? this.getAutoWeight(r,w) : 0;
                 } else {
-                    if(weights[r][w] != Math.max(0, r - w)){
+                    if(weights[r][w] != this.getAutoWeight(r,w)){
                         this.auto = false;
                     }
                 }
@@ -279,6 +302,9 @@ export default {
 }
 
 .weight-table {
+    .field-inner.has-error &{
+        outline: 1px solid #F14336;
+    }
     td, th {
         width: 100px;
         text-align: center;

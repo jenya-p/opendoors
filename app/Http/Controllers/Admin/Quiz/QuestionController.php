@@ -5,9 +5,12 @@ namespace App\Http\Controllers\Admin\Quiz;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Quiz\QuestionRequest;
 use App\Models\Attachment;
+use App\Models\Profile;
 use App\Models\Quiz\Group;
 use App\Models\Quiz\Question;
 use App\Models\Quiz\Quiz;
+use App\Models\Quiz\Theme;
+use App\Models\Track;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
@@ -24,20 +27,9 @@ class QuestionController extends Controller
                 'quiz:id,name',
                 'group:id,order,weight',
             ]);
-        $filter = trim($request->filter);
-        if(!empty($filter)){
-            $lcQuery = '%' . mb_strtolower(trim($filter)) . '%';
-            if(is_numeric($filter)){
-                $query->where(function(Builder $query) use ($filter, $lcQuery){
-                    $query->where('id', $filter)
-                        ->orWhereRaw('text like ? or text_en like ?', [$lcQuery,$lcQuery])
-                        ->orderByRaw('id = ? DESC', $filter);
-                });
-            } else {
-                $query
-                    ->whereRaw('text like ? or text_en like ?', [$lcQuery,$lcQuery]);
-            }
-        }
+
+        $filter = $request->only('track', 'profile_id', 'stage', 'theme_id', 'query');
+        $query->filter($filter);
 
         if(!empty($request->sort)){
             list($name, $dir) = explode(':', $request->sort);
@@ -58,14 +50,27 @@ class QuestionController extends Controller
         }
         $query->orderBy('id', 'asc');
 
-        $items = $query->paginate(50);
+        $items = $query->paginate(10);
 
 
         $items->append(['snippet', 'option_count']);
 
-        return Inertia::render('Admin/Quiz/Question/Index', [
-            'items' => $items
-        ]);
+        if(!$request->inertia() && $request->isXmlHttpRequest()){
+            return [
+                'filter' => $filter,
+                'items' => $items,
+            ];
+        } else {
+            return Inertia::render('Admin/Quiz/Question/Index', [
+                'profile_options' => Profile::get(['id', 'name'])->toArray(),
+                'theme_options' => Theme::get(['id', 'name'])->toArray(),
+                'track_options' => Arr::assocToOptions(Quiz::TRACK_NAMES),
+                'stage_options' => Arr::assocToOptions(Quiz::STAGE_NAMES),
+                'filter' => $filter,
+                'items' => $items
+            ]);
+        }
+
     }
 
     public function create() {
@@ -77,6 +82,9 @@ class QuestionController extends Controller
         ]);
     }
 
+    public function getThemeOptions(Quiz $quiz){
+        return Theme::whereIn('id', $quiz->groups()->pluck('theme_id'))->get()->toArray();
+    }
 
     public function store(QuestionRequest $request) {
         $question = Question::create($request->validated());

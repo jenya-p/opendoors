@@ -14,7 +14,7 @@ Route::get('/set-locale/{locale}', function ($locale) {
 })->whereIn('locale', ['en', 'ru'])
     ->name('set-locale');
 
-Route::group(['as' => 'public.', 'middleware' => [\App\Http\Middleware\LocaleMiddleware::class]], function () {
+Route::group(['as' => 'public.', 'middleware' => []], function () {
     Route::get('/', [\App\Http\Controllers\HomeController::class, 'home'])->name('home');
     Route::get('/about', [\App\Http\Controllers\HomeController::class, 'about'])->name('about');
     Route::get('/rules', [\App\Http\Controllers\HomeController::class, 'rules'])->name('rules');
@@ -81,8 +81,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth', 'c
         ->parameters(['quiz-question' => 'question'])
         ->except([]);
 
-    Route::get('quiz-question/{question}/probe', [\App\Http\Controllers\Admin\Quiz\ProbeController::class, 'probe'])
-        ->name('quiz-question.probe');
 
     Route::get('quiz-probe/show', [\App\Http\Controllers\Admin\Quiz\ProbeController::class, 'show'])->name('quiz-probe.show');
     Route::get('quiz-probe/{question}', [\App\Http\Controllers\Admin\Quiz\ProbeController::class, 'probe'])->name('quiz-probe.probe');

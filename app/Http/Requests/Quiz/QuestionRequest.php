@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Quiz;
 
+use App\Models\Quiz\Group;
 use App\Models\Quiz\Question;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -53,7 +54,28 @@ class QuestionRequest extends FormRequest {
                 'verification' => 'required|array',
                 'verification.correct' => 'required|array',
                 'verification.correct.*' => 'required|integer',
-                'verification.weightsTable' => 'required|array',
+                'verification.weightsTable' => [
+                    'required', 'array', function($fname, $value, $fail){
+
+                        /** @var Group $group */
+                        $group = Group::find($this->group_id);
+                        if($group && $group->weight){
+                            $hasMaxValue = false;
+                            foreach ($value as $row){
+                                foreach ($row as $cell){
+                                    if($cell > $group->weight){
+                                        return $fail('Таблица не может содержать значение больше максимального балла в наборе');
+                                    } else if($cell == $group->weight){
+                                        $hasMaxValue = true;
+                                    }
+                                }
+                            }
+                            if(!$hasMaxValue){
+                                return $fail('В таблице отсутствует максимальный балл по набору');
+                            }
+                        }
+                    }
+                ],
                 'verification.weightsTable.*' => 'required|array',
                 'verification.weightsTable.*.*' => 'required|integer',
             ];
@@ -64,11 +86,11 @@ class QuestionRequest extends FormRequest {
                 'options.step' => 'nullable|numeric',
                 'options.type' => ['required', Rule::in(['single', 'range'])]
                 ];
-            if($this->type == 'range'){
-                $rules['verification'] = ['required|array|min:2|max:2'];
-                $rules['verification.*'] = ['required|numeric'];
-            } else if($this->type == 'single'){
-                $rules['verification'] = ['required|numeric'];
+            if($this->options['type'] == 'range'){
+                $rules['verification'] = 'required|array|min:2|max:2';
+                $rules['verification.*'] = 'required|numeric';
+            } else if($this->options['type'] == 'single'){
+                $rules['verification'] = 'required|numeric';
             }
 
         } else if($this->type == Question::TYPE_WORDS){

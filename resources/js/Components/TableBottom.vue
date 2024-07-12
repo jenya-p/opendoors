@@ -45,6 +45,9 @@ export default {
             }
         }
     },
+    created() {
+        window.addEventListener('scroll', this.refresh);
+    },
     mounted() {
         window.addEventListener('scroll', this.refresh);
         window.addEventListener('resize', this.refresh);

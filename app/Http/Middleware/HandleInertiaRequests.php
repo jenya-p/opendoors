@@ -40,6 +40,8 @@ class HandleInertiaRequests extends Middleware {
             ],
         ];
 
+        $ret['locale'] = app()->getLocale();
+
         if($request->routeIs('admin.*')){
             $ret['notifications'] = [
 

@@ -4,20 +4,25 @@
         <div class="solve-page-title">
             <img src="/images/logo-s.png" alt="">
             <div >
-                <p>Идет тестирование, осталось:</p>
+                <p>{{$t('greeting')}}</p>
                 <countdown :time="time"/>
             </div>
             <!-- <h1>Предпросмотр задания №{{ question.id }}</h1> -->
 
             <div class="to-right">
-
-                <Link :href="route('admin.quiz-question.edit', {question: question.id})" class="btn btn-default">Завершить</Link>
+                <Locale />
+                <Link :href="route('admin.quiz-question.edit', {question: question.id})" class="btn btn-default">
+                    {{ $t('done') }}</Link>
             </div>
         </div>
         <div class="solve-page-main">
-            <h2>Задание 1 из 1</h2>
+            <h2>{{$t('header')}}</h2>
 
             <form class="block" @submit="submit">
+                <div class="question-image-wrapper">
+                    <img v-for="itm of question.images" :src="itm.download_url" alt="" class="">
+                </div>
+
                 <div class="content question-text" v-html="question.text"></div>
 
                 <div class="options">
@@ -73,7 +78,7 @@
                 </div>
                 <table-bottom align="left">
                     <div>
-                        <button class="btn btn-primary" :disabled="!valid">Сохранить ответ</button>
+                        <button class="btn btn-primary" :disabled="!valid">{{ $t('save') }}</button>
                     </div>
                 </table-bottom>
             </form>
@@ -95,8 +100,13 @@ import QuizSolveNumber from "@/Quiz/number/Solve.vue";
 import QuizSolveWords from "@/Quiz/words/Solve.vue";
 import QuizSolveFree from "@/Quiz/free/Solve.vue";
 import QuizSolveMatch from "@/Quiz/match/Solve.vue";
+import Locale from "@/Components/Locale.vue";
+
+
+
 export default {
     components: {
+        Locale,
         QuizSolveMatch,
         QuizSolveFree,
         QuizSolveWords,
@@ -119,6 +129,7 @@ export default {
     },
 
     data() {
+        console.log(this.$i18n);
         return {
             valid: false,
             form: useForm({
@@ -136,7 +147,6 @@ export default {
             this.form.post(route('admin.quiz-probe.check'));
         }
     }
-
 }
 </script>
 
@@ -189,6 +199,9 @@ export default {
         margin-left: auto;
         margin-right: 0;
         text-align: right;
+        display: flex;
+        align-items: center;
+        gap: 40px;
     }
 }
 
@@ -204,6 +217,11 @@ export default {
     padding-top: 100px;
     padding-bottom: 100px;
 
+    .question-image-wrapper{
+        img{
+            max-width: 100%;
+        }
+    }
     .question-text {
         margin-top: 0.5em;
         margin-bottom: 1.5em;
@@ -215,3 +233,19 @@ export default {
 
 </style>
 
+<i18n>
+{
+    "ru": {
+        "greeting": "Идет тестирование, осталось:",
+        "header": "Задание 1 из 1",
+        "done": "Завершить",
+        "save": "Сохранить ответ"
+    },
+    "en": {
+        "greeting": "Testing is underway:",
+        "header": "Task 1 of 1",
+        "done":  "Complete",
+        "save":  "Save answer"
+    }
+}
+</i18n>

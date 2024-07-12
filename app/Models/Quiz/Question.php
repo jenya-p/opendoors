@@ -5,9 +5,11 @@ namespace App\Models\Quiz;
 use App\Models\Attachment;
 use App\Models\Translable;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Validation\Rule;
+
 
 /**
  * @property int $id
@@ -42,7 +44,7 @@ class Question extends Model
     use SoftDeletes, Translable;
 
     protected $translable = [
-        'text', 'description', 'options.*', 'verification.*'
+        'text', 'description', 'options.*', 'verification.*', 'images'
     ];
 
     protected $table = 'quiz_questions';
@@ -144,5 +146,38 @@ class Question extends Model
     }
 
 
+    public function scopeFilter(Builder $query, array $filter) {
+
+        if(!empty($filter['profile_id']) ||
+            !empty($filter['track']) ||
+            !empty($filter['stage'])){
+
+            $quizQuery = Quiz::select('id')->filter(\Arr::only($filter, ['track', 'profile_id', 'stage']));
+            $query->whereIn('quiz_id', $quizQuery);
+        }
+
+
+        if(!empty($filter['theme_id'])){
+            $groupQuery = Group::select('id')->filter(\Arr::only($filter, ['theme_id']));
+            $query->whereIn('group_id', $groupQuery);
+        }
+
+        if(!empty($filter['query'])){
+            $lcQuery = '%' . mb_strtolower(trim($filter['query'])) . '%';
+            if(is_numeric($filter['query'])){
+                $query->where(function(Builder $query) use ($filter, $lcQuery){
+                    $query->where('id', $filter)
+                        ->orWhereRaw('text like ? or text_en like ?', [$lcQuery,$lcQuery])
+                        ->orderByRaw('id = ? DESC', $filter);
+                });
+            } else {
+                $query
+                    ->whereRaw('text like ? or text_en like ?', [$lcQuery,$lcQuery]);
+            }
+        }
+
+
+        return $query;
+    }
 
 }

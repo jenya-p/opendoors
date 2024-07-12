@@ -41,7 +41,6 @@ export default {
                         .replaceAll('@@@@', '*')
                         .replaceAll('.', '\\.')
                         + '$';
-                    console.log(filter, reg);
                     reg = new RegExp(reg);
                     for (const key in errors) {
                         if (reg.test(key) && !isEmpty(errors[key])) {

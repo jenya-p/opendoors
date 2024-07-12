@@ -78,6 +78,7 @@
                 v-model:options="form.options"
                 v-model:verification="form.verification"
                 :errors="form.errors"
+                :max-weight="group?.weight"
             />
             <QuizEditNumber
                 v-else-if="form.type == 'number'"

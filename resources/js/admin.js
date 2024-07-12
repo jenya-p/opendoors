@@ -15,6 +15,8 @@ import "vue-multiselect/dist/vue-multiselect.css";
 import VueMask from "@devindex/vue-mask";
 import isMobileMixin from "@/Components/is-mobile-mixin.js";
 import ntl from "@/Filters/ntl.js";
+import { createI18n } from 'vue-i18n';
+
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
@@ -24,9 +26,13 @@ createInertiaApp({
     setup({ el, App, props, plugin }) {
         let app = createApp({ render: () => h(App, props) });
         app.config.globalProperties.$filters = {currency: currency, plural: plural, htmlize: htmlize, date: date, phone: phone, ntl: ntl};
+console.log(props.initialPage.props.locale);
         app.use(plugin)
             .use(ZiggyVue)
             .use(VueMask)
+            .use(createI18n({
+                locale: props.initialPage.props.locale,
+            }))
             .mixin(isMobileMixin)
             .directive("field-container", fieldContainer)
             // .component('tabs', tabs)

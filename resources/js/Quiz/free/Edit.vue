@@ -37,6 +37,7 @@ export default {
         verification: {
             type: Object
         },
+        maxWeight: 0,
     },
     emits: ['update:options', 'update:verification',],
 

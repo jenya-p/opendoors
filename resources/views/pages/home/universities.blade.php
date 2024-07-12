@@ -61,7 +61,7 @@
                     @endif
                 <a
                     href="{{ $university->url }}"
-                    title="HSE University"
+                    title="{{ $university->name }}"
                     class="group flex min-h-[9.75rem] w-full flex-col gap-4 rounded-[1rem] bg-white p-4 transition-colors hover:bg-opacity-95 md:min-h-[19.5rem] md:p-8 md:px-[2.25rem]"
                 >
                     <div
@@ -95,7 +95,7 @@
                 <a
                     target="_blank"
                     href="{{ $university->url }}"
-                    title="HSE University"
+                    title="{{ $university->name }}"
                     class="group flex min-h-[9.75rem] w-full flex-col gap-4 rounded-[1rem] bg-white p-4 transition-colors hover:bg-opacity-95 md:min-h-[19.5rem] md:p-8 md:px-[2.25rem]"
                 >
                     <div
