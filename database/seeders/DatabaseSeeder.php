@@ -38,9 +38,9 @@ class DatabaseSeeder extends Seeder {
     public function run(): void {
 
 
-        // $this->universitiesLogoFix();
+        $this->universitiesLogoFix();
 
-        // $this->profileFileTypes();
+        $this->profileFileTypes();
 
         $this->profileFiles();
 
