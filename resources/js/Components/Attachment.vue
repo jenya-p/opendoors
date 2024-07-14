@@ -1,25 +1,26 @@
 <template>
     <div class="attachments compact">
-        <div class="attachment" v-for="atta of items">
-            <a :href="atta.download_url" target="_blank">
+        <div class="attachment" v-if="item">
+            <a  :href="item.download_url" target="_blank">
                 <span class="item-img">
-                    <img v-if="atta.thumb_url" :src="atta.thumb_url" :alt="atta.name"/>
-                    <img v-else src="/images/file_types/default.svg" :alt="atta.name"/>
+                    <img v-if="item.thumb_url" :src="item.thumb_url" :alt="item.name"/>
+                    <img v-else src="/images/file_types/default.svg" :alt="item.name"/>
                 </span>
-                <span class="item-name">{{ atta.name }}</span>
+                <span class="item-name">{{ title ?? item.name }}</span>
             </a>
-            <a @click.stop="remove(atta)" class="fa fa-times btn-remove"></a>
+            <a @click="selectFilesToUpload" class="fa fa-refresh btn-refresh" title="Заменить изображения" target="_blank"></a>
+            <a @click.stop="remove(item)" class="fa fa-times btn-remove" title="Удалить изображение"></a>
         </div>
 
-        <a href="javascript:;" @click="selectFilesToUpload" class="attachment upload-button">
+        <a href="javascript:;" @click="selectFilesToUpload" class="attachment upload-button" v-else>
             <span class="item-img">
                 <img src="/images/upload.svg" alt="Загрузить файлы...">
             </span>
             <span class="item-name">
-				Загрузить...
+                {{title ?? "загрузить..."}}
 			</span>
         </a>
-        <input type="file" name="files" ref="file_input" @change="uploadFiles" multiple>
+        <input type="file" name="files" ref="file_input" @change="uploadFiles" >
     </div>
 </template>
 
@@ -27,27 +28,23 @@
 
 export default {
     props: {
-        items: {
-            type: Array
+        item: {
+            type: Object
         },
         item_type: '',
         item_id: 0,
         type: null,
+        title: null
     },
-    emits: ['uploaded'],
+    emits: ['update:item', 'uploaded'],
     methods: {
         remove(item) {
             var $v = this;
             axios.delete('/attachment/' + item.id)
 
                 .then(function (response) {
-                    for (let itemsKey in $v.items) {
-                        if ($v.items[itemsKey].id == item.id) {
-                            $v.items.splice(itemsKey, 1)
-                            $v.$emit('removed', item);
-                            return;
-                        }
-                    }
+                    $v.$emit('update:item', null);
+                    $v.$emit('removed', item);
                 })
 
                 .catch(function (error) {
@@ -75,17 +72,23 @@ export default {
 
                     var data = new FormData();
                     data.append('file', fileInput.files[filesKey]);
-                    data.append('item_type', this.item_type);
-                    data.append('item_id', this.item_id ? this.item_id : '');
-                    if(this.type){
-                        data.append('type', this.type);
-                    }
-                    axios
-                        .post('/attachment', data)
 
-                        .then(function (response) {
+                    let request = null;
+                    if (this.item?.id){
+                        request = axios.post('/attachment/' + this.item.id + '/replace', data);
+                    } else {
+                        data.append('item_type', this.item_type);
+                        data.append('item_id', this.item_id ? this.item_id : '');
+                        if(this.type){
+                            data.append('type', this.type);
+                        }
+                        request = axios.post('/attachment', data)
+                    }
+
+
+                    request.then(function (response) {
                             if (response.status === 200) {
-                                $v.items.push(response.data.item);
+                                $v.$emit('update:item', response.data.item);
                                 $v.$emit('uploaded', response.data.item);
                             }
                         })
@@ -185,8 +188,8 @@ export default {
             line-height: 21px;
             text-align: center;
             border-radius: 50%;
-            right: -7px;
-            top: -7px;
+            right: 10px;
+            top: -11px;
             transition: color 200ms ease,background-color 200ms ease,border-color 200ms ease;
             &:hover{
                 background-color: $attractive-color;
@@ -194,6 +197,32 @@ export default {
                 color: white;
             }
         }
+
+        .btn-refresh{
+            border: 1px solid $shadow-color;
+            border-radius: 50%;
+            margin: 0;
+            position: absolute;
+            background: white;
+            padding: 0;
+            width: 22px;
+            height: 22px;
+            line-height: 21px;
+            text-align: center;
+            border-radius: 50%;
+            top: -11px;
+            right: 40px;
+            transition: color 200ms ease;
+            overflow: visible;
+            font-size: 0.8em;
+            color: $light-fore-color;
+            &:hover{
+                background-color: #0c6e9b;
+                border-color: #0c6e9b;
+                color: white;
+            }
+        }
+
         .item-name {
             text-align: center;
             font-size: 14px;

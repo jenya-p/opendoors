@@ -73,7 +73,7 @@
                     <div
                         class="flex grow bg-[image:var(--background)] bg-contain bg-center bg-no-repeat transition-all group-hover:opacity-100 group-hover:grayscale-0 md:opacity-80 md:grayscale"
                         style="
-                    --background: url({{ $university->logo->downloadUrl }});
+                    --background: url({{ $university->{app()->getLocale() == 'en' ? 'logo_en' : 'logo'}?->downloadUrl }});
                   "
                     ></div>
                 </a>
@@ -107,7 +107,7 @@
                     <div
                         class="flex grow bg-[image:var(--background)] bg-contain bg-center bg-no-repeat transition-all group-hover:opacity-100 group-hover:grayscale-0 md:opacity-80 md:grayscale"
                         style="
-                    --background: url({{ $university->logo->downloadUrl }});
+                    --background: url({{ $university->{app()->getLocale() == 'en' ? 'logo_en' : 'logo'}?->downloadUrl }});
                   "
                     ></div>
                 </a>

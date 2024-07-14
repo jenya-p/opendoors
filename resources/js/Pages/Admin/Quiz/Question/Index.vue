@@ -112,16 +112,24 @@ import Field from "@/Components/Field.vue";
 import VueMultiselect from "vue-multiselect";
 
 class Filter {
-    constructor() {
+
+    constructor(filter = null) {
+        this.set(filter);
+    }
+
+    set(defaults) {
         this.query = '';
         this.profile_id = [];
         this.track = [];
         this.stage = [];
         this.theme_id = [];
+        if(defaults){
+            _extend(this, defaults);
+        }
     }
 
     count() {
-        let count = countNotEmpty(this, ['query', 'profile_ids', 'track_ids', 'types'])
+        let count = countNotEmpty(this, ['query', 'profile_id', 'track', 'stage', 'theme_id'])
         return count;
     }
 }
@@ -130,6 +138,7 @@ class Filter {
 export default {
     components: {Field, Checkbox, TableBottom, Pagination, Sort, Ttd, Link, AdminLayout, VueMultiselect},
     props: {
+        filter: Object,
         items: Object,
         profile_options: Array,
         track_options: Array,

@@ -11,7 +11,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 /**
  * @property int $id
  * @property int $order
- * @property int $coordinator_id
+ * @property string $status     Статус
+ * @property int $coordinator_id    Координатор
  *
  * @property string $name          Название
  * @property string $name_en       Название (En)
@@ -20,7 +21,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property Carbon $deleted_at
- *
+
+ * @property-read University $coordinator
  * @property-read Stage[] $stages
  * @property-read UniversityProfile[] $universityProfiles
  *
@@ -31,7 +33,7 @@ class Profile extends Model {
 
     protected $table = 'profiles';
 
-    protected $fillable = ['order', 'coordinator_id', 'name', 'name_en', 'icon', 'created_at', 'updated_at'];
+    protected $fillable = ['order', 'status', 'coordinator_id', 'name', 'name_en', 'icon', 'created_at', 'updated_at'];
 
     protected $translable = ['name'];
 
@@ -51,6 +53,19 @@ class Profile extends Model {
 
     public function universityProfiles(){
         return $this->hasMany(UniversityProfile::class, 'profile_id', 'id');
+    }
+
+    public function files(){
+        return $this->hasMany(ProfileFile::class, 'profile_id', 'id');
+    }
+
+    public function getFilesOfType($type){
+        return $this->files()
+            ->select('profile_files.*')
+            ->with('file', 'file_en', 'type', 'type.track')
+            ->join('profile_file_types',  'profile_file_types.id','=','profile_files.type_id')
+            ->where('profile_file_types.type', '=', $type)
+            ->orderBy('profile_file_types.order')->get();
     }
 
 }

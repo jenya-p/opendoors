@@ -47,7 +47,7 @@
                     </transition>
                 </li>
 
-                <li :class="{'active-branch': routeIs('content','news','profile-file','widget'), 'hover': curSection=='site'}">
+                <li :class="{'active-branch': routeIs('content','news','profile-file','profile-file-type','widget'), 'hover': curSection=='site'}">
                     <a @click="toggle('site')">
                         <i class="fa-solid fa-globe"></i>
                         <span>Сайт<b class="caret"></b></span>
@@ -85,18 +85,13 @@
                             </li>
 
                             <li>
-                                <span>
-                                    <i class="fa fa-file-pdf"/>
-                                    <span>Файлы</span>
-                                </span>
+                                <Link :href="route('admin.profile-file-type.index')">
+                                    <i class="fa fa-folder-open"/>
+                                    <span>Типы файлов</span>
+                                </Link>
                             </li>
 
-<!--                            <li :class="{'active': routeIs('profile-file')}">-->
-<!--                                <Link :href="route('admin.profile-file.index')">-->
-<!--                                    <i class="fa fa-file-pdf"/>-->
-<!--                                    <span>Файлы</span>         -->
-<!--                                </Link>-->
-<!--                            </li>-->
+
                         </ul>
                     </transition>
                 </li>
@@ -306,7 +301,7 @@ export default {
             this.curSection = 'opendoors';
         } else if(this.routeIs('quiz', 'quiz-question')){
             this.curSection = 'quiz';
-        } else if(this.routeIs('news', 'profile-file', 'widget', 'schedule', 'faq')){
+        } else if(this.routeIs('news', 'profile-file', 'profile-file-type', 'widget', 'schedule', 'faq')){
             this.curSection = 'site';
         }
 

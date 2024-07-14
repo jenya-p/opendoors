@@ -10,6 +10,8 @@ use App\Models\Content\Schedule;
 use App\Models\Content\Widget;
 use App\Models\EduLevel;
 use App\Models\Profile;
+use App\Models\ProfileFile;
+use App\Models\ProfileFileType;
 use App\Models\Stage;
 use App\Models\StudyProgram;
 use App\Models\Track;
@@ -34,22 +36,162 @@ class DatabaseSeeder extends Seeder {
      * Seed the application's database.
      */
     public function run(): void {
-        // User::factory(10)->create();
-        // $this->trackAndStages();
 
 
-         $this->universities();
+        // $this->universitiesLogoFix();
 
-         $this->schedule();
-         $this->news();
-         $this->faq();
-         $this->profiles();
-         $this->partners();
-         $this->pages();
+        // $this->profileFileTypes();
+
+        $this->profileFiles();
 
     }
 
-    public function pages(){
+    public function profileFiles() {
+        \DB::statement('SET FOREIGN_KEY_CHECKS = 0;');
+        DB::table('profile_files')->truncate();
+        Attachment::where('item_type', 'profile_file')->delete();
+        \DB::statement('SET FOREIGN_KEY_CHECKS = 1;');
+
+
+        $client = new Client([
+            'base_uri' => 'https://od.globaluni.ru',
+        ]);
+
+
+        $resp = $client->get('/subject/business');
+        $htmlRu = HtmlDomParser::str_get_html($resp->getBody());
+        $resp = $client->get('/en/subject/business');
+        $htmlEn = HtmlDomParser::str_get_html($resp->getBody());
+
+        $htmlProfilesRu = $htmlRu->find('.subjects-item a');
+        $htmlProfilesEn = $htmlEn->find('.subjects-item a');
+
+        $doProfile = function (Profile $profile, $url, $locale) use ($client) {
+            $resp = $client->get($url);
+            $html = HtmlDomParser::str_get_html($resp->getBody());
+
+            $htmlItems = $html->find('.materials-item');
+
+            foreach ($htmlItems as $htmlItem) {
+                $title = $htmlItem->find('.materials-name',0)->text();
+
+
+                $fileType = ProfileFileType::where([($locale == 'en' ? 'name_en' : 'name') => $title])->firstOrFail();
+
+                $profileFile = ProfileFile::firstOrCreate([
+                    'type_id' => $fileType->id,
+                    'profile_id' => $profile->id
+                ], ['status' => 'active']);
+
+                $pdfUrl = 'https://od.globaluni.ru' . $htmlItem->find('.materials-download', 0)->href;
+                $tempImage = tempnam(sys_get_temp_dir(), uniqid());
+                copy($pdfUrl, $tempImage);
+                $file = \Storage::putFile(Attachment::ITEM_TYPE_PROFILE_FILE, $tempImage);
+
+                $attachmentRu = Attachment::create([
+                    'item_type' => Attachment::ITEM_TYPE_PROFILE_FILE,
+                    'item_id' => $profileFile->id,
+                    'file' => $file,
+                    'type' => $locale,
+                    'name' => basename($profileFile->id . '-' . $locale . '.' . pathinfo($pdfUrl, PATHINFO_EXTENSION))
+                ]);
+            }
+        };
+
+        /** @var simple_html_dom_node $item */
+        foreach ($htmlProfilesRu as $index => $item) {
+
+            $titleRu = $item->find('img', 0)->alt;
+            $titleEn = $htmlProfilesEn[$index]->find('img', 0)->alt;
+            $urlRu = $item->href;
+            $urlEn = $htmlProfilesEn[$index]->href;
+
+            $profile = Profile::
+                where('name', '=', $titleRu)
+                ->where('name_en', '=', $titleEn)
+                ->first();
+
+            $doProfile($profile, $urlRu, 'ru');
+            $doProfile($profile, $urlEn, 'en');
+
+        }
+
+
+
+    }
+
+    public function profileFileTypes() {
+        \DB::statement('SET FOREIGN_KEY_CHECKS = 0;');
+        DB::table('profile_file_types')->truncate();
+        \DB::statement('SET FOREIGN_KEY_CHECKS = 1;');
+
+
+        ProfileFileType::create([
+            'type' => 'materials',
+            'name_en' => 'Demo version',
+            'summary_en' => '<p>Training tasks similar to those, you will face with at the second round of the competition.</p>',
+            'name' => 'Демо версия заданий',
+            'summary' => '<p>Демонстрационный вариант заданий второго этапа.</p>',
+        ]);
+
+        ProfileFileType::create([
+            'type' => 'materials',
+            'name' => 'Программа',
+            'summary' => '<p>Программа профиля</p>',
+            'name_en' => 'Program of Subject Area',
+            'summary_en' => '<p>Program outline.</p>',
+        ]);
+
+        ProfileFileType::create([
+            'track_id' => 19,
+            'type' => 'materials',
+            'name_en' => 'Interview outline',
+            'summary_en' => '<p>For doctoral track’s participants only</p>',
+            'name' => 'Программа собеседования',
+            'summary' => '<p>Только для участников трека аспирантуры</p>',
+        ]);
+
+        ProfileFileType::create([
+            'track_id' => 19,
+            'type' => 'materials',
+            'name_en' => 'List of potential scientific supervisors',
+            'summary_en' => '<p>For doctoral track’s participants only</p>',
+            'name' => 'Перечень научных руководителей',
+            'summary' => '<p>Только для участников трека аспирантуры</p>',
+        ]);
+
+        ProfileFileType::create([
+            'name' =>'Участники 2 этапа',
+            'name_en' =>'Participants of the 2nd stage',
+            'track_id' => null,
+            'type' => 'results',
+        ]);
+
+        ProfileFileType::create([
+            'name' => 'Победители и призеры по треку магистратуры',
+            'name_en' =>'Winners and prize-winners of the master\'s track',
+            'track_id' => null,
+            'type' => 'results',
+        ]);
+
+        ProfileFileType::create([
+            'name' =>'Участники 3 этапа',
+            'name_en' =>'Participants of the 3rd stage of the doctoral track',
+            'track_id' => 19,
+            'type' => 'results',
+        ]);
+
+        ProfileFileType::create([
+           'name' => 'Победители по треку аспирантуры',
+           'name_en' => 'Winners of the doctoral track',
+            'track_id' => 19,
+            'type' => 'results',
+        ]);
+
+
+    }
+
+    public function pages() {
 
 
         Widget::updateOrCreate(['key' => 'home.top'], [
@@ -83,15 +225,15 @@ open all doors',
                         'youtube' => 'Sbeyr4CoZ28',
                         'title' => 'Вебинар с представителями СПбГЭУ "ЛЭТИ" и ИТМО',
                         'title_en' => 'Webinar with the representatives of LETI and ITMO universities',
-                        ], [
+                    ], [
                         'youtube' => 'IGeyH7nKPzk',
                         'title' => 'Вебинар с представителями ННГУ и КФУ',
                         'title_en' => 'Webinar with the representatives of the UNN and KFU',
-                        ], [
+                    ], [
                         'youtube' => 'IggMSPEIHFU',
                         'title' => 'Вебинар с представителями ДВФУ и ТюмГУ',
                         'title_en' => 'Webinar with the representatives of the FEFU and UTMN',
-                        ]
+                    ]
                     ]
 
                 ]
@@ -122,23 +264,23 @@ open all doors',
         $widget->update(
 
             ['data' => [
-            'title' => 'Правила проведения',
-            'title_en' => 'Rules',
-            'blocks' => [[
+                'title' => 'Правила проведения',
+                'title_en' => 'Rules',
+                'blocks' => [[
                     'title_en' => 'Demo version',
                     'summary_en' => 'Training tasks similar to those, you will face with at the second round of the competition.',
                     'title' => 'Демонстрационная версия',
                     'summary' => 'Тренировочные задания, аналогичные тем, с которыми вы столкнетесь во втором туре конкурса.',
                     'file_id' => $attachmentRu->id,
                     'file_id_en' => $attachmentEn->id
-                ] ,[
+                ], [
                     'title_en' => 'Interview outline',
                     'summary_en' => 'For doctoral track’s participants only',
                     'title' => 'План собеседования',
                     'summary' => 'Только для участников докторской программы',
                     'file_id' => $attachmentRu->id,
                     'file_id_en' => $attachmentEn->id
-                ] ,[
+                ], [
 
                     'title_en' => 'List of potential scientific supervisors',
                     'summary_en' => 'For doctoral track’s participants only',
@@ -147,8 +289,8 @@ open all doors',
                     'file_id' => $attachmentRu->id,
                     'file_id_en' => $attachmentEn->id
                 ]
-            ]
-        ]]);
+                ]
+            ]]);
 
 
         Widget::updateOrCreate(
@@ -161,7 +303,6 @@ open all doors',
                 ]
             ]
         );
-
 
 
     }
@@ -190,14 +331,13 @@ open all doors',
         /** @var simple_html_dom_node $item */
         foreach ($htmlItemsRu as $index => $item) {
 
-            $titleRu =    $item->find('img', 0)->alt;
-            $urlRu =      $item->find('a', 0)->href;
-            $imageRu =    'https://od.globaluni.ru' . $item->find('img', 0)->src;
+            $titleRu = $item->find('img', 0)->alt;
+            $urlRu = $item->find('a', 0)->href;
+            $imageRu = 'https://od.globaluni.ru' . $item->find('img', 0)->src;
 
-            $titleEn =    $htmlItemsEn[$index]->find('img', 0)->alt;
-            $urlEn =      $htmlItemsEn[$index]->find('a', 0)->href;
-            $imageEn =    'https://od.globaluni.ru' . $item->find('img', 0)->href;
-
+            $titleEn = $htmlItemsEn[$index]->find('img', 0)->alt;
+            $urlEn = $htmlItemsEn[$index]->find('a', 0)->href;
+            $imageEn = 'https://od.globaluni.ru' . $item->find('img', 0)->href;
 
 
             $tempImage = tempnam(sys_get_temp_dir(), uniqid());
@@ -208,7 +348,7 @@ open all doors',
                 'item_type' => Attachment::ITEM_TYPE_WIDGET,
                 'item_id' => 0,
                 'file' => $file,
-                'name' => basename($index.'-ru.' . pathinfo($imageRu, PATHINFO_EXTENSION))
+                'name' => basename($index . '-ru.' . pathinfo($imageRu, PATHINFO_EXTENSION))
             ]);
 
             $tempImage = tempnam(sys_get_temp_dir(), uniqid());
@@ -219,21 +359,21 @@ open all doors',
                 'item_type' => Attachment::ITEM_TYPE_WIDGET,
                 'item_id' => 0,
                 'file' => $file,
-                'name' => basename($index.'-en.' . pathinfo($imageRu, PATHINFO_EXTENSION))
+                'name' => basename($index . '-en.' . pathinfo($imageRu, PATHINFO_EXTENSION))
             ]);
 
             $data[] = [
-                'title' =>          $titleRu,
-                'title_en' =>       $titleEn,
-                'url' =>            $urlRu,
-                'url_en' =>         $urlEn,
-                'image_id' =>       $attachmentRu->id,
-                'image_id_en' =>    $attachmentEn->id,
+                'title' => $titleRu,
+                'title_en' => $titleEn,
+                'url' => $urlRu,
+                'url_en' => $urlEn,
+                'image_id' => $attachmentRu->id,
+                'image_id_en' => $attachmentEn->id,
             ];
 
         }
         $widget->update([
-            'data' =>$data
+            'data' => $data
         ]);
 
     }
@@ -321,46 +461,40 @@ open all doors',
             if (!empty($coordinatorRu)) {
                 $coordinatorRu = mb_substr($coordinatorRu, 49);
                 $coordinatorEn = mb_substr($coordinatorEn, 37);
-                $uni = University::firstOrCreate(['name' => $coordinatorRu],['name_en' => $coordinatorEn]);
+                $uni = University::firstOrCreate(['name' => $coordinatorRu], ['name_en' => $coordinatorEn]);
                 $profile->update(
                     ['coordinator_id' => $uni->id]
                 );
             }
 
 
-
-
         }
 
         $icons = [
-            "Арифметика TEST" =>	"arithmetic.svg",
-            "Биология и биотехнологии" =>	"_2.svg",
-            "Компьютерные науки и науки о данных" =>	"_4.svg",
-            "Прикладная математика и искусственный интеллект" =>	"_6.svg",
-            "Бизнес и менеджмент" =>	"_1.svg",
-            "Политические науки и международные отношения" =>	"_3.svg",
-            "Физико-технические науки" =>	"_5.svg",
-            "Лингвистика и современные языки" =>	"_7.svg",
-            "Химия и науки о материалах" =>	"_8.svg",
-            "Экономика и эконометрика" =>	"_11.svg",
-            "Инженерия и технологии" =>	"_13.svg",
-            "Клиническая медицина и общественное здравоохранение" =>	"_10.svg",
-            "Науки о Земле и окружающей среде" =>	"_12.svg",
-            "Образование и психология" =>	"_9.svg",
-            "Урбанистика и гражданское строительство" =>	"_14.svg",
+            "Арифметика TEST" => "arithmetic.svg",
+            "Биология и биотехнологии" => "_2.svg",
+            "Компьютерные науки и науки о данных" => "_4.svg",
+            "Прикладная математика и искусственный интеллект" => "_6.svg",
+            "Бизнес и менеджмент" => "_1.svg",
+            "Политические науки и международные отношения" => "_3.svg",
+            "Физико-технические науки" => "_5.svg",
+            "Лингвистика и современные языки" => "_7.svg",
+            "Химия и науки о материалах" => "_8.svg",
+            "Экономика и эконометрика" => "_11.svg",
+            "Инженерия и технологии" => "_13.svg",
+            "Клиническая медицина и общественное здравоохранение" => "_10.svg",
+            "Науки о Земле и окружающей среде" => "_12.svg",
+            "Образование и психология" => "_9.svg",
+            "Урбанистика и гражданское строительство" => "_14.svg",
         ];
 
 
-
-                foreach ($icons as $name => $icon){
-                    Profile::where(['name' => $name])->update(['icon' => $icon]);
-                }
+        foreach ($icons as $name => $icon) {
+            Profile::where(['name' => $name])->update(['icon' => $icon]);
+        }
 
 
     }
-
-
-
 
 
     public function schedule() {
@@ -569,6 +703,44 @@ open all doors',
 
     }
 
+    public function universitiesLogoFix() {
+        $client = new Client([
+            'base_uri' => 'https://od.globaluni.ru',
+        ]);
+
+        $resp = $client->get('/en/?needRussian=0');
+        $htmlEn = HtmlDomParser::str_get_html($resp->getBody());
+
+        $htmlNamesEn = $htmlEn->find('#universities .pt-1');
+        $htmlImagesEn = $htmlEn->find('#universities .universities-img');
+
+        foreach ($htmlNamesEn as $index => $item) {
+
+            $name = $htmlNamesEn[$index]->text();
+            $university = University::where([
+                'name_en' => $htmlNamesEn[$index]->text(),
+            ])->first();
+
+            if ($university) {
+
+                $tempImage = tempnam(sys_get_temp_dir(), uniqid());
+                copy('https://od.globaluni.ru' . $htmlImagesEn[$index]->src, $tempImage);
+                $file = \Storage::putFile(Attachment::ITEM_TYPE_UNIVERSITY, $tempImage);
+
+                $attachment = Attachment::create([
+                    'item_type' => Attachment::ITEM_TYPE_UNIVERSITY,
+                    'item_id' => $university->id,
+                    'type' => 'logo_en',
+                    'file' => $file,
+                    'name' => basename($htmlImagesEn[$index]->src)
+                ]);
+            } else {
+                echo "\nНе найден " . $name;
+            }
+
+        }
+    }
+
     public function universities() {
         $client = new Client([
             'base_uri' => 'https://od.globaluni.ru',
@@ -595,7 +767,7 @@ open all doors',
             $tempImage = tempnam(sys_get_temp_dir(), uniqid());
             copy('https://od.globaluni.ru' . $htmlImages[$index]->src, $tempImage);
 
-            $file = \Storage::putFile(Attachment::ITEM_TYPE_UNIVERSITY_LOGO, $tempImage);
+            $file = \Storage::putFile(Attachment::ITEM_TYPE_UNIVERSITY, $tempImage);
 
             $university = University::create([
                 'name' => $item->text(),
@@ -605,8 +777,9 @@ open all doors',
             ]);
 
             $attachment = Attachment::create([
-                'item_type' => Attachment::ITEM_TYPE_UNIVERSITY_LOGO,
+                'item_type' => Attachment::ITEM_TYPE_UNIVERSITY,
                 'item_id' => $university->id,
+                'type' => 'logo_ru',
                 'file' => $file,
                 'name' => basename($htmlImages[$index]->src)
             ]);

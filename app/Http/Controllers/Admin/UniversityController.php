@@ -17,6 +17,9 @@ class UniversityController extends Controller {
 
 
     public function create() {
+        $item = new University();
+        $item->setRelation('logo', []);
+        $item->setRelation('logo_en', []);
          return Inertia::render('Admin/University/Edit', ['item' => new University()]);
     }
 
@@ -27,11 +30,11 @@ class UniversityController extends Controller {
     }
 
     public function edit(University $university) {
+        $university->load('logo', 'logo_en');
         return Inertia::render('Admin/University/Edit', [
             'item' => $university,
         ]);
     }
-
 
     public function update(UniversityRequest $request, University $university) {
         $university->update($request->validated());

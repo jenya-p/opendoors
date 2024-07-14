@@ -36,7 +36,7 @@
                         datetime="2017-02-14"
                         class="text-[0.75rem] font-medium leading-7 text-mid-gray md:text-[1rem]"
                     >
-                        {{$item->date->translatedFormat("j F")}}
+                        {{$item->date->translatedFormat("j F Y")}}
                     </time>
 
                     <h1 class="text-[1.5rem] font-bold leading-9">

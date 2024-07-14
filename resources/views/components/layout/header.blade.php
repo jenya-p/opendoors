@@ -117,7 +117,7 @@
                                 class="uppercase hover:text-blue"
                                 href="/login"
                             >
-                                {{ __('Sign in') }}
+                                {{ __('Log in') }}
                             </a>
                         </li>
 

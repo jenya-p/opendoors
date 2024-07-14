@@ -83,7 +83,7 @@ class News extends Model {
     }
 
     public static function scopeActive(Builder $query){
-        return $query->where('status', '=', 'active')->orderBy('date');
+        return $query->where('status', '=', 'active')->orderByDesc('date');
     }
 
 }

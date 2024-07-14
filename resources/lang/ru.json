@@ -16,10 +16,11 @@
     "Subjects": "Профили",
     "Schedule": "График",
     "Contact us": "Обратная связь",
-    "Sign in": "Вход",
+    "Log in": "Вход",
     "Sign up": "Регистрация",
     "Organizing Committee": "Организационный комитет",
     "Latest News": "Последние новости",
+    "More news": "Больше новостей",
     "More news on the website of the Association": "Больше новостей на сайте Ассоциации",
     "Subscribe": "Подписаться на трансляции",
     "Subjects of the OpenDoors": "Профили олимпиады",
@@ -27,5 +28,7 @@
     "Master's study programs defined for the Subject": "Перечень направлений подготовки магистратуры, соответствующих Профилю",
     "Competition organized by leading Russian universities": "Университеты-организаторы олимпиады",
     "Partners": "Партнеры",
-    "Recorded live streams of past webinars": "Записи трансляций прошедших вебинаров"
+    "Recorded live streams of past webinars": "Записи трансляций прошедших вебинаров",
+    "Downloads": "Материалы",
+    "Track: ": "Трек: "
 }

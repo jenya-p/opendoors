@@ -35,6 +35,7 @@ class AttachmentController extends Controller
 			'name' => 'nullable|string',
 			'item_type' => 'required|string',
 			'item_id' => 'nullable|numeric',
+            'type' => 'nullable|string',
 		]);
 
 		$name = $request->get('name');
@@ -67,7 +68,8 @@ class AttachmentController extends Controller
 			'name' => $name,
 			'file' => '',
 			'item_type' => $itemType,
-			'item_id' => $itemId
+			'item_id' => $itemId,
+            'type' => $request->type,
 		]);
 
 		$attachment->save();
@@ -85,28 +87,39 @@ class AttachmentController extends Controller
 
 	}
 
-	public function update(Attachment $attachment, Request $request){
+	public function replace(Attachment $attachment, Request $request) {
 
         $request->validate([
-			'name' => 'nullable|string',
-		]);
+            'name' => 'nullable|string',
+        ]);
 
-		$name = $request->get('name');
+        $name = $request->get('name');
 
-		if(empty($name)){
-			$name = File::basename($attachment->file);
-		}
+        $file = $request->file('file');
 
-		$attachment->name = $name;
-		$attachment->save();
+        $attachment2 = new Attachment($attachment->getAttributes());
 
+        if (!empty($file)) {
+            if (empty($name)) {
+                $name = $file->getClientOriginalName();
+            }
+            $path = $attachment->item_type . '/' . $attachment->item_id;
+            $filename = Storage::put($path, $file);
+
+            $attachment2->file = $filename;
+        }
+
+        if(!empty($name)){
+            $attachment2->name = $name;
+        }
+
+        $attachment->delete();
+        $attachment2->save();
+        $attachment2->refresh();
 		return [
-			'item' => $attachment
+			'item' => $attachment2
 		];
 	}
-
-
-
 
 	/**
 	 * @param Attachment $attachment

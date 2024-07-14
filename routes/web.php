@@ -43,7 +43,11 @@ Route::get('/attachment/{attachment}/download', [\App\Http\Controllers\Attachmen
 Route::get('/attachment/{attachment}/thumb', [\App\Http\Controllers\AttachmentController::class, 'thumb'])->name('attachment.thumb');
 
 Route::middleware('auth')->group(function () {
-    Route::resource('attachment', \App\Http\Controllers\AttachmentController::class)->only(['index', 'store', 'update', 'destroy']);
+    Route::post('attachment/{attachment}/replace', [
+        \App\Http\Controllers\AttachmentController::class, 'replace'
+    ])->name('attachment.replace');
+    Route::resource('attachment', \App\Http\Controllers\AttachmentController::class)->only(['index', 'store', 'destroy']);
+
 });
 
 Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth', 'can:admin']], function () {
@@ -74,7 +78,10 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth', 'c
     Route::resource('university', \App\Http\Controllers\Admin\UniversityController::class)->except(['show']);
     Route::resource('track', \App\Http\Controllers\Admin\TrackController::class)->except(['show']);
     Route::resource('profile', \App\Http\Controllers\Admin\ProfileController::class)->except(['show']);
+    Route::get('profile/{profile}/status', [\App\Http\Controllers\Admin\ProfileController::class, 'status'])->name('profile.status');
     Route::resource('stage', \App\Http\Controllers\Admin\StageController::class)->except(['show', 'create', 'store']);
+
+    Route::resource('profile-file-type', \App\Http\Controllers\Admin\Content\ProfileFileTypeController::class)->except(['show']);
 
     Route::resource('quiz', \App\Http\Controllers\Admin\Quiz\QuizController::class)->except([]);
     Route::resource('quiz-question', \App\Http\Controllers\Admin\Quiz\QuestionController::class)

@@ -5,6 +5,7 @@ $fore-color: #242a2f;
 $light-fore-color: lighten($fore-color, 15);
 $shadow-color: #E7E7E7;
 $dark-shadow-color: darken($shadow-color, 15);
+$success-color: #116c59;
 
 @mixin green-box {
     background: linear-gradient(0deg, #1994ce 0%, #1ba2e0 100%);
@@ -34,5 +35,11 @@ $dark-shadow-color: darken($shadow-color, 15);
 @mixin desktop {
     @media only screen and (min-width: 980px) {
         @content;
+    }
+}
+
+@keyframes spinner {
+    to {
+        transform: rotate(1turn);
     }
 }

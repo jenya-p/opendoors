@@ -45,11 +45,11 @@
             </field>
 
             <field :errors="form.errors" for="images" label="Файлы">
-                <Attachments :items="form.images" :item_id="item.id" item_type="question"/>
+                <Attachments :items="form.images" :item_id="item.id" item_type="question" type="ru"/>
             </field>
 
             <field :errors="form.errors" for="images_en" label="Файлы (Англ.)">
-                <Attachments :items="form.images_en" :item_id="item.id" item_type="question_en"/>
+                <Attachments :items="form.images_en" :item_id="item.id" item_type="question" type="en"/>
             </field>
 <!--
             <field :errors="form.errors" for="description" label="Расшифровка ответа">

@@ -3,6 +3,7 @@
 namespace App\Models\Quiz;
 
 use App\Models\Attachment;
+use App\Models\HasAttachments;
 use App\Models\Translable;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
@@ -41,7 +42,7 @@ use Illuminate\Validation\Rule;
  */
 class Question extends Model
 {
-    use SoftDeletes, Translable;
+    use SoftDeletes, Translable, HasAttachments;
 
     protected $translable = [
         'text', 'description', 'options.*', 'verification.*', 'images'
@@ -102,13 +103,11 @@ class Question extends Model
 
 
     public function images(){
-        return $this->hasMany(Attachment::class, 'item_id')
-            ->where('item_type', '=', Attachment::ITEM_TYPE_QUESTION);
+        return $this->hasManyAttachments('ru');
     }
 
     public function images_en(){
-        return $this->hasMany(Attachment::class, 'item_id')
-            ->where('item_type', '=', Attachment::ITEM_TYPE_QUESTION_EN);
+        return $this->hasManyAttachments('en');
     }
 
     public function getSnippetAttribute(){
@@ -122,7 +121,7 @@ class Question extends Model
     }
 
     public function getTypeNameAttribute(){
-
+        return \Arr::iif(self::TYPE_NAMES, $this->type);
     }
 
     public function getOptionCountAttribute(){

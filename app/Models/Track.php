@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @property int $id
+ * @property string $status
  * @property string $name       Название
  * @property string $name_en    Название (En)
  *
@@ -22,11 +23,13 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @mixin \Eloquent
  */
 class Track extends Model {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, Translable;
 
     protected $table = 'tracks';
 
-    protected $fillable = ['name','name_en', 'created_at', 'updated_at'];
+    protected $fillable = ['status', 'name','name_en', 'created_at', 'updated_at'];
+
+    protected $translable = ['name'];
 
     protected $casts = [
         'created_at' => 'datetime',

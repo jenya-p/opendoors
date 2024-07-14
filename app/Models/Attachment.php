@@ -21,11 +21,13 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string $file
  * @property string $item_type
  * @property integer $item_id
+ * @property string $type
+ * @property int    $order
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property Carbon $deleted_at
  *
- * @property-read Model $parent
+ * @property-read Model $item
  * @property-read string $downloadUrl
  * @property-read string $thumbUrl
  * @property-read string $ext
@@ -37,10 +39,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class Attachment extends Model {
 
-    use SoftDeletes, HasTimestamps;
+    use SoftDeletes, HasTimestamps, Ordered;
 
     protected $table = 'attachments';
     protected $primaryKey = 'id';
+
+    protected static $orderedCategory  = ['item_type','item_id','type'];
 
     protected $casts = [
         'created_at' => 'datetime:Y-m-d H:i:s',
@@ -50,40 +54,35 @@ class Attachment extends Model {
 
 
     protected $fillable = [
-        'name', 'file', 'item_type', 'item_id', 'created_at', 'updated_at', 'deleted_at',
+        'name', 'file', 'item_type', 'item_id','type', 'created_at', 'updated_at', 'deleted_at',
     ];
 
     protected $hidden = ['file'];
     protected $appends = ['download_url', 'thumb_url', 'ext', 'base_name'];
 
-    const ITEM_TYPE_UNIVERSITY_LOGO = 'university_logo';
-    const ITEM_TYPE_USERPICK = 'userpick';
-    const ITEM_TYPE_QUESTION = 'question';
-    const ITEM_TYPE_QUESTION_EN = 'question_en';
-    const ITEM_TYPE_PROFILE_FILE = 'profile_file';
-    const ITEM_TYPE_PROFILE_FILE_EN = 'profile_file_en';
-    const ITEM_TYPE_WIDGET = 'widget';
-    const ITEM_TYPE_NEWS = 'news';
-    const ITEM_TYPE_CONTENT = 'content';
+    const ITEM_TYPE_UNIVERSITY =        'university';
+    const ITEM_TYPE_USER =              'user';
+    const ITEM_TYPE_QUESTION =          'question';
+    const ITEM_TYPE_PROFILE_FILE =      'profile_file';
+    const ITEM_TYPE_WIDGET =            'widget';
+    const ITEM_TYPE_NEWS =              'news';
+    const ITEM_TYPE_CONTENT =           'content';
 
     const ITEM_CLASSES = [
-        self::ITEM_TYPE_USERPICK => User::class,
-        self::ITEM_TYPE_UNIVERSITY_LOGO => University::class,
-        self::ITEM_TYPE_QUESTION => Question::class,
-        self::ITEM_TYPE_QUESTION_EN => Question::class,
+        self::ITEM_TYPE_USER =>         User::class,
+        self::ITEM_TYPE_UNIVERSITY =>   University::class,
+        self::ITEM_TYPE_QUESTION =>     Question::class,
         self::ITEM_TYPE_PROFILE_FILE => ProfileFile::class,
-        self::ITEM_TYPE_PROFILE_FILE_EN => ProfileFile::class,
-        self::ITEM_TYPE_WIDGET => Widget::class,
-        self::ITEM_TYPE_NEWS => News::class,
-        self::ITEM_TYPE_CONTENT => Content::class,
+        self::ITEM_TYPE_WIDGET =>       Widget::class,
+        self::ITEM_TYPE_NEWS =>         News::class,
+        self::ITEM_TYPE_CONTENT =>      Content::class,
     ];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public function parent() {
-        $itemClass = self::ITEM_CLASSES[$this->item_type];
-        return $this->hasOne($itemClass, 'id', 'item_id');
+    public function item() {
+        return $this->morphOne('item');
     }
 
     public function getDownloadUrlAttribute() {

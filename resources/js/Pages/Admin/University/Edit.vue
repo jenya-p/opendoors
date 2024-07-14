@@ -17,6 +17,14 @@
                     <input class="input" v-model="form.url"/>
                 </field>
 
+                <field :errors="form.errors" for="logo" label="Лого">
+                    <div style="display: flex; gap: 15px">
+                        <attachment v-model:item="form.logo" item_type="university" :item_id="item.id" :single="true" title="Рус" type="logo_ru"/>
+                        <attachment v-model:item="form.logo_en" item_type="university" :item_id="item.id" :single="true" title="Англ" type="logo_en"/>
+                    </div>
+                </field>
+
+
                 <div class="block-footer">
                     <button type="submit" class="btn btn-primary">Сохранить</button>
                     <!--                <History type="user"/>-->
@@ -34,9 +42,11 @@ import Field from "@/Components/Field.vue";
 import AdminLayout from "@/Layouts/AdminLayout.vue";
 import _extend from "lodash/extend";
 import TextareaAutosize from "@/Components/TextareaAutosize.vue";
+import Attachment from "@/Components/Attachment.vue";
 
 export default {
     components: {
+        Attachment,
         TextareaAutosize,
         AdminLayout,
         Field
@@ -56,7 +66,8 @@ export default {
             form: useForm(_extend({
                 name: null,
                 name_en: null,
-                url: null
+                url: null,
+                logo: null,logo_en: null,
             }, this.item)),
             tabErrors: {
                 info: false, questions: false

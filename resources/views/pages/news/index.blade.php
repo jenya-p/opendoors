@@ -31,9 +31,9 @@
             <div
               class="col-span-2 row-start-2 mx-auto whitespace-nowrap text-balance md:col-span-1 md:row-start-auto"
             >
-              <a
-                href="#!"
-                title="More news"
+                <a
+                href="http://globaluni.ru/#/news/?utm_source=od&utm_campaign=news"
+                title="{{__('More news')}}"
                 class="text-[0.75rem] font-semibold uppercase text-blue transition-colors hover:text-black"
                 >{{__('More news on the website of the Association')}}</a>
             </div>
@@ -66,7 +66,7 @@
                       datetime="2017-02-14"
                       class="text-[0.75rem] font-medium leading-7 text-mid-gray md:text-[1rem]"
                     >
-                        {{ $item->date->translatedFormat('j F') }}
+                        {{ $item->date->translatedFormat('j F Y') }}
                     </time>
 
                     <h2

@@ -2,9 +2,17 @@
 
 namespace App\Providers;
 
+use App\Models\Attachment;
+use App\Models\Content\Content;
+use App\Models\Content\News;
+use App\Models\Content\Widget;
+use App\Models\ProfileFile;
+use App\Models\Quiz\Question;
 use App\Models\Stage;
+use App\Models\University;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
@@ -57,5 +65,6 @@ class AppServiceProvider extends ServiceProvider
             }
         });
 
+        Relation::morphMap(Attachment::ITEM_CLASSES);
     }
 }

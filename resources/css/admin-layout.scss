@@ -13,11 +13,11 @@ body {
     color: $fore-color;
     line-height: 1.3;
     min-width: 300px;
-    @include desktop{
+    @include desktop {
         overflow-y: scroll;
     }
 
-    @include mobile{
+    @include mobile {
         overflow-x: hidden;
     }
 }
@@ -74,11 +74,16 @@ a:hover {
     font-weight: bold
 }
 
-@include mobile{
-    .m-hide {display: none}
+@include mobile {
+    .m-hide {
+        display: none
+    }
 }
-@include desktop{
-    .d-hide {display: none}
+
+@include desktop {
+    .d-hide {
+        display: none
+    }
 }
 
 .content {
@@ -121,7 +126,7 @@ aside {
     z-index: 2;
     box-sizing: border-box;
 
-    @include desktop{
+    @include desktop {
         padding: 0px 20px 100px 20px;
         position: fixed;
         left: 0;
@@ -148,7 +153,7 @@ aside {
             background: linear-gradient(0deg, rgba(255, 255, 255, 0.9) 30%, rgb(255, 255, 255) 100%);
             z-index: -1;
         }
-        .minify-btn{
+        .minify-btn {
             position: absolute;
             top: 15px;
             width: 21px;
@@ -158,24 +163,26 @@ aside {
             text-align: center;
             font-size: 26px;
             color: #999;
-            &:after{
+
+            &:after {
                 content: '❰';
                 display: inline-block;
                 transition: all 200ms ease;
             }
-            &:hover:after{
+
+            &:hover:after {
                 color: #666;
                 translate: -3px;
             }
         }
     }
-    @include mobile{
+    @include mobile {
         position: relative;
         padding: 0;
         overflow: hidden;
         min-height: 100vh;
         width: 100%;
-        .minify-btn{
+        .minify-btn {
             position: absolute;
             top: 0;
             height: 55px;
@@ -186,7 +193,8 @@ aside {
             text-align: center;
             font-size: 30px;
             color: #999;
-            &:after{
+
+            &:after {
                 font-family: "Font Awesome 6 Free";
                 -webkit-font-smoothing: antialiased;
                 line-height: 1.2em;
@@ -202,7 +210,7 @@ aside {
         }
     }
 
-    @include desktop{
+    @include desktop {
         .logo {
             display: flex;
             padding: 20px 5px;
@@ -216,7 +224,7 @@ aside {
         }
     }
 
-    @include mobile{
+    @include mobile {
         .logo {
             display: inline-block;
             width: 100%;
@@ -228,7 +236,6 @@ aside {
             height: 55px;
         }
     }
-
 
 
     .current-user {
@@ -244,12 +251,13 @@ aside {
         right: 20px;
         left: 20px;
 
-        @include desktop{
+        @include desktop {
             display: flex;
         }
-        @include mobile{
+        @include mobile {
             display: none;
         }
+
         .username {
             font-size: 16px;
             font-weight: 400;
@@ -288,7 +296,7 @@ aside {
         font-size: 16px;
         padding: 7.5px 5px 0 0;
         transition: all 200ms ease;
-        @include desktop{
+        @include desktop {
             overflow-y: auto;
             overflow-x: hidden;
             margin: 0 -15px 0 -10px;
@@ -336,11 +344,11 @@ aside {
                     background: transparent;
                     position: relative;
 
-                    @include desktop{
+                    @include desktop {
                         padding: 12px 15px 12px 15px;
                     }
                     @include mobile {
-                        padding: 12px 10px ;
+                        padding: 12px 10px;
                         font-size: 1.1em;
                     }
                     display: flex;
@@ -361,7 +369,8 @@ aside {
                     span {
                         line-height: 20px;
                     }
-                    .caret{
+
+                    .caret {
                         display: inline-block;
                         position: absolute;
                         right: 10px;
@@ -370,7 +379,8 @@ aside {
                         color: #999;
                         transform: rotate(-45deg);
                         transition: transform 200ms ease;
-                        &:after{
+
+                        &:after {
                             content: '⏷'
                         }
                     }
@@ -415,10 +425,11 @@ aside {
                     }
                 }
 
-                &.with-notification a{
+                &.with-notification a {
                     position: relative;
                     padding-right: 50px;
-                    .notification{
+
+                    .notification {
                         position: absolute;
 
                         top: 50%;
@@ -432,46 +443,56 @@ aside {
                         text-align: center;
                         border-radius: 50%;
                         background: $attractive-color;
-                        @include desktop{
+                        @include desktop {
                             right: 10px;
                         }
-                        @include mobile{
+                        @include mobile {
                             margin-left: 10px;
                         }
                     }
                 }
-                ul{
+
+                ul {
                     padding-bottom: 10px;
-                    &.slide-fade{
+
+                    &.slide-fade {
                         &-leave-active,
                         &-enter-active {
                             transition: all 0.3s ease-out;
                         }
+
                         &-enter-from,
                         &-leave-to {
                             transform: translateY(-60px);
                             opacity: 0;
                         }
                     }
-                    li{
+
+                    li {
                         margin-bottom: 0;
-                        & > a, & > span{
+
+                        & > a, & > span {
                             padding: 5px 15px;
                             line-height: 10px;
                             width: 100%;
                             box-sizing: border-box;
                             font-size: 15px;
-                            i{font-size: 1em; margin-left: 15px}
+
+                            i {
+                                font-size: 1em;
+                                margin-left: 15px
+                            }
 
                         }
                     }
                 }
-                &.hover{
-                        & > a, & > span {
-                            .caret{
-                                transform: rotate(0);
-                            }
+
+                &.hover {
+                    & > a, & > span {
+                        .caret {
+                            transform: rotate(0);
                         }
+                    }
                 }
             }
         }
@@ -479,37 +500,42 @@ aside {
 
     }
 
-    @include desktop{
-        &.min{
+    @include desktop {
+        &.min {
             width: 60px;
             padding-right: 10px;
             padding-left: 10px;
             overflow-x: visible;
-            .minify-btn{
+
+            .minify-btn {
                 width: 21px;
                 right: -18px;
                 transition: all;
                 transform: rotate(180deg);
             }
+
             .logo {
                 background-image: url("/images/logo-s.png");
                 background-size: 46px;
                 margin: 0 -5px;
                 background-position: center center;
             }
-            .sidebar-menu{margin-left: -6px;
+
+            .sidebar-menu {
+                margin-left: -6px;
                 overflow: visible;
             }
 
-            .sidebar-menu>ul>li {
+            .sidebar-menu > ul > li {
                 height: 50px;
                 border: 1px transparent solid;
                 position: relative;
             }
-            .sidebar-menu>ul>li>a,
-            .sidebar-menu>ul>li>span,
-            .sidebar-menu>ul>li>ul>li>a,
-            .sidebar-menu>ul>li>ul>li>span{
+
+            .sidebar-menu > ul > li > a,
+            .sidebar-menu > ul > li > span,
+            .sidebar-menu > ul > li > ul > li > a,
+            .sidebar-menu > ul > li > ul > li > span {
                 position: relative;
                 padding-left: 0;
                 padding-right: 0;
@@ -519,26 +545,29 @@ aside {
                 display: flex;
                 justify-items: left;
                 gap: 10px;
-                i{
+
+                i {
                     margin: 0;
                     width: 50px;
                     text-align: center;
                     flex-shrink: 0;
                 }
             }
-            .sidebar-menu>ul>li>span>span:not(.notification),
-            .sidebar-menu>ul>li>a>span:not(.notification){
+
+            .sidebar-menu > ul > li > span > span:not(.notification),
+            .sidebar-menu > ul > li > a > span:not(.notification) {
                 display: none;
                 white-space: nowrap;
                 padding-right: 25px;
             }
 
-            .sidebar-menu>ul>li.active:not(.hover)>span>span.notification,
-            .sidebar-menu>ul>li.active:not(.hover)>a>span.notification{
+            .sidebar-menu > ul > li.active:not(.hover) > span > span.notification,
+            .sidebar-menu > ul > li.active:not(.hover) > a > span.notification {
                 display: none;
             }
-            .sidebar-menu>ul>li:not(.active):not(.hover)>span>span.notification,
-            .sidebar-menu>ul>li:not(.active):not(.hover)>a>span.notification{
+
+            .sidebar-menu > ul > li:not(.active):not(.hover) > span > span.notification,
+            .sidebar-menu > ul > li:not(.active):not(.hover) > a > span.notification {
                 display: inline-block;
                 font-size: 0;
                 width: 10px;
@@ -550,43 +579,59 @@ aside {
                 margin: 0;
             }
 
-            .sidebar-menu ul li ul {display: none}
-
-            .sidebar-menu>ul>li:not(.hover).active-branch>a{
-                    color: #000;
-                    background: rgba(200, 200, 200, 0.3);
-                    i{color: $attractive-color}
+            .sidebar-menu ul li ul {
+                display: none
             }
-            .sidebar-menu>ul>li.hover{
-                background-color: rgba(256,256,256,0.95);
+
+            .sidebar-menu > ul > li:not(.hover).active-branch > a {
+                color: #000;
+                background: rgba(200, 200, 200, 0.3);
+
+                i {
+                    color: $attractive-color
+                }
+            }
+
+            .sidebar-menu > ul > li.hover {
+                background-color: rgba(256, 256, 256, 0.95);
                 box-shadow: 0px 0px 15px -9px gray;
                 border: 1px solid #c1c1c129;
                 width: 300px;
+
                 a,
                 span {
                     width: 100%;
+
                     span:not(.notification) {
                         display: inline-block;
                     }
+
                     span.notification {
                         //position: static;
                         //margin: 3px 18px -4px -18px;
                     }
                 }
-                &>a:hover{background: inherit;}
+
+                & > a:hover {
+                    background: inherit;
+                }
+
                 ul {
-                    background-color: rgba(256,256,256,0.95);
+                    background-color: rgba(256, 256, 256, 0.95);
                     box-shadow: 0px 0px 15px -9px gray;
                     border: 1px solid #c1c1c129;
                     display: inline-block;
-                    position: absolute;top: 53px;
+                    position: absolute;
+                    top: 53px;
                     left: 43px;
                     padding: 5px;
                     padding-bottom: 10px;
                     z-index: 1;
+
                     li {
                         white-space: nowrap;
-                        span, a{
+
+                        span, a {
                             padding-right: 10px;
                         }
                     }
@@ -594,7 +639,7 @@ aside {
             }
 
 
-            .current-user{
+            .current-user {
                 padding: 0;
                 background: transparent;
                 height: 45px;
@@ -602,41 +647,47 @@ aside {
                 margin: 0 0 10px 0;
                 box-shadow: none;
                 cursor: pointer;
-                left: 7px; right: 0;
-                &:before{
+                left: 7px;
+                right: 0;
+
+                &:before {
                     left: 0;
                     box-shadow: none;
                     border: 1px solid lightgrey;
                 }
-                .logout,.username{
+
+                .logout, .username {
                     display: none;
                 }
-                a.profile{
+
+                a.profile {
                     font-size: 0;
                     content: '';
                     position: absolute;
-                    top:0;
-                    right:0;
-                    bottom:0;
-                    left:0;
+                    top: 0;
+                    right: 0;
+                    bottom: 0;
+                    left: 0;
                 }
             }
 
         }
     }
 
-    @include mobile{
-        &.min{
+    @include mobile {
+        &.min {
             height: 60px;
             min-height: unset;
-            .minify-btn{
-                &:after{
+
+            .minify-btn {
+                &:after {
                     content: '\f0c9';
                     color: $base-color;
                     transform: rotate(180deg);
                 }
             }
-            .sidebar-menu{
+
+            .sidebar-menu {
                 translate: 300px 0;
                 opacity: 0;
                 z-index: -1px;
@@ -647,7 +698,8 @@ aside {
 
 main {
     position: relative;
-    aside + &{
+
+    aside + & {
         float: right;
         transition: 0.33s ease;
     }
@@ -663,22 +715,22 @@ main {
     }
 }
 
-@include desktop{
+@include desktop {
     aside + main {
         padding: 0 20px 0 30px;
         width: calc(100% - 300px);
     }
-    aside.min + main{
+    aside.min + main {
         width: calc(100% - 50px);
     }
 }
 
-@include mobile{
+@include mobile {
     aside + main {
         padding: 0 10px 0 10px;
         width: 100%;
     }
-    aside:not(.min) + main{
+    aside:not(.min) + main {
         display: none;
     }
 }
@@ -695,7 +747,7 @@ main {
 
 .breadcrumb {
 
-    @include desktop{
+    @include desktop {
         flex-wrap: wrap;
         padding: 0 0;
         display: flex;
@@ -728,7 +780,7 @@ main {
 
     }
 
-    @include mobile{
+    @include mobile {
         @include green-box();
         border-radius: 5px;
         padding: 0;
@@ -756,7 +808,7 @@ main {
             font-weight: 400;
             flex-grow: 1;
         }
-        a+span{
+        a + span {
             padding-left: 0;
         }
     }
@@ -765,10 +817,9 @@ main {
 }
 
 
-
 table.table {
     width: 100%;
-    @include desktop{
+    @include desktop {
         margin: 0 -5px;
     }
 
@@ -784,7 +835,7 @@ table.table {
         }
     }
 
-    tbody{
+    tbody {
         @include mobile {
             display: flex;
             flex-direction: column;
@@ -808,14 +859,16 @@ table.table {
 
         td {
 
-            @include mobile{
+            @include mobile {
                 padding: 0 5px;
                 width: 100%;
                 display: flex;
                 &.check {
-                    width: 30px; flex-grow: 0;cursor: pointer;
+                    width: 30px;
+                    flex-grow: 0;
+                    cursor: pointer;
                 }
-                &.m-title{
+                &.m-title {
                     font-weight: 400;
                     margin-bottom: 0.4em;
                     font-size: 18px;
@@ -827,43 +880,65 @@ table.table {
                     justify-content: space-between;
                 }
 
-                .ttd-label{
-                    width: 100px; font-weight: bold; flex-shrink: 0; flex-grow: 0;    margin-right: 10px;
+                .ttd-label {
+                    width: 100px;
+                    font-weight: bold;
+                    flex-shrink: 0;
+                    flex-grow: 0;
+                    margin-right: 10px;
                 }
-                &.m-title .ttd-label{
-                    font-size: 12px; margin-top: 3px; margin-right: 8px; width: auto;
+                &.m-title .ttd-label {
+                    font-size: 12px;
+                    margin-top: 3px;
+                    margin-right: 8px;
+                    width: auto;
                 }
                 &.d-text-right,
-                &.m-text-right{
+                &.m-text-right {
                     justify-content: center;
-                    .ttd-label{width: auto; flex-grow: 1;    border-bottom: 1px dotted gainsboro;}
-                    .ttd-value{width: 80px; text-align: right;    border-bottom: 1px dotted gainsboro;}
+
+                    .ttd-label {
+                        width: auto;
+                        flex-grow: 1;
+                        border-bottom: 1px dotted gainsboro;
+                    }
+
+                    .ttd-value {
+                        width: 80px;
+                        text-align: right;
+                        border-bottom: 1px dotted gainsboro;
+                    }
                 }
-                &.m-hide{display: none}
+                &.m-hide {
+                    display: none
+                }
             }
-            @include desktop{
+            @include desktop {
 
                 min-height: 50px;
                 vertical-align: middle;
                 font-weight: 400;
                 padding: 5px;
                 border-bottom: 1px solid #E5E7EB;
-                &.buttons{
+                &.buttons {
+                    width: 30px;
                     text-align: right;
                 }
-                .ttd-label{
+                .ttd-label {
                     display: none;
                 }
                 &.text-right {
                     padding-left: 0;
                     padding-right: 15px;
                 }
-                &.d-text-right{
+                &.d-text-right {
                     padding-left: 0;
                     padding-right: 15px;
                     text-align: right;
                 }
-                &.d-hide{display: none}
+                &.d-hide {
+                    display: none
+                }
             }
 
         }
@@ -888,7 +963,7 @@ table.table {
         cursor: pointer
     }
 
-    tfoot th{
+    tfoot th {
         border-bottom: none;
         border-top: 2px solid #E5E7EB
     }
@@ -897,9 +972,54 @@ table.table {
         color: $light-fore-color;
         font-size: 0.8em;
     }
+
+    .item-status {
+        text-decoration: none;
+        transition: color 200ms ease ;
+        padding: 0.5em;
+        margin-left: 0.5em;
+        border-radius: 5px;
+        font-size: 1em;
+        &:active {
+            translate: -0.5px 0.5px;
+        }
+        &.active {
+            color: #179381;
+            &:before{
+                content: "\f06e";
+                font-family: "Font Awesome 6 Free";
+                font-weight: 400;
+            }
+            &:hover{
+                color: #035D4EFF;
+            }
+        }
+
+        &.disabled {
+            color: #dca7a7;
+            &:before{
+                content: "\f070";
+                font-family: "Font Awesome 6 Free";
+                font-weight: 400;
+            }
+
+            &:hover{
+                color: #f68f8f;
+            }
+        }
+        &.loading{
+            color: #6bb3e9;
+            &:before{
+                display: inline-block;
+                animation: spinner 1000ms linear infinite;
+                content: "\f110";
+                font-family: "Font Awesome 6 Free";
+                font-weight: 900;
+            }
+        }
+    }
+
 }
-
-
 
 
 .simple-list-filter-wrp {
@@ -915,6 +1035,7 @@ table.table {
     }
     width: 100%;
     align-items: flex-start;
+
     input {
         padding-left: 8px;
         padding-right: 50px;
@@ -925,11 +1046,12 @@ table.table {
         gap: 1em;
         white-space: nowrap;
     }
-    .btn{
+
+    .btn {
         white-space: nowrap;
     }
 
-    .filter-erase{
+    .filter-erase {
         line-height: 42px;
         position: relative;
         left: -63px;
@@ -938,13 +1060,14 @@ table.table {
         text-align: center;
         color: $shadow-color;
         transition: color 200ms ease;
-        &:hover{
+
+        &:hover {
             color: $dark-shadow-color
         }
     }
 }
 
-.list-filter-wrp{
+.list-filter-wrp {
     margin-bottom: 1.7em;
     margin-top: 0.5em;
 }
@@ -955,6 +1078,7 @@ table.table {
     padding: 2px 5px;
     border-radius: 3px;
 }
+
 .btn {
     line-height: 18px;
     text-decoration: none;
@@ -971,6 +1095,7 @@ table.table {
         font-size: 15px;
         line-height: 1.1em;
     }
+
     &.btn-xs {
         font-size: 15px;
         line-height: 1em;
@@ -992,11 +1117,13 @@ table.table {
     &:hover {
         text-decoration: none;
     }
-    &:disabled,&.disabled{
+
+    &:disabled, &.disabled {
         background: #e7e7e7;
         color: #b5b5b5;
         cursor: default;
     }
+
     &:not(:disabled,.disabled):active {
         transform: translate(-0.5px, 0.5px);
     }
@@ -1026,6 +1153,7 @@ button.btn-a {
     background-color: $base-color;
     background-image: linear-gradient(0deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.3) 100%);
     color: white;
+
     &:not(:disabled,.disabled):hover {
         background-color: darken($base-color, 5);
     }
@@ -1034,9 +1162,11 @@ button.btn-a {
 .btn-default {
     background: #f7f7f7;
     color: $light-fore-color;
+
     &:hover {
 
     }
+
     &:not(:disabled,.disabled):hover {
         background: #f0f0f0;
         color: $fore-color;
@@ -1046,6 +1176,7 @@ button.btn-a {
 .btn-gray {
     color: #444;
     transition: color 200ms ease, background-color 200ms ease;
+
     &:not(:disabled,.disabled):hover {
         background-color: #f5f5f5;
         // color: $dark-shadow-color;
@@ -1055,11 +1186,11 @@ button.btn-a {
 .btn-remove {
     border-radius: 5px;
     font-size: 1em;
-    @include desktop{
+    @include desktop {
         padding: 0.5em;
         margin-left: 0.5em;
     }
-    @include mobile{
+    @include mobile {
         padding: 0.2em 0.5em;
     }
 
@@ -1068,10 +1199,12 @@ button.btn-a {
     color: $attractive-color;
     transition: color 200ms ease;
     text-decoration: none;
+
     &:hover {
         color: darken($attractive-color, 10);
         text-decoration: none;
     }
+
     &[disabled], &.disabled {
         pointer-events: none;
         color: $dark-shadow-color;
@@ -1085,8 +1218,8 @@ button.btn-a {
     margin: 20px 0;
     min-height: 41px;
 
-    :not(.vertical)>&:not(.field-vertical),
-        &.field-horizontal{
+    :not(.vertical) > &:not(.field-vertical),
+    &.field-horizontal {
         .input-label {
             width: 240px;
             line-height: 43px;
@@ -1097,7 +1230,8 @@ button.btn-a {
 
         :not(.vertical) &.field-display {
             min-height: unset;
-            .input-label{
+
+            .input-label {
                 line-height: unset;
             }
 
@@ -1108,25 +1242,41 @@ button.btn-a {
         }
     }
 
-    .vertical>&:not(.field-horizontal),
-    &.field-vertical{
+    .vertical > &:not(.field-horizontal),
+    &.field-vertical {
         flex-direction: column;
         align-items: stretch;
     }
-    .vertical>&.field-horizontal .input-label{
+
+    .vertical > &.field-horizontal .input-label {
         width: auto;
     }
 
 
-    .no-right-border-radius{border-bottom-right-radius: 0; border-top-right-radius: 0 }
-    .no-left-border-radius{border-bottom-left-radius: 0; border-top-left-radius: 0 }
-    .no-border-radius{border-radius: 0;}
-    .no-right-border-radius+.no-left-border-radius,
-    .no-right-border-radius+.no-border-radius,
-    .no-border-radius+.no-border-radius,
-    .no-border-radius+.no-left-border-radius{border-left: none;}
+    .no-right-border-radius {
+        border-bottom-right-radius: 0;
+        border-top-right-radius: 0
+    }
 
-    &-short{max-width: 500px}
+    .no-left-border-radius {
+        border-bottom-left-radius: 0;
+        border-top-left-radius: 0
+    }
+
+    .no-border-radius {
+        border-radius: 0;
+    }
+
+    .no-right-border-radius + .no-left-border-radius,
+    .no-right-border-radius + .no-border-radius,
+    .no-border-radius + .no-border-radius,
+    .no-border-radius + .no-left-border-radius {
+        border-left: none;
+    }
+
+    &-short {
+        max-width: 500px
+    }
 
 }
 
@@ -1279,6 +1429,7 @@ textarea.autosize {
         border: 2px solid $base-color;
         background: $base-color;
         color: white;
+
         &:before {
             content: "\f00c";
         }
@@ -1286,6 +1437,7 @@ textarea.autosize {
 
     i.mark.half {
         color: $base-color;
+
         &:before {
             content: "\f068";
         }
@@ -1300,6 +1452,7 @@ textarea.autosize {
         outline-offset: 0px;
         box-shadow: 2px 3px 5px -2px rgba($base-color, 0.52);
     }
+
     input[type=checkbox]:checked:not(:disabled):focus + i.mark {
         background-color: $base-color;
     }
@@ -1315,7 +1468,7 @@ textarea.autosize {
 .radio {
     padding-left: 2em;
 
-    i.mark{
+    i.mark {
         margin: -0.05em 0 0 0;
         width: 1.3em;
         height: 1.3em;
@@ -1347,11 +1500,12 @@ textarea.autosize {
         box-shadow: 2px 3px 5px -2px rgba($base-color, 0.52);
     }
 
-    input[type=radio]:checked:disabled + i.mark{
+    input[type=radio]:checked:disabled + i.mark {
         background-color: #636466;
         border-color: #a9afbb;
     }
-    input[type=radio]:disabled + i.mark{
+
+    input[type=radio]:disabled + i.mark {
         background: #f4f4f4;
         border-color: #a9afbb;
         color: #636466;
@@ -1369,8 +1523,7 @@ textarea.autosize {
     }
 
 
-
-    @include desktop{
+    @include desktop {
         margin: 0 0 2em 0;
         border-radius: 10px;
         border: 1px solid #E7E7E7;
@@ -1379,7 +1532,7 @@ textarea.autosize {
         background: white;
         box-shadow: 0px 0px 26px 0px #00000012;
     }
-    @include mobile{
+    @include mobile {
 
     }
 
@@ -1390,7 +1543,7 @@ textarea.autosize {
     }
 }
 
-.tabs{
+.tabs {
     user-select: none;
     align-items: flex-start;
     display: flex;
@@ -1398,7 +1551,7 @@ textarea.autosize {
     overflow: hidden;
     overflow-x: auto;
     white-space: nowrap;
-    @include mobile{
+    @include mobile {
         margin: 0px -5px;
     }
 
@@ -1409,14 +1562,17 @@ textarea.autosize {
         flex-grow: 1;
         flex-shrink: 0;
         justify-content: flex-start;
-        padding: 0; margin: 0 0 15px 0;
+        padding: 0;
+        margin: 0 0 15px 0;
         gap: 1.5em;
     }
+
     li {
         display: block;
         font-weight: 400;
         font-size: 18px;
     }
+
     li.is-active a {
         border-bottom-color: $dark-color;
         color: $dark-color;
@@ -1424,24 +1580,35 @@ textarea.autosize {
     }
 
     a {
+
+        margin-bottom: 1.4em;
+        font-size: 18px;
+        border-bottom: 1px solid transparent;
+        padding: 0.4em 0;
+
         align-items: center;
-        border-bottom: 2px solid transparent;
+
         color: $light-fore-color;
         display: flex;
         justify-content: center;
-        padding: 0.4em 0.5em;
-        margin: 0 -0.5em -2px 0;
+
+        padding: 0.4em 0;
+        margin: 0 0 -2px 0;
+
         vertical-align: top;
         transition: color 200ms ease, border-bottom-color 200ms ease;
-        &:hover{
+
+        &:hover {
             text-decoration: none;
-            border-bottom: 2px solid #0e66502b;
+            border-bottom: 1px solid #0e66502b;
         }
     }
-    li.tab-has-errors a{
+
+    li.tab-has-errors a {
         color: $attractive-color;
         position: relative;
-        &:after{
+
+        &:after {
             font-weight: normal;
             content: "\f188";
             font-family: var(--fa-style-family, "Font Awesome 6 Free");
@@ -1455,7 +1622,8 @@ textarea.autosize {
     }
 }
 
-h5.tabs-header{    margin-top: -4px;
+h5.tabs-header {
+    margin-top: -4px;
     text-align: center;
     margin-bottom: 16px;
 }
@@ -1479,8 +1647,6 @@ h5.tabs-header{    margin-top: -4px;
 }
 
 
-
-
 body {
     --ck-color-base-border: #E7E7E7;
     --ck-color-toolbar-border: #E7E7E7;
@@ -1490,10 +1656,11 @@ body {
 
 }
 
-.ck.ck-editor__editable_inline.ck-blurred{
+.ck.ck-editor__editable_inline.ck-blurred {
     border: 1px solid $shadow-color;
     cursor: text;
 }
+
 .ck.ck-editor__main > .ck-editor__editable {
     transition: border-color 200ms ease
 }
@@ -1525,27 +1692,31 @@ body {
 }
 
 
-.multiselect__input{
-     max-width: 150px !important;
+.multiselect__input {
+    max-width: 150px !important;
 }
 
-.multiselect{
+.multiselect {
     min-height: 2.7em;
     color: inherit;
-    .multiselect__select{
+
+    .multiselect__select {
         width: 42px;
         height: 42px;
-        &::before{
+
+        &::before {
             border-color: $light-fore-color transparent transparent transparent;
         }
     }
-    .multiselect__input, .multiselect__single{
+
+    .multiselect__input, .multiselect__single {
         line-height: 1.5em;
         min-height: 1.5em;
         padding-left: 0;
     }
 }
-.multiselect__tags{
+
+.multiselect__tags {
     padding: 0.55em 40px 0 0.5em;
     min-height: 2.7em;
     border: 1px solid $shadow-color;
@@ -1555,31 +1726,38 @@ body {
     line-height: 1.2em;
     font-size: inherit;
 }
-.multiselect--active .multiselect__tags{
+
+.multiselect--active .multiselect__tags {
     border-color: #2AB795;
     box-shadow: 2px 3px 5px -2px rgb(0 181 142 / 52%);
 }
-.multiselect__content-wrapper{
+
+.multiselect__content-wrapper {
     border: 1px solid $shadow-color;
     box-shadow: 2px 3px 10px -5px #DBDBDB;
 }
+
 .multiselect__option--highlight {
     background: $base-color;
-    &:after{
+
+    &:after {
         background: $base-color;
     }
 }
-.multiselect__option--selected.multiselect__option--highlight{
+
+.multiselect__option--selected.multiselect__option--highlight {
     background: lighten($attractive-color, 10);
-    &:after{
+
+    &:after {
         background: lighten($attractive-color, 10);
     }
 }
 
 
-.multiselect__tags-wrap{
+.multiselect__tags-wrap {
     margin-left: 0;
 }
+
 .multiselect__tag {
     background: transparent;
     border-radius: 0;
@@ -1609,10 +1787,12 @@ body {
     border-radius: 4px;
     height: 18px;
     color: $base-color;
-    &:hover{
+
+    &:hover {
         color: white;
         background: $base-color;
     }
+
     &:after {
         content: "×";
     }

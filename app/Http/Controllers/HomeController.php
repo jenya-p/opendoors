@@ -23,6 +23,7 @@ class HomeController extends Controller {
 
         FaqCategory::addGlobalScope(Active::class);
         Faq::addGlobalScope(Active::class);
+        Profile::addGlobalScope(Active::class);
 
         return view('pages.home', [
             'top' => $top->data,

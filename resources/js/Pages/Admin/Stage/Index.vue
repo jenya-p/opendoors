@@ -45,7 +45,7 @@
                         {{ item.order }}
                     </td>
                     <td>
-                        {{ item.profile.name }}
+                        {{ item.profile?.name }}
                     </td>
                     <td>
                         {{ item.track.name }}

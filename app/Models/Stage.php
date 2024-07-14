@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property int $track_id
  * @property int $profile_id
  * @property int $order         Порядок
+ * @property string $status     Статус
  * @property string $name       Название
  * @property string $name_en    Название (En)
  * @property string $type       Тип
@@ -36,7 +37,7 @@ class Stage extends Model {
     protected $table = 'stages';
 
     protected $fillable = [
-        'profile_id', 'track_id', 'order',
+        'profile_id', 'track_id', 'order','status',
         'name', 'name_en', 'type', 'settings', 'created_at', 'updated_at'];
 
     protected $casts = [

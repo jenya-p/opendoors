@@ -28,13 +28,15 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @mixin \Eloquent
  */
 class University extends Model {
-    use HasFactory, SoftDeletes, Translable;
+    use HasFactory, SoftDeletes, Translable, HasAttachments;
 
     protected $table = 'universities';
 
     protected $fillable = ['name','name_en', 'url', 'url_en', 'created_at', 'updated_at'];
 
-    public $translable = ['name', 'url'];
+    public $translable = ['name', 'url', 'logo'];
+
+
 
     protected $casts = [
         'created_at' => 'datetime',
@@ -51,8 +53,11 @@ class University extends Model {
     }
 
     public function logo(){
-        return $this->hasOne(Attachment::class, 'item_id')
-            ->where('item_type', '=', Attachment::ITEM_TYPE_UNIVERSITY_LOGO);
+        return $this->hasOneAttachment('logo_ru');
+    }
+
+    public function logo_en(){
+        return $this->hasOneAttachment('logo_en');
     }
 
     public function coordinatedProfiles(){

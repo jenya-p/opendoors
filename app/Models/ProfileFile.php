@@ -2,32 +2,20 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Request;
 
 /**
- * @property int $id
- * @property int $profile_id       Профиль
- * @property string $type          Тип
- * @property int $order            Порядок
- * @property string $status        Статус
+ * @property int    $id
+ * @property string $status                     Статус
+ * @property int    $profile_id                 Трек
+ * @property int    $type_id
  *
- * @property string $name          Название
- * @property string $name_en       Название (En)
- * @property string $summary       Описание
- * @property string $summary_en    Описание (En)
- *
- * @property Carbon $created_at
- * @property Carbon $updated_at
- * @property Carbon $deleted_at
- *
- * @property-read string $type_name
- *
- * @property-read Profile $profile
- * @property-read Attachment $file
- * @property-read Attachment $file_en
+ * @property-read Profile           $profile
+ * @property-read ProfileFileType   $type
+ * @property-read Attachment        $file
+ * @property-read Attachment        $file_en
  *
  *
  *
@@ -35,41 +23,46 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class ProfileFile extends Model
 {
-    use HasFactory, Ordered, SoftDeletes, Translable;
+    use Translable, HasAttachments, FilterHelpers;
 
-    const TYPE_MATERIALS = 'materials';
-    const TYPE_RESULTS = 'results';
-    const TYPES = [
-        self::TYPE_MATERIALS => 'Матреиалы',
-        self::TYPE_RESULTS => 'Результаты',
-    ];
+    public $timestamps = false;
 
-    protected $fillable = ['profile_id','type','order','status',
-        'name','name_en','summary','summary_en',
-        'created_at','updated_at',];
+    protected $fillable = ['profile_id','type_id', 'status','created_at','updated_at'];
 
-    protected $translable = ['name', 'summary'];
-
-    protected static $orderedCategory = ['profile_id', 'type'];
+    protected $translable = ['file'];
 
     public function profile(){
         return $this->belongsTo(Profile::class);
     }
 
+    public function type(){
+        return $this->belongsTo(ProfileFileType::class);
+    }
+
     public function file(){
-        return $this->belongsTo(Attachment::class, 'file_id');
+        return $this->hasOneAttachment('ru');
     }
 
     public function file_en(){
-        return $this->belongsTo(Attachment::class, 'file_en_id');
+        return $this->hasOneAttachment('en');
     }
 
-    public function getTypeNameAttribute(){
-        if (array_key_exists($this->type, self::TYPES)) {
-            return self::TYPES[$this->type];
-        } else {
-            return $this->type;
+
+    public function scopeFilter(Builder $query, $filter): Builder {
+        if($filter instanceof Request){
+            $filter = $filter->only(['profile_id','profile_file_type_id', 'type','track_id']);
         }
+        $this->filterByVal($query, $filter, 'profile_id');
+        $this->filterByVal($query, $filter, 'profile_file_type_id');
+
+        $pftFilter = \Arr::only($filter, ['type','track_id']);
+
+        if( !empty($pftFilter)){
+            $qubQuery = ProfileFileType::select('id')->filter($pftFilter);
+            $query->whereIn('profile_file_type_id', $qubQuery);
+        }
+
+        return $query;
     }
 
 }
