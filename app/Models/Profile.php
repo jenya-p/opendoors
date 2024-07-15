@@ -62,7 +62,7 @@ class Profile extends Model {
     public function getFilesOfType($type){
         return $this->files()
             ->select('profile_files.*')
-            ->with('file', 'file_en', 'type', 'type.track')
+            ->with('file', 'file_en', 'type', 'type.tracks')
             ->join('profile_file_types',  'profile_file_types.id','=','profile_files.type_id')
             ->where('profile_file_types.type', '=', $type)
             ->orderBy('profile_file_types.order')->get();

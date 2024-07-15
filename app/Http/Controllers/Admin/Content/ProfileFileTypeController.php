@@ -18,7 +18,7 @@ class ProfileFileTypeController extends Controller {
      * Display a listing of the resource.
      */
     public function index() {
-        $items = ProfileFileType::with('track:id,name')->get()->append(['type_name', 'file_count', 'can_delete']);
+        $items = ProfileFileType::with('tracks:id,name')->get()->append(['type_name', 'file_count', 'can_delete']);
         return Inertia::render('Admin/Content/ProfileFileType/Index', [
             'items' => $items
         ]);
@@ -36,7 +36,7 @@ class ProfileFileTypeController extends Controller {
 
     public function store(ProfileFileTypeRequest $request) {
         $profileFileType = ProfileFileType::create($request->validated());
-
+        $profileFileType->tracks()->sync(array_column($request->tracks, 'id'));
         return \Redirect::route('admin.profile-file-type.index');
     }
 
@@ -44,6 +44,7 @@ class ProfileFileTypeController extends Controller {
      * Show the form for editing the specified resource.
      */
     public function edit(ProfileFileType $profileFileType) {
+        $profileFileType->load('tracks:id,name');
         return Inertia::render('Admin/Content/ProfileFileType/Edit', [
             'track_options' => fn() => Track::all('id', 'name')->toArray(),
             'type_options' => ProfileFileType::TYPES,
@@ -56,6 +57,7 @@ class ProfileFileTypeController extends Controller {
      */
     public function update(ProfileFileTypeRequest $request, ProfileFileType $profileFileType) {
         $profileFileType->update($request->validated());
+        $profileFileType->tracks()->sync(array_column($request->tracks, 'id'));
         return \Redirect::route('admin.profile-file-type.index');
     }
 

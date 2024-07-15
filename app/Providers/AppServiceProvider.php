@@ -11,6 +11,7 @@ use App\Models\Quiz\Question;
 use App\Models\Stage;
 use App\Models\University;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Arr;
@@ -41,6 +42,12 @@ class AppServiceProvider extends ServiceProvider
         Blade::directive('translate', function (string $expression) {
             return '<?php if(' . $expression . ' instanceof \Illuminate\Database\Eloquent\Model && method_exists(' . $expression . ', \'translate\')){
                 ' . $expression . '->translate();
+            } else if (' . $expression . ' instanceof \Illuminate\Support\Collection){
+                foreach(' . $expression . ' as $__item){
+                     if($__item instanceof \Illuminate\Database\Eloquent\Model && method_exists(' . $expression . ', \'translate\')){
+                        $__item->translate();
+                    }
+                }
             } ?>';
         });
 

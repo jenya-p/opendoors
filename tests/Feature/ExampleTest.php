@@ -3,17 +3,17 @@
 namespace Tests\Feature;
 
 // use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Models\ProfileFileType;
+use App\Models\Track;
 use Tests\TestCase;
 
 class ExampleTest extends TestCase
 {
-    /**
-     * A basic test example.
-     */
-    public function test_the_application_returns_a_successful_response(): void
-    {
-        $response = $this->get('/');
+   public function testProfileFileTypes2Tracks(){
+       $t = Track::find(19);
+       dd($t->profileFileTypes->toArray());
 
-        $response->assertStatus(200);
-    }
+       $pft = ProfileFileType::find(3);
+       dd($pft->tracks->toArray());
+   }
 }

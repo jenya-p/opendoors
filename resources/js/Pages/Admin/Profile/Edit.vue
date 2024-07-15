@@ -2,7 +2,6 @@
     <AdminLayout :title="item.id ? item.name : 'Новый профиль'"
                  :breadcrumb="[{link: route('admin.profile.index'), label: 'Профили'}, item.id ? item.name: 'Новый']">
 
-{{form.errors}}
         <form method="post" @submit.prevent="submit" class="block" v-field-container>
             <tabs>
                 <tab label="Основная информация" name="main">

@@ -10,8 +10,8 @@
                 <radio v-model="form.type" v-for="(name, key) of type_options" :value="key">{{name}}</radio>
             </field>
 
-            <field :errors="form.errors" for="track_id" label="Трек">
-                <vue-multiselect :options="track_options" v-model="track" track-by="id" label="name"/>
+            <field :errors="form.errors" for="tracks.**" label="Треки">
+                <vue-multiselect :options="track_options" v-model="form.tracks" track-by="id" label="name" :multiple="true" :closeOnSelect="false"/>
             </field>
 
             <field :errors="form.errors" for="name" label="Заголовок">
@@ -47,7 +47,7 @@ import AdminLayout from "@/Layouts/AdminLayout.vue";
 import TextareaAutosize from "@/Components/TextareaAutosize.vue";
 import CKEditor from "@ckeditor/ckeditor5-vue";
 import InlineEditor from '@ckeditor/ckeditor5-build-inline';
-import {selectable} from "@/Components/utils.js";
+import {selectable, selectables} from "@/Components/utils.js";
 import VueMultiselect from "vue-multiselect";
 import Radio from "@/Components/Radio.vue";
 import TableBottom from "@/Components/TableBottom.vue";
@@ -76,7 +76,7 @@ export default {
         return {
             form: useForm(this.item.id ? this.item : {
                 'type': Object.keys(this.type_options)[0],
-                'track_id': null,
+                'tracks': [],
                 'name': null,
                 'name_en': null,
                 'summary': '',
@@ -96,9 +96,9 @@ export default {
             }
         }
     },
-    computed: {
-      track: selectable('track_options', 'form', 'track_id'),
-    }
+    // computed: {
+    //   track: selectables('track_options', 'form', 'track_id'),
+    // }
 
 }
 </script>

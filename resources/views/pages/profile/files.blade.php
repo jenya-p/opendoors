@@ -20,14 +20,14 @@
                 >
                     {{$material->type->name}}
                 </div>
+                @if(count($material->type->tracks))
+                    @translate($material->type->tracks)
+                    <p class="text-pink md:group-hover:text-white">{{$material->type->tracks->map(fn($itm) => $itm->name)->join(', ')}}</p>
+                @endif
 
-                @if($material->type->track || $material->type->summary)
+                @if($material->type->summary)
                     <div class="grow text-[1rem] font-medium leading-1 md:group-hover:text-white">
                         {!! $material->type->summary !!}
-                        @if($material->type->track)
-                            @translate($material->type->track)
-                            <p>{{__('Track: ')}}{{$material->type->track->name}}</p>
-                        @endif
                     </div>
                 @endif
 

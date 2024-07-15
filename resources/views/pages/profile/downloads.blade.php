@@ -97,14 +97,14 @@
                                 <div class="text-[1.5rem] font-bold leading-9">
                                     {{$material->type->name}}
                                 </div>
+                                @if(count($material->type->tracks))
+                                    @translate($material->type->tracks)
+                                    <p class="text-pink" style="margin-top: -1rem">{{$material->type->tracks->map(fn($itm) => $itm->name)->join(', ')}}</p>
+                                @endif
 
-                                @if($material->type->track || $material->type->summary)
+                                @if($material->type->summary)
                                     <div class="grow text-[1rem] font-medium leading-6">
                                         {!! $material->type->summary !!}
-                                        @if($material->type->track)
-                                            @translate($material->type->track)
-                                            <p>{{__('Track: ')}}{{$material->type->track->name}}</p>
-                                        @endif
                                     </div>
                                 @endif
                                 <div class="h-[1.5rem] w-[1.25rem] shrink-0">

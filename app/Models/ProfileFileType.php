@@ -27,7 +27,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read string $file_count
  * @property-read string $can_delete
  *
- * @property-read Profile $track
+ * @property-read Track[] $tracks
  * @property-read ProfileFile[] $files
  *
  * @mixin \Eloquent
@@ -51,8 +51,8 @@ class ProfileFileType extends Model
 
     protected static $orderedCategory = ['type'];
 
-    public function track(){
-        return $this->belongsTo(Track::class);
+    public function tracks(){
+        return $this->belongsToMany(Track::class, 'profile_file_tracks', 'type_id', 'track_id');
     }
 
     public function files(){

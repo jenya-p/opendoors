@@ -112,7 +112,7 @@
                         >
                             <div class="overflow-clip rounded-[0.5rem]">
                                 <iframe
-                                    width="560"
+                                    style="width: 100%"
                                     height="315"
                                     src="https://www.youtube.com/embed/{{$webinar['youtube']}}?controls=0"
                                     title="YouTube video player"

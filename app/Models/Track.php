@@ -42,5 +42,8 @@ class Track extends Model {
         return $this->hasMany(StudentProfile::class, 'student_id', 'id');
     }
 
+    public function profileFileTypes(){
+        return $this->belongsToMany(ProfileFileType::class, 'profile_file_tracks', 'track_id', 'type_id');
+    }
 
 }

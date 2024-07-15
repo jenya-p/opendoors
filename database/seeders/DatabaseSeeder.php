@@ -38,11 +38,11 @@ class DatabaseSeeder extends Seeder {
     public function run(): void {
 
 
-        $this->universitiesLogoFix();
-
-        $this->profileFileTypes();
-
-        $this->profileFiles();
+        $this->partners();
+//
+//        $this->profileFileTypes();
+//
+//        $this->profileFiles();
 
     }
 
@@ -337,8 +337,7 @@ open all doors',
 
             $titleEn = $htmlItemsEn[$index]->find('img', 0)->alt;
             $urlEn = $htmlItemsEn[$index]->find('a', 0)->href;
-            $imageEn = 'https://od.globaluni.ru' . $item->find('img', 0)->href;
-
+            $imageEn = 'https://od.globaluni.ru' . $htmlItemsEn[$index]->find('img', 0)->src;
 
             $tempImage = tempnam(sys_get_temp_dir(), uniqid());
             copy($imageRu, $tempImage);

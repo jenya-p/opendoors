@@ -42,7 +42,7 @@ class ProfileController extends Controller {
         $profile->load('files', 'files.file', 'files.file_en');
         return Inertia::render('Admin/Profile/Edit', [
             'item' => $profile,
-            'file_types' => fn() => ProfileFileType::with('track:id,name')->get(['id', 'track_id', 'type', 'name'])->toArray(),
+            'file_types' => fn() => ProfileFileType::with('tracks:id,name')->get(['id', 'type', 'name'])->toArray(),
             'file_type_types' => ProfileFileType::TYPES
         ]);
     }

@@ -19,7 +19,7 @@
                     <th>
                         <sort name="name" v-model="lItems.sort">Название</sort>
                     </th>
-                    <th>Трек</th>
+                    <th>Треки</th>
                     <th>
                         <sort name="file_count" v-model="lItems.sort" strategy="numeric">Файлов</sort>
                     </th>
@@ -34,7 +34,7 @@
                         <div class="secondary">{{ item.name_en }}</div>
                     </td>
                     <td>
-                        {{ item.track?.name }}
+                        {{ item.tracks.map(itm => itm.name).join(', ') }}
                     </td>
                     <td>
                         {{ item.file_count }}
