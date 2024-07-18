@@ -18,7 +18,7 @@
                                     label="name"/>
                 </div>
             </field>
-            <field label="Тематика">
+            <field label="Направление МКН">
                 <div style="display:flex;">
                     <VueMultiselect :options="theme_options" v-model="themes" :multiple="true" trackBy="id"
                                     label="name"/>
@@ -40,7 +40,7 @@
                 <thead class="m-hide">
                 <tr>
                     <th class="code">
-                        <sort name="id" v-model="sort">№</sort>
+                        <sort name="id" v-model="sort">ID</sort>
                     </th>
                     <th class="quiz">
                         <sort name="quiz" v-model="sort">Группа</sort>
@@ -50,12 +50,12 @@
                     </th>
                     <th class="text">Текст задания</th>
                     <th class="order">
-                        <sort name="order" v-model="sort">Порядок</sort>
+                        <sort name="order" v-model="sort">Номер задания в тесте</sort>
                     </th>
+                    <th class="theme">Направление МКН</th>
                     <th class="weight">
-                        <sort name="weight" v-model="sort">Вес</sort>
+                        <sort name="weight" v-model="sort">Макс. балл</sort>
                     </th>
-                    <th class="options">Варианты</th>
                     <th class="buttons"></th>
                 </tr>
                 </thead>
@@ -75,11 +75,12 @@
                     <td class="order">
                         {{ item.group.order }}
                     </td>
+                    <td class="theme">
+                        {{ item.group.theme.name }}
+                    </td>
+
                     <td class="weight">
                         {{ item.group.weight }}
-                    </td>
-                    <td class="options">
-                        {{ item.option_count }}
                     </td>
                     <td class="buttons">
                         <a class="fa fa-times btn-remove" @click.stop="remove(item)"></a>
@@ -260,16 +261,14 @@ table.table {
                 width: 80px;
                 text-align: center
             }
-
+            &.theme {
+                width: 180px;
+            }
             &.weight {
                 width: 50px;
                 text-align: center;
             }
 
-            &.options {
-                width: 80px;
-                text-align: center
-            }
 
             &.buttons {
                 width: 50px;

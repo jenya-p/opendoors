@@ -9,15 +9,15 @@
                 <field class="field-display" label="Профиль">{{item.profile?.name}}</field>
                 <field class="field-display" label="Трек(и)">{{item.track_name}}</field>
                 <field class="field-display" label="Этап">{{item.stage_name}}</field>
-                <h2>Наборы заданий и распределение баллов</h2>
+                <h2>Задания и распределение баллов</h2>
                 <field :errors="form.errors" for="groups">
                     <table class="table weight-table" v-if="form.groups.length">
                         <tr>
                             <th></th>
-                            <th class="number">Номер</th>
+                            <th class="number">Номер задания в тесте</th>
                             <th class="weight" style="padding-left: 20px">Макс. балл</th>
-                            <th class="count">Задания</th>
-                            <th class="theme">Тематика</th>
+                            <th class="count">Варианты</th>
+                            <th class="theme">Направление МКН</th>
                             <th class="remove"></th>
                             <th class="errors"></th>
                         </tr>

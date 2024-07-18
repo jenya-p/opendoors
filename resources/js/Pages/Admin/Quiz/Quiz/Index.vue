@@ -14,8 +14,8 @@
                     <th class="profile"><sort name="name" v-model="lItems.sort">Профиль</sort></th>
                     <th class="track"><sort name="track" v-model="lItems.sort">Трек</sort></th>
                     <th class="stage"><sort name="stage" v-model="lItems.sort">Этап</sort></th>
-                    <th class="question-count"><sort name="question_count" v-model="lItems.sort" strategy="numeric">Задания</sort></th>
-                    <th class="group-count"><sort name="group_count" v-model="lItems.sort" strategy="numeric">Наборы</sort></th>
+                    <th class="question-count"><sort name="question_count" v-model="lItems.sort" strategy="numeric">Варианты</sort></th>
+                    <th class="group-count"><sort name="group_count" v-model="lItems.sort" strategy="numeric">Задания</sort></th>
                     <th class="buttons"></th>
                 </tr>
                 </thead>

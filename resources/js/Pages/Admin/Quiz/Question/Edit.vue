@@ -1,6 +1,6 @@
 <template>
-    <AdminLayout :title="item.id ? 'Задание № ' + item.id : 'Новое задание'"
-                 :breadcrumb="[{link: route('admin.quiz-question.index'), label: 'Задания'}, item.id ? '№ ' + item.id: 'Новое']">
+    <AdminLayout :title="item.id ? 'Задание ' + item.id : 'Новое задание'"
+                 :breadcrumb="[{link: route('admin.quiz-question.index'), label: 'Задания'}, item.id ? item.id: 'Новое']">
 
         <form method="post" @submit.prevent="submit(false)" class="block" v-field-container>
             <h2>Основная информация</h2>
@@ -18,10 +18,10 @@
             </div>
 
             <div v-if="group">
-                <field :errors="form.errors" for="weight" label="Максимальный бал за задание" class="field-display">
+                <field :errors="form.errors" for="weight" label="Максимальный балл за задание" class="field-display">
                     {{group.weight}}
                 </field>
-                <field label="Тематика вопроса" class="field-display">
+                <field label="Направление МКН" class="field-display">
                     <template  v-if="group && group.theme">{{group.theme.name}}</template>
                     <i v-else>не указана</i>
                 </field>

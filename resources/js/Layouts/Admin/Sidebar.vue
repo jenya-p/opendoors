@@ -141,7 +141,7 @@
                 <li :class="{'active-branch': routeIs('quiz','quiz-question'), 'hover': curSection=='quiz'}">
                     <a @click="toggle('quiz')">
                         <i class="fa-solid fa-spell-check"></i>
-                        <span>Тестирования<b class="caret"></b></span>
+                        <span>Задания олимпиады<b class="caret"></b></span>
                     </a>
                     <transition name="slide-fade">
                         <ul v-show="curSection=='quiz'">

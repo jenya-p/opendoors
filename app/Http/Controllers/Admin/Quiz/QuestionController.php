@@ -25,7 +25,8 @@ class QuestionController extends Controller
             ->select('quiz_questions.*')
             ->with([
                 'quiz:id,name',
-                'group:id,order,weight',
+                'group:id,theme_id,order,weight',
+                'group.theme:id,name',
             ]);
 
         $filter = $request->only('track', 'profile_id', 'stage', 'theme_id', 'query');
