@@ -29,11 +29,14 @@ class QuestionController extends Controller
                 'group.theme:id,name',
             ]);
 
-        $filter = $request->only('track', 'profile_id', 'stage', 'theme_id', 'query');
+        $filter = $request->only('track', 'profile_id', 'stage', 'theme_id', 'status','query');
+        $themeOptions = $this->getThemeOptions($filter);
         $query->filter($filter);
-
+        $sort = null;
         if(!empty($request->sort)){
             list($name, $dir) = explode(':', $request->sort);
+            $sort = ['name' => $name, 'dir' => $dir];
+
             if($name == 'quiz'){
                 $query->leftJoin('quizzes', 'quizzes.id', '=', 'quiz_questions.quiz_id');
                 $query->orderBy('quizzes.name', $dir);
@@ -45,7 +48,6 @@ class QuestionController extends Controller
                     $query->orderBy('quiz_groups.weight', $dir);
                 }
             } else {
-
                 $query->orderBy($name, $dir);
             }
         }
@@ -53,38 +55,53 @@ class QuestionController extends Controller
 
         $items = $query->paginate(10);
 
+        $items->append(['snippet', 'option_count', 'status_name']);
 
-        $items->append(['snippet', 'option_count']);
+
 
         if(!$request->inertia() && $request->isXmlHttpRequest()){
             return [
-                'filter' => $filter,
                 'items' => $items,
+                'theme_options' => $themeOptions,
+                'filter' => $filter
             ];
         } else {
             return Inertia::render('Admin/Quiz/Question/Index', [
                 'profile_options' => Profile::get(['id', 'name'])->toArray(),
-                'theme_options' => Theme::get(['id', 'name'])->toArray(),
+                'theme_options' => $themeOptions,
                 'track_options' => Arr::assocToOptions(Quiz::TRACK_NAMES),
                 'stage_options' => Arr::assocToOptions(Quiz::STAGE_NAMES),
-                'filter' => $filter,
+                'status_options' => $this->getAvailableStatusOptions(),
+                'filter' => $filter + ['sort' => $sort],
                 'items' => $items
             ]);
         }
 
     }
 
+    public function getThemeOptions(&$filter){
+        if(empty($filter['profile_id'])){
+            return [];
+        }
+        $quizIds = Quiz::select('id')->filter(Arr::only($filter, 'profile_id'))->get()->toArray();
+        if(empty($quizIds)){
+            return [];
+        }
+        $themeIds = Group::select('theme_id')->whereIn('quiz_id', $quizIds)->get()->toArray();
+        if(empty($themeIds)){
+            return [];
+        }
+        return Theme::find($themeIds, ['id', 'name'])->toArray();
+
+    }
+
     public function create() {
         return Inertia::render('Admin/Quiz/Question/Edit', [
             'type_options' => $this->getAvailableTypeOptions(),
+            'status_options' => $this->getAvailableStatusOptions(),
             'quiz_options' => Quiz::with('groups', 'groups.theme')->get(['id', 'name'])->toArray(),
             'item' => new Question()
-
         ]);
-    }
-
-    public function getThemeOptions(Quiz $quiz){
-        return Theme::whereIn('id', $quiz->groups()->pluck('theme_id'))->get()->toArray();
     }
 
     public function store(QuestionRequest $request) {
@@ -96,7 +113,7 @@ class QuestionController extends Controller
         if(request('preview')){
             return \Redirect::route('admin.quiz-probe.probe', ['question' => $question]);
         } else {
-            return \Redirect::route('admin.quiz-question.index');
+            return \Redirect::route('admin.quiz-question.edit',$question);
         }
 
     }
@@ -105,6 +122,7 @@ class QuestionController extends Controller
         $question->load(['images','images_en']);
         return Inertia::render('Admin/Quiz/Question/Edit', [
             'type_options' => $this->getAvailableTypeOptions(),
+            'status_options' => $this->getAvailableStatusOptions(),
             'quiz_options' => Quiz::with('groups', 'groups.theme')->get(['id', 'name'])->toArray(),
             'item' => $question,
         ]);
@@ -116,7 +134,7 @@ class QuestionController extends Controller
         if(request('preview')){
             return \Redirect::route('admin.quiz-probe.probe', ['question' => $question]);
         } else {
-            return \Redirect::route('admin.quiz-question.index');
+            return \Redirect::route('admin.quiz-question.edit',$question);
         }
     }
 
@@ -133,6 +151,16 @@ class QuestionController extends Controller
             Question::TYPE_WORDS => 1,
             Question::TYPE_NUMBER => 1,
             Question::TYPE_FREE => 1,
+        ]));
+
+    }
+
+    public function getAvailableStatusOptions(){
+
+        return Arr::assocToOptions(array_intersect_key(Question::STATUS_NAMES, [
+            Question::STATUS_ACTIVE => 1,
+            Question::STATUS_DISABLED => 1,
+            Question::STATUS_DRAFT => 1,
         ]));
 
     }

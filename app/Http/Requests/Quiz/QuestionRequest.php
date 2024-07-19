@@ -13,6 +13,7 @@ class QuestionRequest extends FormRequest {
     public function rules(): array {
 
         $rules = [
+            'status' => ['required', Rule::in(array_keys(Question::STATUS_NAMES))],
             'quiz_id' => ['required', Rule::exists('quizzes', 'id')],
             'group_id' => ['required', Rule::exists('quiz_groups', 'id')],
             'type' => ['required', Rule::in(array_keys(Question::TYPE_NAMES))],

@@ -6,6 +6,7 @@ use App\Models\Content\Content;
 use App\Models\Content\News;
 use App\Models\Content\Widget;
 use App\Models\Quiz\Question;
+use App\Models\Quiz\Quiz;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
 use Illuminate\Database\Eloquent\Model;
@@ -63,6 +64,7 @@ class Attachment extends Model {
     const ITEM_TYPE_UNIVERSITY =        'university';
     const ITEM_TYPE_USER =              'user';
     const ITEM_TYPE_QUESTION =          'question';
+    const ITEM_TYPE_QUIZ =              'quiz';
     const ITEM_TYPE_PROFILE_FILE =      'profile_file';
     const ITEM_TYPE_WIDGET =            'widget';
     const ITEM_TYPE_NEWS =              'news';
@@ -76,6 +78,7 @@ class Attachment extends Model {
         self::ITEM_TYPE_WIDGET =>       Widget::class,
         self::ITEM_TYPE_NEWS =>         News::class,
         self::ITEM_TYPE_CONTENT =>      Content::class,
+        self::ITEM_TYPE_QUIZ =>         Quiz::class,
     ];
 
     /**

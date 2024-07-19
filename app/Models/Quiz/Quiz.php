@@ -3,6 +3,7 @@
 namespace App\Models\Quiz;
 
 use App\Models\Attachment;
+use App\Models\HasRoles;
 use App\Models\Profile;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
@@ -32,7 +33,7 @@ use Illuminate\Support\Arr;
  * @mixin \Eloquent
  */
 class Quiz extends Model {
-    use SoftDeletes;
+    use SoftDeletes, HasRoles;
 
     protected $table = 'quizzes';
 
@@ -47,7 +48,22 @@ class Quiz extends Model {
     const STAGE_2 = '2';
     const STAGE_NAMES = [
         self::STAGE_1 => 'Входное тестирование',
-        self::STAGE_2 => 'II этап'
+        self::STAGE_2 => 'Задания II этапа'
+    ];
+
+
+    const ROLE_MANAGER = 'manager';
+    const ROLE_EDITOR = 'editor';
+    const ROLE_EXPERT = 'expert';
+    const ROLE_VERIFIER = 'verifier';
+    const ROLE_APPEALS = 'appeals';
+
+    const ROLE_NAMES = [
+        self::ROLE_MANAGER =>   'Управление',
+        self::ROLE_EDITOR =>    'Редактор',
+        self::ROLE_EXPERT =>    'Эксперт',
+        self::ROLE_VERIFIER =>  'Проверка заданий',
+        self::ROLE_APPEALS =>   'Апелляционная комиссия',
     ];
 
     protected $fillable = [
@@ -104,6 +120,20 @@ class Quiz extends Model {
         $filterByIds('profile_id');
         $filterByIds('track');
         $filterByIds('stage');
+
+        if(!empty($filter['query'])){
+            $lcQuery = '%' . mb_strtolower(trim($filter['query'])) . '%';
+            if(is_numeric($filter['query'])){
+                $query->where(function(Builder $query) use ($filter, $lcQuery){
+                    $query->where('id', $filter['query'])
+                        ->orWhereRaw('name like ?', $lcQuery)
+                        ->orderByRaw('id = ? DESC', $filter['query']);
+                });
+            } else {
+                $query
+                    ->whereRaw('name like ?', $lcQuery);
+            }
+        }
 
         return $query;
     }

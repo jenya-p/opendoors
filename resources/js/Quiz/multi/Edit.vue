@@ -3,7 +3,7 @@
     <draggable
         v-if="lOptions.length"
         v-model="lOptions"
-        handle=".input-label"
+        handle=".option-counter"
         group="group"
         item-key="index"
         ghost-class="ghost"
@@ -11,6 +11,7 @@
     >
         <template #item="{element, index}">
             <div class="option" v-field-container>
+                <span class="option-counter">{{ index + 1 }}</span>
                 <field :errors="errors"
                        label="Русский текст"
                        :for="'options.options.' + element.index + '.text'" class="field-option">
@@ -254,44 +255,50 @@ export default {
 @import "resources/css/admin-vars";
 
 :deep(.option) {
-    border-radius: 5px;
-    padding-left: 10px;
+    border-radius: 11px;
+    padding-left: 15px;
+    margin-left: 25px;
+    margin-bottom: 20px;
     position: relative;
     border-left: 2px solid $shadow-color;
 
-    .btn-remove {
-        color: $dark-shadow-color;
-        font-size: 0.9em;
-
-        &:hover {
-            color: $attractive-color;
-        }
-
-        padding: 0;
+    &:focus-within {
+        border-left: 2px solid $base-color;
     }
 
-    .handler {
-        color: $dark-shadow-color;
-        border-radius: 5px;
-        font-size: 1.4em;
-        padding: 0.5em 0.5em 0.5em 0.5em;
-        cursor: grab;
+    .option-counter {
+        font-size: 1.2em;
         position: absolute;
-        left: 0px;
-        top: 0px;
+        left: -30px;
+        bottom: 0;
+        width: 35px;
+        padding-left: 5px;
+        text-align: left;
+        top: 9px;
+        cursor: grab;
 
         &:active {
             cursor: grabbing;
         }
     }
 
+
+    .btn-remove {
+        color: $dark-shadow-color;
+        font-size: 0.9em;
+        padding: 0;
+
+        &:hover {
+            color: $attractive-color;
+        }
+    }
+
+
+
     &:not(.vertical) .field .input-label {
         width: 230px;
     }
 
-    .input-label {
-        cursor: grab
-    }
 
     .field-right .field-inner {
         display: flex;

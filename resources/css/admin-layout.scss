@@ -843,7 +843,6 @@ table.table {
             gap: 20px;
         }
     }
-
     tr {
 
         @include mobile {
@@ -1020,6 +1019,24 @@ table.table {
         }
     }
 
+}
+
+.highlight {
+    animation: blink 0.2s 3 ease;
+}
+@keyframes blink {
+    from {
+        transform: none
+    }
+    33% {
+        transform: translate(-3px, 0)
+    }
+    66% {
+        transform: translate(3px, 0)
+    }
+    to {
+        transform: none;
+    }
 }
 
 
@@ -1212,11 +1229,13 @@ button.btn-a {
         cursor: default;
     }
 }
-
+.btn-editor-close{
+    width: 50px; padding-left: 0; padding-right: 0
+}
 .field {
     display: flex;
     width: 100%;
-    margin: 20px 0;
+    margin: 16px 0;
     min-height: 41px;
 
     :not(.vertical) > &:not(.field-vertical),
@@ -1700,7 +1719,7 @@ body {
 .multiselect {
     min-height: 2.7em;
     color: inherit;
-
+    font-family: sans-serif;
     .multiselect__select {
         width: 42px;
         height: 42px;

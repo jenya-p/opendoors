@@ -15,6 +15,7 @@ use Illuminate\Validation\Rule;
 /**
  * @property int $id
  *
+ * @property string $status
  * @property int $quiz_id
  * @property int $group_id
  *
@@ -31,6 +32,8 @@ use Illuminate\Validation\Rule;
  * @property Carbon $deleted_at
  *
  * @property-read string $snippet
+ * @property-read string $status_name
+ * @property-read string $type_name
  *
  * @preperty-read Quiz $quiz
  * @preperty-read Group $group
@@ -50,7 +53,7 @@ class Question extends Model
 
     protected $table = 'quiz_questions';
 
-    protected $fillable = ['group_id','quiz_id',
+    protected $fillable = ['status', 'group_id','quiz_id',
         'text','text_en','description','description_en',
         'type','options','verification','created_at','updated_at',
     ];
@@ -67,11 +70,11 @@ class Question extends Model
     const STATUS_DRAFT =        'draft';
 
     const STATUS_NAMES = [
-        self::STATUS_ACTIVE => 'Активно',
-        self::STATUS_DISABLED => 'Отключено',
-        self::STATUS_VERIFICATION => 'Проверка',
-        self::STATUS_PROBLEM => 'Проблема',
-        self::STATUS_DRAFT => 'Черновик',
+        self::STATUS_ACTIVE =>          'Активно',
+        self::STATUS_DISABLED =>        'Архив',
+        self::STATUS_VERIFICATION =>    'Проверка',
+        self::STATUS_PROBLEM =>         'Проблема',
+        self::STATUS_DRAFT =>           'Скрыт',
    ];
 
     const TYPE_ONE =    'one';
@@ -120,6 +123,10 @@ class Question extends Model
 
     }
 
+    public function getStatusNameAttribute(){
+        return \Arr::iif(self::STATUS_NAMES, $this->status);
+    }
+
     public function getTypeNameAttribute(){
         return \Arr::iif(self::TYPE_NAMES, $this->type);
     }
@@ -160,6 +167,20 @@ class Question extends Model
             $groupQuery = Group::select('id')->filter(\Arr::only($filter, ['theme_id']));
             $query->whereIn('group_id', $groupQuery);
         }
+
+        $filterByIds = function ($key) use ($query, $filter) {
+            if (!empty($filter[$key])) {
+                if (is_array($filter[$key])) {
+                    $query->whereIn($this->table . '.' . $key, $filter[$key]);
+                } else if (is_numeric($filter[$key])) {
+                    $query->where($this->table . '.' . $key, '=', $filter[$key]);
+                }
+            } else if (array_key_exists($key, $filter) && $filter[$key] === null) {
+                $query->whereNull($this->table . '.' . $key);
+            }
+        };
+
+        $filterByIds('status');
 
         if(!empty($filter['query'])){
             $lcQuery = '%' . mb_strtolower(trim($filter['query'])) . '%';

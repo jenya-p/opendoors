@@ -25,7 +25,9 @@ let refresh = function (el) {
 
 export default {
     mounted: (el, binding) => {
+        let e = refresh(el);
         window.addEventListener('resize', refresh(el));
+        setTimeout(e, 1);
     },
     unmounted: (el, binding) => {
         window.removeEventListener('resize', refresh(el));

@@ -21,6 +21,8 @@
             <field label="Направление МКН">
                 <div style="display:flex;">
                     <VueMultiselect :options="theme_options" v-model="themes" :multiple="true" trackBy="id"
+                                    :disabled="theme_options.length == 0"
+                                    placeholder="Все"
                                     label="name"/>
                 </div>
             </field>
@@ -33,35 +35,46 @@
                 <checkbox v-for="(stage) of stage_options" v-model="lFilter.stage" :value="stage.id">{{ stage.name }}
                 </checkbox>
             </field>
-
+            <field label="Статус">
+                <div style="display:flex;">
+                    <VueMultiselect :options="status_options" v-model="statuses" :multiple="true" trackBy="id" label="name" placeholder="Все"/>
+                </div>
+            </field>
             <br>
 
             <table class="table">
                 <thead class="m-hide">
                 <tr>
                     <th class="code">
-                        <sort name="id" v-model="sort">ID</sort>
+                        <sort name="id" v-model="lFilter.sort">ID</sort>
+                    </th>
+                    <th class="status">
+                        <sort name="status" v-model="lFilter.sort">Статус</sort>
                     </th>
                     <th class="quiz">
-                        <sort name="quiz" v-model="sort">Группа</sort>
+                        <sort name="quiz" v-model="lFilter.sort">Группа</sort>
                     </th>
                     <th class="type">
-                        <sort name="type" v-model="sort">Тип</sort>
+                        <sort name="type" v-model="lFilter.sort">Тип</sort>
                     </th>
                     <th class="text">Текст задания</th>
                     <th class="order">
-                        <sort name="order" v-model="sort">Номер задания в тесте</sort>
+                        <sort name="order" v-model="lFilter.sort">Номер задания в тесте</sort>
                     </th>
                     <th class="theme">Направление МКН</th>
                     <th class="weight">
-                        <sort name="weight" v-model="sort">Макс. балл</sort>
+                        <sort name="weight" v-model="lFilter.sort">Макс. балл</sort>
                     </th>
                     <th class="buttons"></th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr v-for="item of lItems" @click="itemClick(item)" class="cursor-pointer">
+
+                <tr v-for="item of items.data" @click="itemClick(item, $event)" class="cursor-pointer" :class="{highlight: item.highlight}">
                     <td class="code">{{ item.id }}</td>
+                    <td class="group">
+                        <span class="badge" :class="'badge-' + item.status">{{ item.status_name }}</span>
+                    </td>
                     <td class="group">
                         {{ item.quiz?.name }}
                     </td>
@@ -73,10 +86,10 @@
                         {{ item.snippet }}
                     </td>
                     <td class="order">
-                        {{ item.group.order }}
+                        {{ item.group?.order }}
                     </td>
                     <td class="theme">
-                        {{ item.group.theme.name }}
+                        {{ item.group?.theme?.name }}
                     </td>
 
                     <td class="weight">
@@ -89,8 +102,7 @@
                 </tbody>
             </table>
             <table-bottom>
-
-                <pagination :item-count="lTotal" v-model="page" :ipp="perPage"></pagination>
+                <pagination :item-count="items.total" v-model="page" :ipp="items.per_page"></pagination>
             </table-bottom>
         </div>
     </AdminLayout>
@@ -99,22 +111,23 @@
 <script>
 import AdminLayout from "@/Layouts/AdminLayout.vue";
 import {Link} from "@inertiajs/vue3";
-import {SimpleList} from "@/Components/SimpleList.js";
 import Ttd from "@/Components/table-td.vue";
-import _isArray from "lodash/isArray.js";
 import _debounce from "lodash/debounce.js";
 import Sort from "@/Components/Sort.vue";
 import Pagination from "@/Components/Paginator.vue";
 import TableBottom from "@/Components/TableBottom.vue";
-import {countNotEmpty, findByIds, paramsToUrl, selectables} from "@/Components/utils.js";
+import {countNotEmpty, openEditor, paramsToUrl, selectables} from "@/Components/utils.js";
 import _extend from "lodash/extend.js";
 import Checkbox from "@/Components/Checkbox.vue";
 import Field from "@/Components/Field.vue";
 import VueMultiselect from "vue-multiselect";
+import _intersection from "lodash/intersection";
+import IndexPage from '@/Components/index-page.js';
 
 class Filter {
 
     constructor(filter = null) {
+
         this.set(filter);
     }
 
@@ -124,9 +137,20 @@ class Filter {
         this.track = [];
         this.stage = [];
         this.theme_id = [];
-        if(defaults){
+        this.status = [];
+        this.sort = null;
+        if (defaults) {
             _extend(this, defaults);
         }
+    }
+
+    getParams() {
+        let params = _extend({},
+            this,
+            {sort: this.sort ? (this.sort.name + ':' + this.sort.dir) : ''}
+        );
+
+        return params;
     }
 
     count() {
@@ -137,6 +161,7 @@ class Filter {
 
 
 export default {
+    mixins: [IndexPage],
     components: {Field, Checkbox, TableBottom, Pagination, Sort, Ttd, Link, AdminLayout, VueMultiselect},
     props: {
         filter: Object,
@@ -145,52 +170,41 @@ export default {
         track_options: Array,
         stage_options: Array,
         theme_options: Array,
+        status_options: Array,
     },
     data() {
-        let u = new URLSearchParams(document.location.search);
-        let page = u.get('page');
-        if (page == null) {
-            page = 1;
-        }
-
-        let sort = u.get('sort');
-
-        if (sort != null) {
-            sort = sort.split(':');
-            if (_isArray(sort) && sort.length == 2) {
-                sort = {name: sort[0], dir: sort[1]};
-            } else {
-                sort = null;
-            }
-        }
-
         return {
-            page: 1,
-            sort: sort,
             lFilter: new Filter(this.filter),
-            lItems: this.items.data,
-            lTotal: this.items.total,
-            perPage: this.items.per_page
+            page:    this.items.current_page,
         };
     },
     methods: {
-        itemClick: function (item) {
-            this.$inertia.visit(route('admin.quiz-question.edit', {question: item.id}))
-        },
-        refreshPage: _debounce(function () {
+        itemClick: openEditor('quiz-question', 'question'),
+
+        refreshPage: _debounce(function (highlightId = null) {
 
             var $v = this;
 
-            let params = _extend({}, this.lFilter);
-            params.sort = this.sort ? (this.sort.name + ':' + this.sort.dir) : null;
+            let params = this.lFilter.getParams();
             params.page = this.page;
 
             axios.get(route(route().current()), {
                 params: params, responseType: 'json'
             }).then(function (response) {
-                $v.lItems = response.data.items.data;
-                $v.lTotal = response.data.items.total;
-                $v.perPage = response.data.items.per_page;
+                $v.items.data = response.data.items.data;
+                $v.items.total = response.data.items.total;
+                $v.items.per_page = response.data.items.per_page;
+                $v.theme_options.length = 0;
+                for (const theme of response.data.theme_options) {
+                    $v.theme_options.push(theme);
+                }
+                params.theme_id = _intersection($v.lFilter.theme_id, $v.theme_options.map(itm =>itm.id));
+                if(params.theme_id.length != $v.lFilter.theme_id.length){
+                    $v.lFilter.theme_id = params.theme_id;
+                }
+
+                $v.highlightItem(highlightId, $v.items.data);
+
                 history.replaceState(null, null, route(route().current()) + '?' + paramsToUrl(params));
                 $v.$forceUpdate();
             })
@@ -216,22 +230,17 @@ export default {
         },
         lFilter: {
             deep: true,
-            handler(){
+            handler() {
                 this.page = 1;
                 this.refreshPage();
             }
-        },
-        sort() {
-            this.page = 1;
-            this.refreshPage();
-        },
+        }
     },
     computed: {
         profiles: selectables('profile_options', 'lFilter', 'profile_id'),
-        themes: selectables('theme_options', 'lFilter', 'theme_id')
+        themes: selectables('theme_options', 'lFilter', 'theme_id'),
+        statuses: selectables('status_options', 'lFilter', 'status')
     }
-
-
 }
 </script>
 
@@ -244,6 +253,7 @@ table.table {
             &.code {
                 width: 50px;
             }
+
             &.group {
                 width: 150px;
             }
@@ -261,9 +271,11 @@ table.table {
                 width: 80px;
                 text-align: center
             }
+
             &.theme {
                 width: 180px;
             }
+
             &.weight {
                 width: 50px;
                 text-align: center;
@@ -273,10 +285,12 @@ table.table {
             &.buttons {
                 width: 50px;
             }
+            .badge{
+                &-active{background: $success-color ; color: white}
+                &-draft{background: red; color: white}
+            }
         }
     }
-
-
 }
 
 </style>
