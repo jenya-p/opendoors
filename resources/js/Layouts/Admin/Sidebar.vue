@@ -96,8 +96,7 @@ export default {
             }
             return isActive;
         }
-        doer(this.$page.props.sidebar)
-        console.log(this.$page.props.sidebar);
+        doer(this.$page.props.sidebar);
     },
     mounted() {
         let $v = this;

@@ -48,7 +48,7 @@ class Quiz extends Model {
     const STAGE_2 = '2';
     const STAGE_NAMES = [
         self::STAGE_1 => 'Входное тестирование',
-        self::STAGE_2 => 'Задания II этапа'
+        self::STAGE_2 => 'II этап'
     ];
 
 
@@ -60,10 +60,10 @@ class Quiz extends Model {
 
     const ROLE_NAMES = [
         self::ROLE_MANAGER =>   'Управление',
-        self::ROLE_EDITOR =>    'Редактор',
+        self::ROLE_EDITOR =>    'Методист',
         self::ROLE_EXPERT =>    'Эксперт',
-        self::ROLE_VERIFIER =>  'Проверка заданий',
-        self::ROLE_APPEALS =>   'Апелляционная комиссия',
+        self::ROLE_VERIFIER =>  'Член жюри',
+        self::ROLE_APPEALS =>   'Член апелляционной комиссии',
     ];
 
     protected $fillable = [

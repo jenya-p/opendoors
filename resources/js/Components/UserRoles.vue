@@ -11,6 +11,7 @@
 
 import Field from "@/Components/Field.vue";
 import UserSelect from "@/Components/UserSelect.vue";
+
 export default {
     components: {UserSelect, Field},
 
@@ -18,25 +19,23 @@ export default {
         roles: Array,
         items: Array
     },
-    data(){
+    data() {
         let users = {};
         for (const role of this.roles) {
             users[role.id] = [];
             for (const item of this.items) {
-                if(item.role == role.id){
+                if (item.role == role.id) {
                     users[role.id].push(item.user);
                 }
             }
         }
-        console.log(users);
-
-       return {
-           users: users,
-       }
+        return {
+            users: users,
+        }
     },
     emits: ['update:items'],
     methods: {},
-    watch:{
+    watch: {
         users: {
             deep: true,
             handler() {

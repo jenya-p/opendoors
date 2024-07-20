@@ -12,7 +12,7 @@ class QuizRequest extends FormRequest {
     public function rules(): array {
 
         $rules = [
-            'groups' => 'required|array',
+            'groups' => 'nullable|array',
             'groups.*' => 'required|array',
             'groups.*.id' => 'nullable|integer|exists:quiz_groups',
             'groups.*.weight' => 'required|numeric|min:0|max:10000',
