@@ -73,7 +73,6 @@
 
                     </tab>
                     <tab label="Пользователи" name="roles">
-                        {{form}}
                         <user-roles :roles="role_options" v-model:items="form.roles"/>
                     </tab>
                 </tabs>
