@@ -67,4 +67,8 @@ class Admin extends Model {
         return $ret;
     }
 
+    public function hasRole($role){
+        return in_array($role, $this->roles);
+    }
+
 }

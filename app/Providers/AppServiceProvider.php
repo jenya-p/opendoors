@@ -2,20 +2,17 @@
 
 namespace App\Providers;
 
+use App\Models\Admin;
 use App\Models\Attachment;
-use App\Models\Content\Content;
-use App\Models\Content\News;
-use App\Models\Content\Widget;
-use App\Models\ProfileFile;
 use App\Models\Quiz\Question;
-use App\Models\Stage;
-use App\Models\University;
+use App\Models\Quiz\Quiz;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Model;
+use App\Policies\Quiz\QuestionPolicy;
+use App\Policies\Quiz\QuizPolicy;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -59,7 +56,6 @@ class AppServiceProvider extends ServiceProvider
             return $options;
         });
 
-
         Arr::macro('iif', function ($src, $key, $empty = null) {
             if(array_key_exists($key, $src)){
                 return $src[$key];
@@ -73,5 +69,29 @@ class AppServiceProvider extends ServiceProvider
         });
 
         Relation::morphMap(Attachment::ITEM_CLASSES);
+
+        Gate::define('manage-users', function (User $user) {
+            return $user->admin && $user->admin->hasRole(Admin::ROLE_MANAGE_USERS);
+        });
+
+        Gate::define('manage-site', function (User $user) {
+            return $user->admin && $user->admin->hasRole(Admin::ROLE_MANAGE_SITE);
+        });
+
+        Gate::define('manage-quiz', function (User $user) {
+            return $user->admin && $user->admin->hasRole(Admin::ROLE_MANAGE_QUIZZES);
+        });
+
+        Gate::define('manage-interview', function (User $user) {
+            return $user->admin && $user->admin->hasRole(Admin::ROLE_MANAGE_INTERVIEW);
+        });
+
+        Gate::define('manage-portfolio', function (User $user) {
+            return $user->admin && $user->admin->hasRole(Admin::ROLE_MANAGE_PORTFOLIOS);
+        });
+
+        Gate::policy(Question::class, QuestionPolicy::class);
+        Gate::policy(Quiz::class, QuizPolicy::class);
+
     }
 }

@@ -30,4 +30,36 @@ class Role extends Model
     public function item(){
         return $this->morphTo();
     }
+
+
+    public static function scopeForItem($builder, $subject){
+
+        if($subject instanceof Model){
+            $builder->where('item_type', '=', $subject->getMorphClass())
+                ->whereIn('item_id', $subject->id);
+            return $builder;
+
+        } else if(is_string($subject)){
+            if(array_key_exists($subject, Attachment::ITEM_CLASSES)){
+                $subject = Attachment::ITEM_CLASSES[$subject];
+            }
+            if(class_exists($subject)){
+                $subject = (new $subject);
+                /** @var Model $subject */
+                if($subject instanceof Model){
+                    $builder->where('item_type', '=', $subject->getMorphClass())
+                        ->whereIn('item_id', $subject->newQuery()->select('id'));
+                    return $builder;
+                }
+            }
+        } else if ($subject == null){
+            $builder->whereNull('item_type', '=', $subject->getMorphClass())
+                ->whereNull('item_id', $subject->newQuery()->select('id'));
+        }
+
+
+        throw new \Exception('Некорректный subject');
+
+    }
+
 }

@@ -4,7 +4,9 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Concerns\HasRelationships;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -106,6 +108,22 @@ class User extends Authenticatable
         }
 
         return $ret;
+    }
+
+
+    public function roles(){
+        return $this->hasMany(Role::class, 'user_id');
+    }
+
+    public function hasAnyRoleOf($item, $roles = null){
+        $query = $this->roles()->forItem($item);
+        if(!empty($roles)){
+            if(is_string($roles)){
+                $roles = [$roles];
+            }
+            $query->whereIn('role', $roles);
+        }
+        return $query->exists();
     }
 
 }
