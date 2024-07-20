@@ -139,7 +139,43 @@ class HandleInertiaRequests extends Middleware {
             ];
         }
 
-        // if (\Auth::user()->can('manage-quiz')) {
+        if (\Auth::user()->admin) {
+            $sidebar[] = [
+                'key' => 'opendoors',
+                'label' => 'Open Doors',
+                'i' => 'fa fa-door-open',
+                'items' => [
+                    [
+                        'key' => 'edu-level',
+                        'href' => route('admin.edu-level.index'),
+                        'i' => "fa fa-bars",
+                        'label' => 'Уровни образования',
+                    ], [
+                        'key' => 'university',
+                        'href' => route('admin.university.index'),
+                        'i' => "fa fa-bars",
+                        'label' => 'Университеты',
+                    ], [
+                        'key' => 'track',
+                        'href' => route('admin.track.index'),
+                        'i' => "fa fa-bars",
+                        'label' => 'Треки',
+                    ], [
+                        'key' => 'profile',
+                        'href' => route('admin.profile.index'),
+                        'i' => "fa fa-bars",
+                        'label' => 'Профили',
+                    ], [
+                        'key' => 'stage',
+                        'href' => route('admin.stage.index'),
+                        'i' => "fa fa-bars",
+                        'label' => 'Этапы',
+                    ]
+                ]
+            ];
+        }
+
+
         $items = [];
         if (\Auth::user()->can('viewAny', Quiz::class)) {
             $items[] = [
@@ -233,7 +269,7 @@ class HandleInertiaRequests extends Middleware {
                 ];
         }
 
-        if (count($sidebar) == 1 && !empty($sidebar[0]['items'])){
+        if (count($sidebar) == 1 && !empty($sidebar[0]['items'])) {
             return $sidebar[0]['items'];
         }
 
