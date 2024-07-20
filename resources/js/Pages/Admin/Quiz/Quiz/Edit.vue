@@ -72,7 +72,7 @@
                         </field>
 
                     </tab>
-                    <tab label="Пользователи" name="roles">
+                    <tab label="Пользователи" name="roles" v-if="item.can.manage">
                         <user-roles :roles="role_options" v-model:items="form.roles"/>
                     </tab>
                 </tabs>
@@ -211,79 +211,8 @@ export default {
 
 }
 </script>
-<style lang="scss" scoped>
-@import "/resources/css/admin-vars";
-.table.weight-table {
+<style lang="scss" scoped src="./form.scss" />
 
-    margin: 0 0 10px 0;
-    :deep(td, th) {
-
-        text-align: left;
-        vertical-align: middle;
-        &.remove{
-            width: 50px;
-            text-align: right;
-        }
-        &.errors{
-            width: auto;
-        }
-        &.number{width: 100px}
-        &.weight{width: 150px}
-        &.count{width: 100px}
-        &.theme{width: 500px;
-
-            .multiselect .multiselect__tags{
-                border-radius: 0;
-            }
-            .multiselect:not(.multiselect--active) .multiselect__tags{
-                box-shadow: none;
-                border-color: transparent;
-            }
-        }
-
-
-
-        &:first-child{
-            padding-left: 15px;
-            width: 30px
-        }
-    }
-
-    th.theme {
-        padding-left: 10px;
-    }
-    td{
-        padding: 0 5px;
-
-    }
-
-
-    input {
-        z-index: 100;
-        border-radius: 0;
-        padding: 0 5px 0 15px;
-        &:not(:focus) {
-            border-color: transparent;
-            box-shadow: none;
-        }
-    }
-    .handler{
-        color: $dark-shadow-color;
-        border-radius: 5px;
-        font-size: 1.4em;
-        padding: 5px;
-        margin-left: -5px;
-        cursor: grab;
-
-        &:active {
-            cursor: grabbing;
-        }
-    }
-}
-
-
-
-</style>
 
 <style lang="scss">
 .ghost {

@@ -22,7 +22,7 @@ class QuestionPolicy {
 
 
     public function view(User $user, Question $question){
-        return $user->hasAnyRoleOf($question);
+        return $user->hasAnyRoleOf($question->quiz);
     }
 
     public function create(User $user){

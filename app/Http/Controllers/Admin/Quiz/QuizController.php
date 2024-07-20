@@ -20,7 +20,7 @@ class QuizController extends Controller
         $filter = $request->only(['profile_id', 'track', 'stage', 'query']);
 
         $query = Quiz::with('profile:id,name', 'groups:id,order,weight');
-        $query->filter($filter);
+        $query->filter($filter)->available();
 
         if(!empty($request->sort)){
             list($name, $dir) = explode(':', $request->sort);
@@ -35,7 +35,7 @@ class QuizController extends Controller
 
         $quizzes =  $query->get();
         $quizzes->load('groups:id,quiz_id,order,weight');
-        $quizzes->each->append('question_count', 'track_name', 'stage_name');
+        $quizzes->each->append('question_count', 'track_name', 'stage_name', 'can');
         $quizzes->map(function(Quiz $quiz) {$quiz->group_count = count($quiz->groups);});
 
 
@@ -55,7 +55,7 @@ class QuizController extends Controller
         } else {
             return Inertia::render('Admin/Quiz/Quiz/Index', [
                 'items' => $quizzes,
-                'profile_options' => Profile::get(['id', 'name'])->toArray(),
+                'profile_options' => Profile::available()->get(['id', 'name'])->toArray(),
                 'theme_options' => Theme::get(['id', 'name'])->toArray(),
                 'track_options' => Arr::assocToOptions(Quiz::TRACK_NAMES),
                 'stage_options' => Arr::assocToOptions(Quiz::STAGE_NAMES),
@@ -68,7 +68,7 @@ class QuizController extends Controller
 
     public function edit(Quiz $quiz) {
         $quiz->load('profile:id,name', 'groups', 'groups.theme', 'roles', 'roles.user:id,name');
-        $quiz->append('question_count', 'track_name', 'stage_name');
+        $quiz->append('question_count', 'track_name', 'stage_name', 'can');
         $quiz->groups->each->append('question_count');
         return Inertia::render('Admin/Quiz/Quiz/Edit', [
             'item' => $quiz,
@@ -78,10 +78,21 @@ class QuizController extends Controller
     }
 
 
+    public function show(Quiz $quiz) {
+        $quiz->load('profile:id,name', 'groups', 'groups.theme', 'roles', 'roles.user:id,name');
+        $quiz->append('question_count', 'track_name', 'stage_name', 'can');
+        $quiz->groups->each->append('question_count');
+        return Inertia::render('Admin/Quiz/Quiz/Show', [
+            'item' => $quiz,
+        ]);
+    }
+
     public function update(QuizRequest $request, Quiz $quiz) {
         // $quiz->update($request->validated());
         $this->updateGroups($quiz, $request->groups);
-        $quiz->updateRoles($request->roles);
+        if(\Gate::check('manage', $quiz)){
+            $quiz->updateRoles($request->roles);
+        }
         return \Redirect::route('admin.quiz.edit', $quiz);
     }
 

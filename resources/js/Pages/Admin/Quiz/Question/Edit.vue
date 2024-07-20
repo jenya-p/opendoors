@@ -1,7 +1,6 @@
 <template>
     <AdminLayout :title="item.id ? 'Задание ' + item.id : 'Новое задание'"
                  :breadcrumb="[{link: route('admin.quiz-question.index'), label: 'Задания'}, item.id ? item.id: 'Новое']">
-
         <form method="post" @submit.prevent="submit(null)" class="block" v-field-container>
             <h2>Основная информация</h2>
 
@@ -287,58 +286,7 @@ export default {
     }
 }
 </script>
-<style lang="scss" scoped>
-@import "resources/css/admin-vars";
 
-:deep(form) {
-    &:not(.vertical) .field-row {
-        display: flex;
-        gap: 40px;
+<style lang="scss" scoped src="./form.scss" />
 
-        .input {
-            width: 190px;
-        }
-
-        .field {
-            margin: 0
-        }
-
-        .field:not(:first-child) .input-label {
-            text-align: right;
-            width: auto;
-        }
-
-        .field-short.field-display {
-            & > div, & > label {
-                line-height: 43px;
-            }
-        }
-    }
-
-    &.vertical .field-row .field {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .attachments-lang {
-        display: inline-flex;
-        align-content: center;
-        flex-direction: column;
-
-        margin-right: 30px;
-        margin-bottom: 20px;
-
-        & > label {
-            font-weight: 500;
-            font-size: 0.9em;
-            width: 100%;
-            border-bottom: 1px solid $shadow-color;
-            padding-bottom: 5px;
-            margin-bottom: 10px;
-        }
-    }
-}
-
-
-</style>
 

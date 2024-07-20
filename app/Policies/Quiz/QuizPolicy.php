@@ -37,11 +37,9 @@ class QuizPolicy {
         return $user->hasAnyRoleOf($quiz, [Quiz::ROLE_MANAGER]);
     }
 
-    public function restore(User $user, Quiz $quiz){
+    public function manage(User $user, Quiz $quiz){
         return $user->hasAnyRoleOf($quiz, [Quiz::ROLE_MANAGER]);
     }
 
-    public function forceDelete(User $user, Quiz $quiz){
 
-    }
 }

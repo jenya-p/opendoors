@@ -200,4 +200,21 @@ class Question extends Model
         return $query;
     }
 
+
+    public function scopeAvailable(Builder $query, $mode = null) {
+        if(\Gate::check('admin-quiz')){
+            return;
+        }
+        $idSelect = \Auth::user()->roles()->forItem(Quiz::class)->select('item_id');
+        $query->whereIn('quiz_id', $idSelect);
+    }
+
+    public function getCanAttribute(){
+        return [
+            'view'   => \Gate::check('view', $this),
+            'update' => \Gate::check('update', $this),
+            'delete' => \Gate::check('delete', $this),
+        ];
+    }
+
 }

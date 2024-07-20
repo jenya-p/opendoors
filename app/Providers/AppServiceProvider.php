@@ -9,6 +9,7 @@ use App\Models\Quiz\Quiz;
 use App\Models\User;
 use App\Policies\Quiz\QuestionPolicy;
 use App\Policies\Quiz\QuizPolicy;
+use App\Policies\UserPolicy;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Blade;
@@ -70,28 +71,33 @@ class AppServiceProvider extends ServiceProvider
 
         Relation::morphMap(Attachment::ITEM_CLASSES);
 
-        Gate::define('manage-users', function (User $user) {
+        Gate::define('admin', function (User $user) {
+            return !empty($user->admin);
+        });
+
+        Gate::define('admin-users', function (User $user) {
             return $user->admin && $user->admin->hasRole(Admin::ROLE_MANAGE_USERS);
         });
 
-        Gate::define('manage-site', function (User $user) {
+        Gate::define('admin-site', function (User $user) {
             return $user->admin && $user->admin->hasRole(Admin::ROLE_MANAGE_SITE);
         });
 
-        Gate::define('manage-quiz', function (User $user) {
+        Gate::define('admin-quiz', function (User $user) {
             return $user->admin && $user->admin->hasRole(Admin::ROLE_MANAGE_QUIZZES);
         });
 
-        Gate::define('manage-interview', function (User $user) {
+        Gate::define('admin-interview', function (User $user) {
             return $user->admin && $user->admin->hasRole(Admin::ROLE_MANAGE_INTERVIEW);
         });
 
-        Gate::define('manage-portfolio', function (User $user) {
+        Gate::define('admin-portfolio', function (User $user) {
             return $user->admin && $user->admin->hasRole(Admin::ROLE_MANAGE_PORTFOLIOS);
         });
 
         Gate::policy(Question::class, QuestionPolicy::class);
         Gate::policy(Quiz::class, QuizPolicy::class);
+        Gate::policy(User::class, UserPolicy::class);
 
     }
 }

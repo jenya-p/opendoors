@@ -62,7 +62,7 @@ class HandleInertiaRequests extends Middleware {
         }
 
         $sidebar = [];
-        if (\Auth::user()->can('manage-users')) {
+        if (\Gate::check('admin-users')) {
             $sidebar[] =
                 [
                     'key' => 'user',
@@ -98,7 +98,7 @@ class HandleInertiaRequests extends Middleware {
                 ];
         }
 
-        if (\Auth::user()->can('manage-site')) {
+        if (\Gate::check('admin-site')) {
             $sidebar[] = [
                 'key' => 'site',
                 'label' => 'Сайт',
@@ -139,7 +139,7 @@ class HandleInertiaRequests extends Middleware {
             ];
         }
 
-        if (\Auth::user()->admin) {
+        if (\Gate::check('admin')){
             $sidebar[] = [
                 'key' => 'opendoors',
                 'label' => 'Open Doors',
@@ -177,7 +177,7 @@ class HandleInertiaRequests extends Middleware {
 
 
         $items = [];
-        if (\Auth::user()->can('viewAny', Quiz::class)) {
+        if (\Gate::check('viewAny', Quiz::class)) {
             $items[] = [
                 'key' => 'quiz',
                 'href' => route('admin.quiz.index'),
@@ -186,7 +186,7 @@ class HandleInertiaRequests extends Middleware {
             ];
         }
 
-        if (\Auth::user()->can('viewAny', Question::class)) {
+        if (\Gate::check('viewAny', Question::class)) {
             $items[] = [
                 'key' => 'quiz-question',
                 'href' => route('admin.quiz-question.index'),
@@ -195,7 +195,7 @@ class HandleInertiaRequests extends Middleware {
             ];
         }
 
-        if (\Auth::user()->can('manage-site')) {
+        if (\Gate::check('admin-quiz')) {
             $items[] = [
                 'key' => 'quiz-attempt',
                 'i' => "fa fa-user-check",
@@ -218,7 +218,7 @@ class HandleInertiaRequests extends Middleware {
         }
 
 
-        if (\Auth::user()->can('manage-portfolio')) {
+        if (\Gate::check('admin-portfolio')) {
             $sidebar[] = [
                 'key' => 'portfolio',
                 'label' => 'Портфолио',
@@ -227,7 +227,7 @@ class HandleInertiaRequests extends Middleware {
             ];
         }
 
-        if (\Auth::user()->can('manage-interview')) {
+        if (\Gate::check('admin-interview')) {
             $sidebar[] =
 
                 [

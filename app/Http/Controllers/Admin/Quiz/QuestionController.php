@@ -21,7 +21,7 @@ class QuestionController extends Controller
     public function index(Request $request)
     {
 
-        $query = Question::query()
+        $query = Question::available()
             ->select('quiz_questions.*')
             ->with([
                 'quiz:id,name',
@@ -55,9 +55,7 @@ class QuestionController extends Controller
 
         $items = $query->paginate(10);
 
-        $items->append(['snippet', 'option_count', 'status_name']);
-
-
+        $items->append(['snippet', 'option_count', 'status_name', 'can']);
 
         if(!$request->inertia() && $request->isXmlHttpRequest()){
             return [
@@ -67,7 +65,7 @@ class QuestionController extends Controller
             ];
         } else {
             return Inertia::render('Admin/Quiz/Question/Index', [
-                'profile_options' => Profile::get(['id', 'name'])->toArray(),
+                'profile_options' => Profile::available()->get(['id', 'name'])->toArray(),
                 'theme_options' => $themeOptions,
                 'track_options' => Arr::assocToOptions(Quiz::TRACK_NAMES),
                 'stage_options' => Arr::assocToOptions(Quiz::STAGE_NAMES),
@@ -99,7 +97,7 @@ class QuestionController extends Controller
         return Inertia::render('Admin/Quiz/Question/Edit', [
             'type_options' => $this->getAvailableTypeOptions(),
             'status_options' => $this->getAvailableStatusOptions(),
-            'quiz_options' => Quiz::with('groups', 'groups.theme')->get(['id', 'name'])->toArray(),
+            'quiz_options' => Quiz::available('edit')->with('groups', 'groups.theme')->get(['id', 'name'])->toArray(),
             'item' => new Question()
         ]);
     }
@@ -118,12 +116,20 @@ class QuestionController extends Controller
 
     }
 
+    public function show(Question $question) {
+        $question->load(['images','images_en', 'quiz', 'group', 'group.theme']);
+        $question->append('type_name', 'can');
+        return Inertia::render('Admin/Quiz/Question/Show', [
+            'item' => $question,
+        ]);
+    }
+
     public function edit(Question $question) {
         $question->load(['images','images_en']);
         return Inertia::render('Admin/Quiz/Question/Edit', [
             'type_options' => $this->getAvailableTypeOptions(),
             'status_options' => $this->getAvailableStatusOptions(),
-            'quiz_options' => Quiz::with('groups', 'groups.theme')->get(['id', 'name'])->toArray(),
+            'quiz_options' => Quiz::available('edit')->with('groups', 'groups.theme')->get(['id', 'name'])->toArray(),
             'item' => $question,
         ]);
     }

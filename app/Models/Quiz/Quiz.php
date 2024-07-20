@@ -138,4 +138,24 @@ class Quiz extends Model {
         return $query;
     }
 
+    public function scopeAvailable(Builder $query, $mode = null) {
+        if(\Gate::check('admin-quiz')){
+            return;
+        }
+        $idSelect = \Auth::user()->roles()->forItem(Quiz::class)->select('item_id');
+        if($mode == 'edit'){
+            $idSelect->whereIn('role', [Quiz::ROLE_MANAGER, Quiz::ROLE_EDITOR]);
+        }
+        $query->whereIn('id', $idSelect);
+    }
+
+
+    public function getCanAttribute(){
+        return [
+            'view'   => \Gate::check('view', $this),
+            'delete' => \Gate::check('delete', $this),
+            'update' => \Gate::check('update', $this),
+            'manage' => \Gate::check('manage', $this),
+        ];
+    }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\Quiz\Quiz;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -33,8 +34,13 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        if(Auth::user()->is_admin){
+        if (\Auth::user()->can('admin-users')) {
             return redirect()->intended(route('admin.user.index', absolute: false));
+        } else if (\Auth::user()->can('admin-site')) {
+            return redirect()->intended(route('admin.widgets.index', absolute: false));
+        } else if (\Auth::user()->can('admin-quiz') ||
+            \Auth::user()->hasAnyRoleOf(Quiz::class)) {
+            return redirect()->intended(route('admin.quiz-question.index', absolute: false));
         } else {
             return redirect(route('dashboard', absolute: false));
         }

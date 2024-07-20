@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use App\Models\Quiz\Quiz;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -66,6 +68,17 @@ class Profile extends Model {
             ->join('profile_file_types',  'profile_file_types.id','=','profile_files.type_id')
             ->where('profile_file_types.type', '=', $type)
             ->orderBy('profile_file_types.order')->get();
+    }
+
+
+    public function scopeAvailable(Builder $query) {
+        if(\Gate::check('admin')){
+            return;
+        }
+        $idSelect = \Auth::user()->roles()->forItem(Quiz::class)
+            ->join('quizzes', 'quizzes.id', '=', 'roles.item_id', 'inner')
+            ->select('quizzes.profile_id');
+        $query->whereIn('id', $idSelect);
     }
 
 }

@@ -1,0 +1,50 @@
+@import "resources/css/admin-vars";
+
+:deep(form) {
+    &:not(.vertical) .field-row {
+        display: flex;
+        gap: 40px;
+
+        .input {
+            width: 190px;
+        }
+
+        .field {
+            margin: 0
+        }
+
+        .field:not(:first-child) .input-label {
+            text-align: right;
+            width: auto;
+        }
+
+        .field-short.field-display {
+            & > div, & > label {
+                line-height: 43px;
+            }
+        }
+    }
+
+    &.vertical .field-row .field {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .attachments-lang {
+        display: inline-flex;
+        align-content: center;
+        flex-direction: column;
+
+        margin-right: 30px;
+        margin-bottom: 20px;
+
+        & > label {
+            font-weight: 500;
+            font-size: 0.9em;
+            width: 100%;
+            border-bottom: 1px solid $shadow-color;
+            padding-bottom: 5px;
+            margin-bottom: 10px;
+        }
+    }
+}

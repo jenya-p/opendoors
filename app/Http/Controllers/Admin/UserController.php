@@ -8,13 +8,20 @@ use App\Models\Admin;
 use App\Models\UniversityUser;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 
-class UserController extends Controller
+class UserController extends \Illuminate\Routing\Controller
 {
+    use AuthorizesRequests;
+
+    public function __construct() {
+        $this->authorizeResource(User::class);
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -82,7 +89,12 @@ class UserController extends Controller
         ]);
 
         $user->update($data);
-        return \Redirect::route('admin.user.index');
+        if(\Gate::check('viewAny', User::class)){
+            return \Redirect::route('admin.user.index');
+        } else {
+            return \Redirect::back();
+        }
+
 
     }
 

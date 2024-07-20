@@ -61,7 +61,7 @@
                         {{ item.group_count }}
                     </td>
                     <td class="buttons">
-                        <a class="fa fa-times btn-remove" @click.stop="remove(item)"></a>
+                        <a class="fa fa-times btn-remove" @click.stop="remove(item)" v-if="item.can.delete"></a>
                     </td>
                 </tr>
                 </tbody>

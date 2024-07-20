@@ -130,15 +130,19 @@ export function openEditor(pageName, parameterName = null) {
     return function (item, event) {
         let params = {};
         params[parameterName] = item.id;
+        let routeSuffix = 'edit';
+        if(item.can && item.can.update == false && item.can.view == true) {
+            routeSuffix = 'show';
+        }
         if (event.ctrlKey) {
             localStorage.setItem('back_state', JSON.stringify({
                 type: pageName + '.' + item.id,
                 url: document.location.toString(),
                 scroll: (window.pageYOffset || document.scrollTop) - (document.clientTop || 0)
             }));
-            this.$inertia.visit(route('admin.' + pageName + '.edit', params));
+            this.$inertia.visit(route('admin.' + pageName + '.' + routeSuffix, params));
         } else {
-            window.open(route('admin.' + pageName + '.edit', params), '_blank');
+            window.open(route('admin.' + pageName + '.' + routeSuffix, params), '_blank');
         }
     }
 };

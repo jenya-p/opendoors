@@ -36,7 +36,7 @@ class Role extends Model
 
         if($subject instanceof Model){
             $builder->where('item_type', '=', $subject->getMorphClass())
-                ->whereIn('item_id', $subject->id);
+                ->where('item_id', '=', $subject->id);
             return $builder;
 
         } else if(is_string($subject)){
