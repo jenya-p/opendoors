@@ -35,11 +35,11 @@
                 <checkbox v-for="(stage) of stage_options" v-model="lFilter.stage" :value="stage.id">{{ stage.name }}
                 </checkbox>
             </field>
-            <field label="Статус">
+            <!-- <field label="Статус">
                 <div style="display:flex;">
                     <VueMultiselect :options="status_options" v-model="statuses" :multiple="true" trackBy="id" label="name" placeholder="Все"/>
                 </div>
-            </field>
+            </field> -->
             <br>
 
             <table class="table">
@@ -48,9 +48,9 @@
                     <th class="code">
                         <sort name="id" v-model="lFilter.sort">ID</sort>
                     </th>
-                    <th class="status">
+                    <!-- <th class="status">
                         <sort name="status" v-model="lFilter.sort">Статус</sort>
-                    </th>
+                    </th> -->
                     <th class="quiz">
                         <sort name="quiz" v-model="lFilter.sort">Группа</sort>
                     </th>
@@ -72,9 +72,9 @@
 
                 <tr v-for="item of items.data" @click="itemClick(item, $event)" class="cursor-pointer" :class="{highlight: item.highlight}">
                     <td class="code">{{ item.id }}</td>
-                    <td class="group">
+                    <!-- <td class="status">
                         <span class="badge" :class="'badge-' + item.status">{{ item.status_name }}</span>
-                    </td>
+                    </td> -->
                     <td class="group">
                         {{ item.quiz?.name }}
                     </td>

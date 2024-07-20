@@ -11,10 +11,10 @@
                                 :allow-empty="false"/>
             </field>
 
-            <field :errors="form.errors" for="status" label="Статус" class="field-short">
+            <!-- <field :errors="form.errors" for="status" label="Статус" class="field-short">
                 <VueMultiselect :options="status_options" v-model="status" trackBy="id" label="name"
                                 :allow-empty="false"/>
-            </field>
+            </field> -->
 
             <div class="field-row" v-if="quiz">
                 <field :errors="form.errors" for="order" label="Номер задания в тесте" class="field-short">
@@ -219,8 +219,8 @@ export default {
                 options: [],
                 verification: [],
                 images: [],
-                images_en: []
-
+                images_en: [],
+                status: 'active'
             }, this.item)),
             editor: ClassicEditor,
         }
