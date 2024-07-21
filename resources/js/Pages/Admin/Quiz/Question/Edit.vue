@@ -1,6 +1,6 @@
 <template>
-    <AdminLayout :title="item.id ? 'Задание ' + item.id : 'Новое задание'"
-                 :breadcrumb="[{link: route('admin.quiz-question.index'), label: 'Задания'}, item.id ? item.id: 'Новое']">
+    <AdminLayout :title="item.id ? 'Задание ' + item.id : 'Новый вариант задания'"
+                 :breadcrumb="[{link: route('admin.quiz-question.index'), label: 'Задания'}, item.id ? item.id: 'Новый вариант задания']">
         <form method="post" @submit.prevent="submit(null)" class="block" v-field-container>
             <h2>Основная информация</h2>
 
@@ -28,7 +28,7 @@
                 </field>
                 <field label="Направление МКН" class="field-display">
                     <template v-if="group && group.theme">{{ group.theme.name }}</template>
-                    <i v-else>не указана</i>
+                    <i v-else>не указано</i>
                 </field>
             </div>
 
@@ -214,7 +214,7 @@ export default {
                 group_id: null,
                 text: '',
                 text_en: '',
-                type: 'one',
+                type: null,
                 options: [],
                 verification: [],
                 images: [],

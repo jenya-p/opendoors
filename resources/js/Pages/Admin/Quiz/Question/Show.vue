@@ -21,7 +21,7 @@
             </field>
             <field label="Направление МКН" class="field-display">
                 <template v-if="item.group && item.group.theme">{{ item.group.theme.name }}</template>
-                <i v-else>не указана</i>
+                <i v-else>не указано</i>
             </field>
 
             <field label="Тип задания" class="field-display">

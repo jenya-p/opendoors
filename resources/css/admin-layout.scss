@@ -824,6 +824,7 @@ table.table {
     }
 
 
+    a.tr{display: table-row; color: inherit; text-decoration: inherit}
     tr {
         th {
             font-weight: 400;
@@ -843,7 +844,7 @@ table.table {
             gap: 20px;
         }
     }
-    tr {
+    tr, a.tr {
 
         @include mobile {
             display: flex;
