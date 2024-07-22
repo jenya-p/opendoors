@@ -1,6 +1,6 @@
 <template>
-    <AdminLayout :title="item.id ? 'Задание ' + item.id : 'Новое задание'"
-                 :breadcrumb="[{link: route('admin.quiz-question.index'), label: 'Задания'}, item.id ? item.id: 'Новое']">
+    <AdminLayout :title="item.id ? 'Вариант задания ' + item.id : 'Новый вариант задания'"
+                 :breadcrumb="[{link: route('admin.quiz-question.index'), label: 'Варианты задания'}, item.id ? item.id: 'Новый вариант задания']">
 
 
         <div class="block" v-field-container>
