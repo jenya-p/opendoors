@@ -23,11 +23,11 @@
             </field>
 
             <field :errors="form.errors" for="summary" label="Описание">
-                <ckeditor v-model="form.summary" :editor="editor" :config="{width: '100%'}"/>
+                <editor v-model="form.summary" :item="['profile-file-type', item.id, 'summary']"/>
             </field>
 
             <field :errors="form.errors" for="summary_en" label="Описание (Англ. )">
-                <ckeditor v-model="form.summary_en" :editor="editor" :config="{width: '100%'}"/>
+                <editor v-model="form.summary_en" :item="['profile-file-type', item.id, 'summary_en']"/>
             </field>
 
             <table-bottom align="left">
@@ -45,15 +45,13 @@ import {useForm} from '@inertiajs/vue3';
 import Field from "@/Components/Field.vue";
 import AdminLayout from "@/Layouts/AdminLayout.vue";
 import TextareaAutosize from "@/Components/TextareaAutosize.vue";
-import CKEditor from "@ckeditor/ckeditor5-vue";
-import InlineEditor from '@ckeditor/ckeditor5-build-inline';
-import {selectable, selectables} from "@/Components/utils.js";
+import Editor from "@/Components/Editor.vue";
 import VueMultiselect from "vue-multiselect";
 import Radio from "@/Components/Radio.vue";
 import TableBottom from "@/Components/TableBottom.vue";
 
 export default {
-    components: {TableBottom, Radio, TextareaAutosize, AdminLayout, Field,  ckeditor: CKEditor.component, VueMultiselect},
+    components: {TableBottom, Radio, TextareaAutosize, AdminLayout, Field,  Editor, VueMultiselect},
     props: {
         item: {
             type: Object,
@@ -82,7 +80,6 @@ export default {
                 'summary': '',
                 'summary_en': '',
             }),
-            editor: InlineEditor,
         }
     },
 

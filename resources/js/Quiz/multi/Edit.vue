@@ -15,16 +15,12 @@
                 <field :errors="errors"
                        label="Русский текст"
                        :for="'options.options.' + element.index + '.text'" class="field-option">
-                    <ckeditor v-model="element.text" :editor="editor" ref="optionTextInput" :config="{
-                            width: '100%'
-                        }"/>
+                    <editor v-model="element.text" ref="optionTextInput" :item="['question', $parent.item.id, 'option']"/>
                 </field>
                 <field :errors="errors"
                        label="Английский текст"
                        :for="'options.options.' + element.index + '.text_en'" class="field-option">
-                    <ckeditor v-model="element.text_en" :editor="editor" :config="{
-                            width: '100%'
-                        }"/>
+                    <editor v-model="element.text_en" :item="['question', $parent.item.id, 'option_en']"/>
                 </field>
                 <field label="" class="field-right">
                     <checkbox v-model="right" :value="element.index">Верный ответ</checkbox>
@@ -72,19 +68,17 @@ import draggable from "vuedraggable";
 import Field from "@/Components/Field.vue";
 import TextareaAutosize from "@/Components/TextareaAutosize.vue";
 import InputError from "@/Components/InputError.vue";
-import CKEditor from "@ckeditor/ckeditor5-vue";
-import Editor from '@ckeditor/ckeditor5-build-inline';
+import Editor from "@/Components/Editor.vue";
 import _isArray from "lodash/isArray";
 import Checkbox from "@/Components/Checkbox.vue";
 import _isObject from "lodash/isObject";
 import _isNumber from "lodash/isNumber";
-import _debounce from "lodash/debounce";
 
 let _counter = 0;
 
 export default {
     name: "quiz-edit-multi",
-    components: {Checkbox, InputError, TextareaAutosize, Field, draggable, Radio, ckeditor: CKEditor.component},
+    components: {Checkbox, InputError, TextareaAutosize, Field, draggable, Radio, Editor},
     props: {
         errors: {
             default: null,
@@ -101,7 +95,6 @@ export default {
             lOptions: [],
             right: [],
             weights: [],
-            editor: Editor,
             auto: true,
         }
     },
@@ -124,7 +117,7 @@ export default {
             });
             let $v = this;
             setTimeout(function () {
-                $v.$refs.optionTextInput.$el.ckeditorInstance.editing.view.focus();
+                $v.$refs.optionTextInput.focus();
             }, 100);
         },
 

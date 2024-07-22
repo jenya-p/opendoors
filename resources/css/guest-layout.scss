@@ -473,6 +473,10 @@ header{
 
 
 .block {
+
+    background: white;
+    box-sizing: border-box;
+
     @media screen and (min-width: 500px) {
         padding: 28px 43px;
     }
@@ -480,8 +484,6 @@ header{
         padding: 28px 20px;
     }
 
-    background: white;
-    box-sizing: border-box;
 
     @media screen and (max-width: 500px) {
         border-bottom: 1px solid #E7E7E7;

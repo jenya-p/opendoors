@@ -18,11 +18,11 @@
             </field>
 
             <field :errors="form.errors" for="answer" label="Ответ">
-                <ckeditor v-model="form.answer" :editor="editor" :config="{width: '100%', 'max-height': 500}"/>
+                <editor v-model="form.answer" :editor="editor"  :item="['faq', item.id, 'answer']"/>
             </field>
 
             <field :errors="form.errors" for="answer_en" label="Ответ (Англ. )">
-                <ckeditor v-model="form.answer_en" :editor="editor" :config="{width: '100%'}"/>
+                <editor v-model="form.answer_en" :editor="editor" :item="['faq', item.id, 'answer']"/>
             </field>
 
             <div class="block-footer">
@@ -40,13 +40,12 @@ import {useForm} from '@inertiajs/vue3';
 import Field from "@/Components/Field.vue";
 import AdminLayout from "@/Layouts/AdminLayout.vue";
 import TextareaAutosize from "@/Components/TextareaAutosize.vue";
-import CKEditor from "@ckeditor/ckeditor5-vue";
-import InlineEditor from '@ckeditor/ckeditor5-build-inline';
+import Editor from "@/Components/Editor.vue";
 import {selectable} from "@/Components/utils.js";
 import VueMultiselect from "vue-multiselect";
 
 export default {
-    components: {TextareaAutosize, AdminLayout, Field,  ckeditor: CKEditor.component, VueMultiselect},
+    components: {TextareaAutosize, AdminLayout, Field, Editor, VueMultiselect},
     props: {
         item: {
             type: Object,
@@ -70,8 +69,7 @@ export default {
                 'question_en': null,
                 'answer': '',
                 'answer_en': '',
-            }),
-            editor: InlineEditor,
+            })
         }
     },
 

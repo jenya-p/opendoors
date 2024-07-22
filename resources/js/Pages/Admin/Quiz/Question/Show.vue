@@ -50,14 +50,10 @@
 
 
                                     <field :errors="form.errors" for="description" label="Расшифровка ответа">
-                                        <ckeditor v-model="form.description" :editor="editor" :config="{
-                                                width: '100%'
-                                            }"/>
+                                        <editor v-model="form.description"/>
                                     </field>
                                     <field :errors="form.errors" for="description_en" label="Расшифровка ответа (Англ.)">
-                                        <ckeditor v-model="form.description_en" :editor="editor" :config="{
-                                                width: '100%'
-                                            }"/>
+                                        <editor v-model="form.description_en"/>
                                     </field>
                         -->
             <div style="height: 30px"></div>

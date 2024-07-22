@@ -343,6 +343,10 @@ aside {
                 & > a, & > span {
                     background: transparent;
                     position: relative;
+                    display: flex;
+                    align-items: center;
+                    border-radius: 5px;
+                    width: 100%;
 
                     @include desktop {
                         padding: 12px 15px 12px 15px;
@@ -351,10 +355,7 @@ aside {
                         padding: 12px 10px;
                         font-size: 1.1em;
                     }
-                    display: flex;
-                    align-items: center;
-                    border-radius: 5px;
-                    width: 100%;
+
 
                     i {
                         font-size: 20px;
@@ -1045,6 +1046,8 @@ table.table {
     margin-bottom: 1.7em;
     margin-top: 0.5em;
     display: flex;
+    width: 100%;
+    align-items: flex-start;
 
     @include desktop {
         gap: 5em;
@@ -1052,8 +1055,6 @@ table.table {
     @include mobile {
         gap: 1em;
     }
-    width: 100%;
-    align-items: flex-start;
 
     input {
         padding-left: 8px;
@@ -1205,6 +1206,11 @@ button.btn-a {
 .btn-remove {
     border-radius: 5px;
     font-size: 1em;
+    text-decoration: none;
+    color: $attractive-color;
+    transition: color 200ms ease;
+    text-decoration: none;
+
     @include desktop {
         padding: 0.5em;
         margin-left: 0.5em;
@@ -1214,10 +1220,6 @@ button.btn-a {
     }
 
 
-    text-decoration: none;
-    color: $attractive-color;
-    transition: color 200ms ease;
-    text-decoration: none;
 
     &:hover {
         color: darken($attractive-color, 10);

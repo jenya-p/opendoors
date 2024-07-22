@@ -38,15 +38,11 @@
 
 
             <field :errors="form.errors" for="text" label="Текст задания">
-                <ckeditor v-model="form.text" :editor="editor" :config="{
-                        width: '100%'
-                    }"/>
+                <editor v-model="form.text" :item="['question', item.id, 'text']"/>
             </field>
 
             <field :errors="form.errors" for="text_en" label="Текст задания (Англ. )">
-                <ckeditor v-model="form.text_en" :editor="editor" :config="{
-                        width: '100%'
-                    }"/>
+                <editor v-model="form.text_en" :item="['question', item.id, 'text_en']"/>
             </field>
 
             <field :errors="form.errors" for="images, images_en" label="Файлы">
@@ -62,14 +58,10 @@
 
             <!--
                         <field :errors="form.errors" for="description" label="Расшифровка ответа">
-                            <ckeditor v-model="form.description" :editor="editor" :config="{
-                                    width: '100%'
-                                }"/>
+                            <editor v-model="form.description"/>
                         </field>
                         <field :errors="form.errors" for="description_en" label="Расшифровка ответа (Англ.)">
-                            <ckeditor v-model="form.description_en" :editor="editor" :config="{
-                                    width: '100%'
-                                }"/>
+                            <editor v-model="form.description_en"/>
                         </field>
             -->
             <div style="height: 30px"></div>
@@ -140,19 +132,14 @@
     </AdminLayout>
 </template>
 <script>
-import {Link, router, useForm} from '@inertiajs/vue3';
+import {Link, useForm} from '@inertiajs/vue3';
 import Field from "@/Components/Field.vue";
 import AdminLayout from "@/Layouts/AdminLayout.vue";
-import CKEditor from "@ckeditor/ckeditor5-vue";
-import ClassicEditor from '@ckeditor/ckeditor5-build-inline';
-
 import _extend from "lodash/extend";
 import TextareaAutosize from "@/Components/TextareaAutosize.vue";
-import {closeEditor, findByIds, selectable, selectables} from "@/Components/utils.js";
+import {closeEditor, selectable} from "@/Components/utils.js";
 import VueMultiselect from "vue-multiselect";
-// import {defineAsyncComponent} from "vue";
 import Attachments from "@/Components/Attachments.vue";
-
 import QuizEditNumber from "@/Quiz/number/Edit.vue";
 import QuizEditWords from "@/Quiz/words/Edit.vue";
 import QuizEditOne from "@/Quiz/one/Edit.vue";
@@ -162,6 +149,7 @@ import QuizEditMulti from "@/Quiz/multi/Edit.vue";
 import QuizEditMatch from "@/Quiz/match/Edit.vue";
 import TableBottom from "@/Components/TableBottom.vue";
 import InputLabel from "@/Components/InputLabel.vue";
+import Editor from "@/Components/Editor.vue";
 
 export default {
     components: {
@@ -178,7 +166,7 @@ export default {
         TextareaAutosize,
         AdminLayout,
         Field,
-        ckeditor: CKEditor.component,
+        Editor,
         VueMultiselect,
         Link
     },
@@ -221,7 +209,6 @@ export default {
                 images_en: [],
                 status: 'active'
             }, this.item)),
-            editor: ClassicEditor,
         }
     },
     watch: {},

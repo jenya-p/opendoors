@@ -46,7 +46,9 @@ Route::middleware('auth')->group(function () {
     Route::post('attachment/{attachment}/replace', [
         \App\Http\Controllers\AttachmentController::class, 'replace'
     ])->name('attachment.replace');
-    Route::resource('attachment', \App\Http\Controllers\AttachmentController::class)->only(['index', 'store', 'destroy']);
+    Route::resource('attachment', \App\Http\Controllers\AttachmentController::class)->only(['index', 'store', 'destroy'])
+    ->withoutMiddleware('')
+    ;
 
     Route::put('user/password', [\App\Http\Controllers\Admin\UserController::class, 'password'])->name('users.password');
 });

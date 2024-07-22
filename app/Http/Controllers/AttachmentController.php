@@ -40,7 +40,12 @@ class AttachmentController extends Controller
 
 		$name = $request->get('name');
 
-		$file = $request->file('file');
+
+        if($request->mode == 'ckeditor'){
+            $file = $request->file('upload');
+        } else {
+            $file = $request->file('file');
+        }
 
         if(empty($file)){
             throw new \Exception('upload failed');
@@ -81,9 +86,19 @@ class AttachmentController extends Controller
 
 		$attachment->save();
 
-		return [
-			'item' => $attachment
-		];
+        if($request->mode == 'ckeditor'){
+            return [
+                'uploaded' => 1,
+                'fileName' => $attachment->name,
+                'url' => $attachment->downloadUrl
+            ];
+        } else {
+            return [
+                'item' => $attachment
+            ];
+        }
+
+
 
 	}
 

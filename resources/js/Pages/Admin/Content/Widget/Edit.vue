@@ -3,11 +3,9 @@ import {useForm} from '@inertiajs/vue3';
 import Field from "@/Components/Field.vue";
 import AdminLayout from "@/Layouts/AdminLayout.vue";
 import TextareaAutosize from "@/Components/TextareaAutosize.vue";
-import CKEditor from "@ckeditor/ckeditor5-vue";
-import ClassicEditor from '@ckeditor/ckeditor5-build-inline';
 
 export default {
-    components: {TextareaAutosize, AdminLayout, Field,  ckeditor: CKEditor.component},
+    components: {TextareaAutosize, AdminLayout, Field},
     props: {
         item: {
             type: Object,
@@ -20,7 +18,6 @@ export default {
             form: useForm(this.item ? this.item : {
                 data: 'asdasd',
             }),
-            editor: ClassicEditor,
         }
     },
 

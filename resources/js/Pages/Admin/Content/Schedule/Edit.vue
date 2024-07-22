@@ -23,19 +23,19 @@
             </field>
 
             <field :errors="form.errors" for="summary" label="Краткое содержание">
-                <ckeditor v-model="form.summary" :editor="editor" :config="{width: '100%', 'max-height': 500}"/>
+                <editor v-model="form.summary" :item="['question', item.id, 'summary']"/>
             </field>
 
             <field :errors="form.errors" for="summary_en" label="Краткое содержание (Англ. )">
-                <ckeditor v-model="form.summary_en" :editor="editor" :config="{width: '100%'}"/>
+                <editor v-model="form.summary_en" :item="['question', item.id, 'summary_en']"/>
             </field>
 
             <field :errors="form.errors" for="details" label="Подробное расписание">
-                <ckeditor v-model="form.details" :editor="editor" :config="{width: '100%'}"/>
+                <editor v-model="form.details" :item="['question', item.id, 'details']"/>
             </field>
 
             <field :errors="form.errors" for="details_en" label="Подробное расписание (Англ. )">
-                <ckeditor v-model="form.details_en" :editor="editor" :config="{width: '100%'}"/>
+                <editor v-model="form.details_en" :item="['question', item.id, 'details_en']"/>
             </field>
 
             <table-bottom align="left">
@@ -52,12 +52,11 @@ import {useForm} from '@inertiajs/vue3';
 import Field from "@/Components/Field.vue";
 import AdminLayout from "@/Layouts/AdminLayout.vue";
 import TextareaAutosize from "@/Components/TextareaAutosize.vue";
-import CKEditor from "@ckeditor/ckeditor5-vue";
-import InlineEditor from '@ckeditor/ckeditor5-build-inline';
+import Editor from "@/Components/Editor.vue";
 import TableBottom from "@/Components/TableBottom.vue";
 
 export default {
-    components: {TableBottom, TextareaAutosize, AdminLayout, Field,  ckeditor: CKEditor.component},
+    components: {TableBottom, TextareaAutosize, AdminLayout, Field, Editor},
     props: {
         item: {
             type: Object,
@@ -77,7 +76,6 @@ export default {
                 details: '',
                 details_en: '',
             }),
-            editor: InlineEditor,
         }
     },
 

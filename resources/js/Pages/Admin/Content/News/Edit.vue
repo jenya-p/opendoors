@@ -18,19 +18,19 @@
             </field>
 
             <field :errors="form.errors" for="summary" label="Краткое содержание">
-                <ckeditor v-model="form.summary" :editor="editor" :config="{width: '100%', 'max-height': 500}"/>
+                <editor v-model="form.summary" :item="['news', item.id, 'summary']"/>
             </field>
 
             <field :errors="form.errors" for="summary_en" label="Краткое содержание (Англ. )">
-                <ckeditor v-model="form.summary_en" :editor="editor" :config="{width: '100%'}"/>
+                <editor v-model="form.summary_en" :item="['news', item.id, 'summary_en']"/>
             </field>
 
             <field :errors="form.errors" for="content" label="Краткое содержание">
-                <ckeditor v-model="form.content" :editor="editor" :config="{width: '100%'}"/>
+                <editor v-model="form.content" :item="['news', item.id, 'content']"/>
             </field>
 
             <field :errors="form.errors" for="content_en" label="Краткое содержание (Англ. )">
-                <ckeditor v-model="form.content_en" :editor="editor" :config="{width: '100%'}"/>
+                <editor v-model="form.content_en" :item="['news', item.id, 'content_en']"/>
             </field>
 
             <table-bottom align="left">
@@ -45,23 +45,21 @@
 import {Link, useForm} from '@inertiajs/vue3';
 import Field from "@/Components/Field.vue";
 import AdminLayout from "@/Layouts/AdminLayout.vue";
-import CKEditor from "@ckeditor/ckeditor5-vue";
-import ClassicEditor from '@ckeditor/ckeditor5-build-inline';
-
 import _extend from "lodash/extend";
 import TextareaAutosize from "@/Components/TextareaAutosize.vue";
 import Attachments from "@/Components/Attachments.vue";
 import TableBottom from "@/Components/TableBottom.vue";
+import Editor from "@/Components/Editor.vue";
 
 
 export default {
     components: {
+        Editor,
         TableBottom,
         Attachments,
         TextareaAutosize,
         AdminLayout,
         Field,
-        ckeditor: CKEditor.component,
         Link
     },
     props: {
@@ -88,7 +86,6 @@ export default {
                 summary: '',
                 summary_en: '',
             }, this.item)),
-            editor: ClassicEditor,
         }
     },
 
