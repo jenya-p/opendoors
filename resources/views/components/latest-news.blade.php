@@ -89,7 +89,7 @@
 
                         <div
 
-                            class="text-[0.875rem] font-medium leading-[1.5rem] md:text-[1rem] md:leading-7 "
+                            class="text-[0.875rem] font-medium leading-[1.5rem] md:text-[1rem] md:leading-7 ck-content"
                         >
                             {!! $item->summary !!}
                         </div>

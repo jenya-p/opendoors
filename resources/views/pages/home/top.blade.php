@@ -14,11 +14,11 @@
         "
     >
         <div class="relative z-10 flex max-w-[55rem] flex-col gap-4 drop-shadow-[0_0_5rem_white] md:gap-12">
-            <h1 class="text-[2.5rem] font-semibold leading-[2.625rem] text-black [text-shadow:_0_0_1rem_white] md:text-[6rem] md:leading-[6.625rem]">
+            <h1 class="text-[2.5rem] font-semibold leading-[2.625rem] text-black [text-shadow:_0_0_1rem_white] md:text-[6rem] md:leading-[6.625rem] ck-content">
                 {!! $h1 !!}
             </h1>
 
-            <p class="text-balance text-[0.875rem] font-medium leading-6 [text-shadow:_0_0_0.25rem_white] md:text-[1rem] md:leading-7">
+            <p class="text-balance text-[0.875rem] font-medium leading-6 [text-shadow:_0_0_0.25rem_white] md:text-[1rem] md:leading-7 ck-content">
                 {!! $description !!}
             </p>
         </div>

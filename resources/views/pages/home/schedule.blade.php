@@ -1,4 +1,14 @@
-<div class="glide bg-white px-0 pb-8 pt-8 md:py-16">
+@php
+    /** @var Schedule[] $schedule */
+    $startAt = 0;
+    foreach($schedule as $index => $item){
+        if($item->date_from <= now() && $item->date_to >= now()){
+            $startAt = $index;
+            break;
+        }
+    }
+@endphp
+<div class="glide bg-white px-0 pb-8 pt-8 md:py-16" data-start-at="{{$startAt}}">
     <div class="px-4 sm:px-16">
         <div class="mx-auto flex w-full max-w-content items-center gap-8">
             <h3
@@ -60,7 +70,9 @@
                     class="glide__slide group w-[30.625rem] shrink-0 select-none px-4 md:px-0"
                 >
                     <div class="flex flex-col gap-3">
-                        <div class="pr-4 font-medium leading-7 text-blue">
+                        <div class="pr-4 font-medium leading-7
+                            @if($item->date_from <= now() && $item->date_to >= now()) text-red @else text-blue @endif
+                        ">
                             {{$item->date_range_description }}
                         </div>
 
@@ -102,7 +114,7 @@
                             class="text text-[0.875rem] font-medium leading-6 transition-all [&_ol]:my-2 [&_ol]:list-inside [&_ol]:list-decimal [&_p]:my-2 [&_ul]:my-2 [&_ul]:list-inside [&_ul]:list-disc"
                             style="height: 0; opacity: 0"
                         >
-                            <div class="pt-6">
+                            <div class="pt-6 ck-content">
                                 {!! $item->details!!}
                             </div>
                         </div>
@@ -112,3 +124,6 @@
         </ul>
     </div>
 </div>
+<style>
+
+</style>

@@ -47,16 +47,20 @@ class HomeController extends Controller {
 
     public function rules() {
         $rules = Widget::findByKey('rules')->translate();
-        return view('pages.rules', $rules->data);
+        $tracks = Widget::findByKey('tracks')->translate();
+        return view('pages.rules', [
+            'rules' => $rules->data,
+            'tracks' => $tracks->data,
+        ]);
     }
 
     public function olympiad() {
-        $rules = Widget::findByKey('tracks')->translate();
-        return view('pages.olympiad', $rules->data);
+        return redirect()->route('home.rules');
     }
 
 
     public function profile(Profile $profile){
+        Profile::addGlobalScope(Active::class);
 
         $locale = app()->getLocale();
 

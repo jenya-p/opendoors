@@ -5,7 +5,7 @@
         <div class="block">
             <h1 class="main-page-title" v-if="content.title">{{content.title}}</h1>
             <div class="content-wrapper">
-                <div class="content" v-html="content.content"></div>
+                <div class="ck-content" v-html="content.content"></div>
             </div>
         </div>
     </GuestLayout>

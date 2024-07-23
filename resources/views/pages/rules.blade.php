@@ -28,7 +28,7 @@
                         <h3
                             class="text-[1.25rem] font-semibold leading-[1.75rem] md:text-[1.5rem] md:font-bold md:leading-[2.25rem]"
                         >
-                            {{$title}}
+                            {{$rules['title']}}
                         </h3>
 
                         <div
@@ -98,7 +98,7 @@
                 data-glide-el="track"
             >
                 <ul class="glide__slides flex md:pl-[calc((100vw_-_81.5rem)_/_2)]">
-                    @foreach($blocks as $block)
+                    @foreach($rules['blocks'] as $block)
                         @php
                             $file = \App\Models\Attachment::find($block['file_id']);
                         @endphp
@@ -141,6 +141,20 @@
                     @endforeach
                 </ul>
             </div>
+
+            <div class="mx-auto w-full max-w-content">
+                <div class="mt-12 flex max-w-[52.5rem] flex-col">
+                    <h1 class="text-[1.5rem] font-bold leading-9">{{ $tracks['h1']  }}</h1>
+
+                    <div
+                        class="[&#38;>_*]:my-4 [&#38;_:is(ol,ul)]:pl-4 [&#38;_ol]:list-decimal [&#38;_ul]:list-disc [&#38;_a]:underline [&#38;_a]:text-blue [&#38;_a:hover]:no-underline [&#38;_h4]:text-[1.125rem] [&#38;_h5]:text-[1rem] [&#38;_h3]:text-[1.25rem] [&#38;_h2]:text-[1.375rem] [&#38;_h1]:text-[1.5rem] [&#38;_:is(h1,h2,h3,h4,h5)]:leading-9 [&#38;_:is(h1,h2,h3,h4,h5)]:font-bold leading-7 after:clear-both after:block"
+                    >
+                        {!! $tracks['content'] !!}
+                    </div>
+                </div>
+            </div>
+
+
         </div>
     </main>
 </x-public-layout>

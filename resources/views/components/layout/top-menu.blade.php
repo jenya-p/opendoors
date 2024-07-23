@@ -12,9 +12,6 @@
         <a href="/#universities" title="{{__('Universities')}}" class="hover:text-blue"> {{__('Universities')}} </a>
     </li>
     <li>
-        <a href="/olympiad" title="{{__('Tracks')}}" class="hover:text-blue"> {{__('Tracks')}} </a>
-    </li>
-    <li>
         <a href="/#subjects" title="{{__('Subjects')}}" class="hover:text-blue"> {{__('Subjects')}} </a>
     </li>
     <li>

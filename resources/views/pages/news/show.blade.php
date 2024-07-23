@@ -45,7 +45,7 @@
                 </div>
 
                 <div
-                    class="[&#38;>_*]:my-4 [&#38;_:is(ol,ul)]:pl-4 [&#38;_ol]:list-decimal [&#38;_ul]:list-disc [&#38;_a]:underline [&#38;_a]:text-blue [&#38;_a:hover]:no-underline [&#38;_h4]:text-[1.125rem] [&#38;_h5]:text-[1rem] [&#38;_h3]:text-[1.25rem] [&#38;_h2]:text-[1.375rem] [&#38;_h1]:text-[1.5rem] [&#38;_:is(h1,h2,h3,h4,h5)]:leading-9 [&#38;_:is(h1,h2,h3,h4,h5)]:font-bold leading-7 after:clear-both after:block"
+                    class="[&#38;>_*]:my-4 [&#38;_:is(ol,ul)]:pl-4 [&#38;_ol]:list-decimal [&#38;_ul]:list-disc [&#38;_a]:underline [&#38;_a]:text-blue [&#38;_a:hover]:no-underline [&#38;_h4]:text-[1.125rem] [&#38;_h5]:text-[1rem] [&#38;_h3]:text-[1.25rem] [&#38;_h2]:text-[1.375rem] [&#38;_h1]:text-[1.5rem] [&#38;_:is(h1,h2,h3,h4,h5)]:leading-9 [&#38;_:is(h1,h2,h3,h4,h5)]:font-bold leading-7 after:clear-both after:block ck-content"
                 >
                     {!! $item->content !!}
                 </div>

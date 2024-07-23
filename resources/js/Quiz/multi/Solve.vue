@@ -3,7 +3,7 @@
     <ul>
         <li v-for="(options, index) of question.options.options">
             <checkbox v-model="choices" :value="index">
-                <div class="content" v-html="options.text" style="margin-top: 1.5px"></div>
+                <div class="ck-content" v-html="options.text" style="margin-top: 1.5px"></div>
             </checkbox>
         </li>
     </ul>

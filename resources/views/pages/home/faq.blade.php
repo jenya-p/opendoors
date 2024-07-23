@@ -36,7 +36,7 @@
                                         style="height: 0; opacity: 0"
                                     >
                                         <div
-                                            class="pt-[1.25rem] text-[0.875rem] font-medium leading-6 md:pb-6 md:text-[1rem] md:leading-7"
+                                            class="pt-[1.25rem] text-[0.875rem] font-medium leading-6 md:pb-6 md:text-[1rem] md:leading-7 ck-content"
                                         >
                                             {!! $faq->answer !!}
 

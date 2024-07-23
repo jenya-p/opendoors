@@ -94,7 +94,7 @@
                                 download
                                 class="flex h-full flex-col gap-4 rounded-[1rem] bg-white fill-gray-light p-6 transition-colors md:hover:fill-pink md:hover:text-pink"
                             >
-                                <div class="text-[1.5rem] font-bold leading-9">
+                                <div class="text-[1.5rem] font-bold leading-9" style="line-height: 1.2em; margin-bottom: 0.6em">
                                     {{$material->type->name}}
                                 </div>
                                 @if(count($material->type->tracks))
@@ -103,7 +103,7 @@
                                 @endif
 
                                 @if($material->type->summary)
-                                    <div class="grow text-[1rem] font-medium leading-6">
+                                    <div class="grow text-[1rem] font-medium leading-6 ck-content">
                                         {!! $material->type->summary !!}
                                     </div>
                                 @endif

@@ -26,7 +26,7 @@
                 @endif
 
                 @if($material->type->summary)
-                    <div class="grow text-[1rem] font-medium leading-1 md:group-hover:text-white">
+                    <div class="grow text-[1rem] font-medium leading-1 md:group-hover:text-white ck-content">
                         {!! $material->type->summary !!}
                     </div>
                 @endif

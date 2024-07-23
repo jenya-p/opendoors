@@ -74,11 +74,13 @@
   document.querySelectorAll(".glide").forEach((slider) => {
     const perView = parseFloat(slider.dataset.perView) || 2.5
     const gap = parseInt(slider.dataset.gap) || 0
+    const startAt = parseInt(slider.dataset.startAt) || 0
 
     new Glide(slider, {
       rewind: false,
       perView,
       gap,
+      startAt,
       breakpoints: {
         768: {
           perView: 1,

@@ -4,13 +4,13 @@
         <ul>
             <li v-for="(option, index) of question.options.options">
                 <span class="counter">{{index + 1}}</span>
-                <div class="content" v-html="option.text"></div>
+                <div class="ck-content" v-html="option.text"></div>
             </li>
         </ul>
         <ul>
             <li v-for="(option, index) of question.options.categories">
                 <span class="counter">{{$filters.ntl(index + 1)}}</span>
-                <div class="content" v-html="option.text"></div>
+                <div class="ck-content" v-html="option.text"></div>
             </li>
         </ul>
     </div>

@@ -7,7 +7,6 @@
     },
     "devDependencies": {
         "ckeditor5-custom-build": "file:resources/js/ckeditor",
-        "vite-plugin-commonjs": "^0.10.1",
         "@devindex/vue-mask": "^2.0.3",
         "@inertiajs/vue3": "^1.0.0",
         "@intlify/unplugin-vue-i18n": "^4.0.0",

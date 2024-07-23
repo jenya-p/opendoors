@@ -6,7 +6,7 @@
         <h3
             class="text-[1.25rem] font-semibold leading-[1.75rem] md:text-[1.5rem] md:font-bold md:leading-[2.25rem]"
         >
-            Subjects of the OpenDoors
+            {{__('Subjects of the OpenDoors')}}
         </h3>
 
         <div class="mt-6 md:mt-[2.125rem]">

@@ -23,7 +23,7 @@
                     <img v-for="itm of question.images" :src="itm.download_url" alt="" class="">
                 </div>
 
-                <div class="content question-text" v-html="question.text"></div>
+                <div class="ck-content question-text" v-html="question.text"></div>
 
                 <div class="options">
                     <QuizSolveOne
@@ -129,7 +129,6 @@ export default {
     },
 
     data() {
-        console.log(this.$i18n);
         return {
             valid: false,
             form: useForm({

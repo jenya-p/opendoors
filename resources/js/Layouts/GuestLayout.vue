@@ -25,7 +25,6 @@ export default {
     },
     methods: {
         pressEsc (evt) {
-            console.log('pressEsc');
             if (evt.key === "Escape") {
                 this.closePopupMenu();
             }
