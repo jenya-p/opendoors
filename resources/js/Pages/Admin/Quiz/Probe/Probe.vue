@@ -158,6 +158,15 @@ export default {
 
 
 .solve-page-title {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 50px;
+    padding: 15px;
+    background: white;
+    box-shadow: 2px -3px 10px 5px #DBDBDB;
+
     img {
         height: 50px;
         margin-right: 1em;
@@ -167,14 +176,7 @@ export default {
         margin-bottom: 0;
     }
 
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 50px;
-    padding: 15px;
-    background: white;
-    box-shadow: 2px -3px 10px 5px #DBDBDB;
+
 }
 
 .solve-page-footer {
@@ -209,13 +211,13 @@ export default {
 .solve-page-main {
     max-width: 1200px;
     margin: 0 auto;
-    h2 {
-        margin-bottom: 2em;
-    }
-
     padding: 15px;
     padding-top: 100px;
     padding-bottom: 100px;
+
+    h2 {
+        margin-bottom: 2em;
+    }
 
     .question-image-wrapper{
         img{

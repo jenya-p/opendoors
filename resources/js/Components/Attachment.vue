@@ -115,23 +115,19 @@ export default {
     }
 }
 </script>
-
 <style scoped lang="scss">
 @import "resources/css/admin-vars";
 .attachments{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
 
     input[type=file] {
         width: 0px;
         height: 0px;
         position: fixed;
         left: -100px;
-
     }
-
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-
     .attachment {
         width: 95px;
         position: relative;
@@ -146,6 +142,14 @@ export default {
 
         .item-img {
             display: flex;
+            border: 1px solid $shadow-color;
+            border-radius: 4px;
+            background-color: white;
+            color: #67C3F2;
+            position: relative;
+            text-decoration: none;
+            font-size: 12px;
+
             @media screen and (min-width: 700px){
                 min-width: 40px;
                 height: 95px;
@@ -154,13 +158,7 @@ export default {
                 min-width: 80px;
                 height: 95px;
             }
-            border: 1px solid $shadow-color;
-            border-radius: 4px;
-            background-color: white;
-            color: #67C3F2;
-            position: relative;
-            text-decoration: none;
-            font-size: 12px;
+
 
             img {
                 display: block;

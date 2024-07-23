@@ -259,12 +259,12 @@ table.table {
             }
 
             &.type {
+                width: 80px;
+                text-align: center;
+
                 img {
                     width: 25px;
                 }
-
-                width: 80px;
-                text-align: center
             }
 
             &.order {

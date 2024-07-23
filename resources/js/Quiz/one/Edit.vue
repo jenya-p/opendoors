@@ -14,12 +14,13 @@
                 <field :errors="errors"
                        label="Русский текст"
                        :for="'options.' + element.index + '.text'" class="field-option">
-                    <editor v-model="element.text" ref="optionTextInput"  :item="['question', $parent.item.id, 'option']"/>
+                    <editor v-model="element.text" ref="optionTextInput"
+                            :item="['question', $parent.item?.id, 'option']"/>
                 </field>
                 <field :errors="errors"
                        label="Английский текст"
                        :for="'options.' + element.index + '.text_en'" class="field-option">
-                    <editor v-model="element.text_en" :item="['question', $parent.item.id, 'option_en']"/>
+                    <editor v-model="element.text_en" :item="['question', $parent.item?.id, 'option_en']"/>
                 </field>
                 <field label="" class="field-right">
                     <radio v-model="right" :value="element.index">Верный ответ</radio>
@@ -61,7 +62,7 @@ export default {
     },
     emits: ['update:options', 'update:verification',],
 
-    data(){
+    data() {
         return {
             lOptions: [],
             right: null
@@ -81,22 +82,24 @@ export default {
                 text_en: ''
             });
             let $v = this;
-            setTimeout(function(){
+            setTimeout(function () {
                 $v.$refs.optionTextInput.focus();
             }, 100);
         },
 
-        update(){
+        update() {
             let correct = this.lOptions.findIndex(itm => itm.index == this.right);
             if (correct == -1) {
                 correct = null;
             }
 
             let options = null;
-            if(this.lOptions.length){
-                options = this.lOptions.map(function(itm){ return {
-                    text: itm.text, text_en: itm.text_en
-                };});
+            if (this.lOptions.length) {
+                options = this.lOptions.map(function (itm) {
+                    return {
+                        text: itm.text, text_en: itm.text_en
+                    };
+                });
             }
             this.$emit('update:options', {options: options});
             this.$emit('update:verification', {correct: correct});
@@ -106,7 +109,7 @@ export default {
     watch: {
         lOptions: {
             deep: true,
-            handler(){
+            handler() {
                 this.update();
             }
         },
@@ -116,8 +119,8 @@ export default {
     },
     created() {
         _counter = 0;
-        if(_isObject(this.options) && _isArray(this.options.options)){
-            this.lOptions = this.options.options.map(function(itm){
+        if (_isObject(this.options) && _isArray(this.options.options)) {
+            this.lOptions = this.options.options.map(function (itm) {
                 itm.index = _counter++;
                 return itm;
             });
@@ -140,7 +143,7 @@ export default {
 <style lang="scss" scoped>
 @import "resources/css/admin-vars";
 
-    :deep(.option) {
+:deep(.option) {
     border-radius: 5px;
     padding-left: 10px;
     position: relative;
@@ -149,12 +152,13 @@ export default {
     .btn-remove {
         color: $dark-shadow-color;
         font-size: 0.9em;
+        padding: 0;
 
         &:hover {
             color: $attractive-color;
         }
 
-        padding: 0;
+
     }
 
     .handler {

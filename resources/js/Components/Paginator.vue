@@ -74,8 +74,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "resources/css/admin-vars";
+
 .pagination {
-    @import "resources/css/admin-vars";
 
     width: auto;
     margin: 0 5px 0 auto;

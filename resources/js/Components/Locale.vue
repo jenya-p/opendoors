@@ -38,11 +38,12 @@ a{
     color: $dark-shadow-color;
     text-decoration: none;
     transition: color 200ms ease;
+    padding: 5px;
 
     &:hover{
         color: $fore-color
     }
-    padding: 5px;
+
 }
 
 </style>

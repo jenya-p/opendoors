@@ -1,66 +1,6 @@
 <script>
 
-import Editor from 'ckeditor5-custom-build';
-// import translations from 'ckeditor5/translations/ru.js';
-
-
-// import 'ckeditor5/ckeditor5.css';
-// import {
-    // InlineEditor,
-    // AccessibilityHelp,
-    // Alignment,
-    // Autoformat,
-    // AutoImage,
-    // AutoLink,
-    // Autosave,
-    // BlockQuote,
-    // Bold,
-    // Code,
-    // CodeBlock,
-    // Essentials,
-    // FontBackgroundColor,
-    // FontColor,
-    // FontFamily,
-    // FontSize,
-    // GeneralHtmlSupport,
-    // Heading,
-    // Highlight,
-    // HorizontalLine,
-    // ImageBlock,
-    // ImageCaption,
-    // ImageInline,
-    // ImageInsert,
-    // ImageInsertViaUrl,
-    // ImageResize,
-    // ImageStyle,
-    // ImageTextAlternative,
-    // ImageToolbar,
-    // ImageUpload,
-    // Indent,
-    // IndentBlock,
-    // Italic,
-    // Link,
-    // LinkImage,
-    // List,
-    // Paragraph,
-    // PasteFromOffice,
-    // RemoveFormat,
-    // SelectAll,
-    // SimpleUploadAdapter,
-    // Strikethrough,
-    // Style,
-    // Subscript,
-    // Superscript,
-    // Table,
-    // TableCellProperties,
-    // TableColumnResize,
-    // TableProperties,
-    // TableToolbar,
-    // TextTransformation,
-    // Underline,
-    // Undo
-//} from 'ckeditor5';
-// import Math from "@isaul32/ckeditor5-math/src/math";
+// import Editor from 'ckeditor5-custom-build';
 
 import {markRaw} from "vue";
 import _debounce from "lodash/debounce";
@@ -79,10 +19,10 @@ export default {
             default: false
         }
     },
-    emits: ['ready', 'update:modelValue', 'focus', 'blur'],
+    emits: ['ready', 'update:modelValue', 'focus', 'blur', 'destroy'],
     methods: {
         focus() {
-            this.$refs.editor.$el.ckeditorInstance.editing.view.focus();
+            this.instance.editing.view.focus();
         }
     },
     data() {
@@ -272,7 +212,7 @@ export default {
                     }
                 }
             },
-            placeholder: 'Type or paste your content here!',
+            placeholder: 'Введите или вставьте сюда ваш текст!',
             style: {
                 definitions: [
                     {
@@ -356,9 +296,9 @@ export default {
         }
 
 
-        Editor.create($v.$refs.element, editorConfig)
+        window.InlineEditor.create($v.$refs.element, editorConfig)
             .then(editor => {
-                $v.instance = editor; // markRaw( editor );
+                $v.instance = markRaw( editor );
 
                 setUpEditorEvents( editor );
 
@@ -371,8 +311,6 @@ export default {
                 if ($v.disabled) {
                     editor.enableReadOnlyMode('123123321321');
                 }
-
-                window.ed = editor;
 
                 // Let the world know the editor is ready.
                 $v.$emit('ready', editor);

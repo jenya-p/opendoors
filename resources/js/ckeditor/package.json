@@ -7,7 +7,6 @@
     "private": true,
     "main": "./build/ckeditor.js",
     "types": "./build/ckeditor.d.ts",
-    "type": "commonjs",
     "dependencies": {
         "@ckeditor/ckeditor5-autoformat": "41.4.2",
         "@ckeditor/ckeditor5-basic-styles": "41.4.2",

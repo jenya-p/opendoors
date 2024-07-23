@@ -156,12 +156,12 @@ export default {
     .btn-remove {
         color: $dark-shadow-color;
         font-size: 0.9em;
-
+        padding: 0;
         &:hover {
             color: $attractive-color;
         }
 
-        padding: 0;
+
     }
 
     .handler {

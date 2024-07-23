@@ -26,10 +26,10 @@ export default defineConfig({
             include: resolve(dirname(fileURLToPath(import.meta.url)), '@/resources/js/**'),
         }),
     ],
-    optimizeDeps: {
-        include: ['ckeditor5-custom-build'],
-    },
-    build: {
-        commonjsOptions: { exclude: ['ckeditor5-custom-build'], include: [] },
-    },
+    // optimizeDeps: {
+    //     include: ['ckeditor5-custom-build'],
+    // },
+    // build: {
+    //     commonjsOptions: { exclude: ['ckeditor5-custom-build'], include: [] },
+    // },
 });

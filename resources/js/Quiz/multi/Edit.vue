@@ -15,12 +15,12 @@
                 <field :errors="errors"
                        label="Русский текст"
                        :for="'options.options.' + element.index + '.text'" class="field-option">
-                    <editor v-model="element.text" ref="optionTextInput" :item="['question', $parent.item.id, 'option']"/>
+                    <editor v-model="element.text" ref="optionTextInput" :item="['question', $parent.item?.id, 'option']"/>
                 </field>
                 <field :errors="errors"
                        label="Английский текст"
                        :for="'options.options.' + element.index + '.text_en'" class="field-option">
-                    <editor v-model="element.text_en" :item="['question', $parent.item.id, 'option_en']"/>
+                    <editor v-model="element.text_en" :item="['question', $parent.item?.id, 'option_en']"/>
                 </field>
                 <field label="" class="field-right">
                     <checkbox v-model="right" :value="element.index">Верный ответ</checkbox>
