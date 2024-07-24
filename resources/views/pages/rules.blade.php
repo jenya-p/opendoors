@@ -109,7 +109,6 @@
                                 <a
                                     href="{{$file->downloadUrl}}"
                                     title="Download {{$block['title']}}"
-                                    download
                                     class="flex h-full flex-col gap-4 rounded-[1rem] bg-white fill-gray-light p-6 transition-colors md:hover:fill-pink md:hover:text-pink"
                                 >
                                     <div class="text-[1.5rem] font-bold leading-9">
