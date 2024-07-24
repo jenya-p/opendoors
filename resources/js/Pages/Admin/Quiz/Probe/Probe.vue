@@ -145,6 +145,11 @@ export default {
             let $v = this;
             this.form.post(route('admin.quiz-probe.check'));
         }
+    },
+    mounted() {
+        if (window.MathJax){
+            MathJax.Hub.Typeset();
+        }
     }
 }
 </script>

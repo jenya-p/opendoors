@@ -6,7 +6,7 @@
         <a href="/about" title="{{__('About')}}" class="hover:text-blue"> {{__('About')}} </a>
     </li>
     <li>
-        <a href="/rules" title="{{__('Rules')}}" class="hover:text-blue"> {{__('Rules')}} </a>
+        <a href="/rules" title="{{__('Rules and Tracks')}}" class="hover:text-blue"> {{__('Rules and Tracks')}} </a>
     </li>
     <li>
         <a href="/#universities" title="{{__('Universities')}}" class="hover:text-blue"> {{__('Universities')}} </a>
