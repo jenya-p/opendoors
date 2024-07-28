@@ -8,7 +8,7 @@ import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite';
 export default defineConfig({
     plugins: [
         laravel({
-            input: ['resources/js/register.js', 'resources/js/admin.js'],
+            input: ['resources/js/app.js', 'resources/js/register.js', 'resources/js/admin.js'],
             refresh: true,
         }),
         vue({
