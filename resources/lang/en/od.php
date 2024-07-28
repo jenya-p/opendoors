@@ -17,5 +17,9 @@ return [
     'Schedule' => 'Schedule',
     'Open detailed schedule' => 'Open detailed schedule',
     'Close detailed schedule' => 'Close detailed schedule',
-    'FAQ' => 'FAQ'
+    'FAQ' => 'FAQ',
+
+    'registration' => [
+        'title' => 'Registration'
+    ]
 ];

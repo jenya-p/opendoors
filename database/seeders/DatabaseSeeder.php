@@ -8,6 +8,9 @@ use App\Models\Content\FaqCategory;
 use App\Models\Content\News;
 use App\Models\Content\Schedule;
 use App\Models\Content\Widget;
+use App\Models\Dir\Citizenship;
+use App\Models\Dir\Country;
+use App\Models\Dir\Region;
 use App\Models\EduLevel;
 use App\Models\Profile;
 use App\Models\ProfileFile;
@@ -19,15 +22,14 @@ use App\Models\University;
 use App\Models\UniversityProfile;
 use App\Models\UniversityUser;
 use App\Models\User;
-use Carbon\Carbon;
 use Faker\Factory;
 use GuzzleHttp\Client;
 use Heriw\LaravelSimpleHtmlDomParser\HtmlDomParser;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Password;
-use Illuminate\Support\Str;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Reader\Xls;
 use simplehtmldom\simple_html_dom_node;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -38,12 +40,116 @@ class DatabaseSeeder extends Seeder {
      */
     public function run(): void {
 
-        $this->methhodists();
+        $this->countries();
+//        $this->methhodists();
 //        $this->partners();
 //
 //        $this->profileFileTypes();
 //
 //        $this->profileFiles();
+
+    }
+
+    public function countries(){
+
+        \DB::statement('SET FOREIGN_KEY_CHECKS = 0;');
+        DB::table('dir_countries')->truncate();
+        DB::table('dir_regions')->truncate();
+        \DB::statement('SET FOREIGN_KEY_CHECKS = 1;');
+
+        // $countries = $this->exl('country');
+
+
+        $regionMap = [];
+        $regions = $this->exl('region');
+        foreach ($regions as $reg){
+            $regionMap[$reg['ID']] = Region::create([
+                'name' => $reg['name'],
+                'name_en' => $reg['name_en'],
+                'code' => $reg['code'],
+            ])->id;
+        }
+        $countries = $this->exl('country');
+        foreach ($countries as $country){
+            Country::create([
+                'name' => $country['name'],
+                'name_en' => $country['name_en'],
+                'code' => $country['iso_code'],
+                'region_id' => array_key_exists($country['region_id'], $regionMap) ? $regionMap[$country['region_id']] : null
+            ]);
+        }
+    }
+
+
+    public function exl($name){
+
+        $excel = IOFactory::load(resource_path('temp/' . $name . '.xls'));
+        $sheet = $excel->getActiveSheet();
+        $keys = [];
+
+        $i = 1;
+
+        for($j = 1; !empty($value = $sheet->getCell([$j, $i])->getValue()); $j++){
+            $keys[$j] = $value;
+        }
+
+        $data = [];
+        for($i = 2; $i <= $sheet->getHighestRow(); $i++){
+            $item = [];
+            foreach ($keys as $j => $key){
+                $item[$key] = $sheet->getCell([$j, $i])->getValue();
+            }
+            $data[] = $item;
+        }
+
+        return $data;
+
+    }
+
+    public function citizenship(){
+
+        \DB::statement('SET FOREIGN_KEY_CHECKS = 0;');
+        DB::table('dir_citizenships')->truncate();
+        \DB::statement('SET FOREIGN_KEY_CHECKS = 1;');
+
+        $f = fopen(resource_path('temp/Citizenships.csv'), 'r');
+        $titleCase = function ($string, $delimiters = array(" ", "-", ".", "(", ")"), $exceptions = array("и", "to", "д", "of", "the", "and", 'part', 'часть')){
+
+            $string = mb_convert_case($string, MB_CASE_TITLE, "UTF-8");
+            foreach ($delimiters as $dlnr => $delimiter) {
+                $words = explode($delimiter, $string);
+                $newwords = array();
+                foreach ($words as $wordnr => $word) {
+                    if (in_array(mb_strtoupper($word, "UTF-8"), $exceptions)) {
+                        // check exceptions list for any words that should be in upper case
+                        $word = mb_strtoupper($word, "UTF-8");
+                    } elseif (in_array(mb_strtolower($word, "UTF-8"), $exceptions)) {
+                        // check exceptions list for any words that should be in upper case
+                        $word = mb_strtolower($word, "UTF-8");
+                    } elseif (!in_array($word, $exceptions)) {
+                        // convert to uppercase (non-utf8 only)
+                        $word = ucfirst($word);
+                    }
+                    array_push($newwords, $word);
+                }
+                $string = join($delimiter, $newwords);
+            }//foreach
+            return $string;
+        };
+
+        while (false !== $row = fgetcsv($f, null, ';')){
+            echo 1;
+            if(!count($row) > 2){
+                dd($row);
+            } else {
+                Citizenship::create([
+                    'name' => $titleCase($row[0]),
+                    'name_en' => $titleCase($row[1]),
+                    'code' => $row[2],
+                ]);
+            }
+
+        }
 
     }
 

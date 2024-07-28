@@ -1,0 +1,12 @@
+
+		<html>
+		<head>
+		<title>Records for highload information block "FieldType"</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<style>
+			td {mso-number-format:\@;}
+			.number0 {mso-number-format:0;}
+			.number2 {mso-number-format:Fixed;}
+		</style>
+		</head>
+		<body><table border="1"><tr><td>ID</td><td>code</td><td>subject</td></tr><tr><td>1</td><td>text</td><td>&nbsp;</td></tr><tr><td>2</td><td>textarea</td><td>&nbsp;</td></tr><tr><td>3</td><td>select</td><td>&nbsp;</td></tr><tr><td>6</td><td>file</td><td>&nbsp;</td></tr><tr><td>7</td><td>date</td><td>&nbsp;</td></tr><tr><td>8</td><td>directory</td><td>&nbsp;</td></tr></table></body></html>

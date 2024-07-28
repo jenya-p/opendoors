@@ -20,7 +20,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @mixin \Eloquent
  */
 class EduLevel extends Model {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, Translable;
+
+    protected $translable = ['name'];
 
     protected $table = 'edu_levels';
 

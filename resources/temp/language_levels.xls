@@ -1,0 +1,12 @@
+
+		<html>
+		<head>
+		<title>Records for highload information block "LanguageLevel"</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<style>
+			td {mso-number-format:\@;}
+			.number0 {mso-number-format:0;}
+			.number2 {mso-number-format:Fixed;}
+		</style>
+		</head>
+		<body><table border="1"><tr><td>ID</td><td>language_id</td><td>level_code</td><td>level_value_ru</td><td>level_value_en</td></tr><tr><td>1</td><td>2</td><td>native</td><td>Родной</td><td>Native</td></tr><tr><td>2</td><td>2</td><td>fluent</td><td>Уверенный</td><td>Fluent</td></tr><tr><td>3</td><td>2</td><td>intermediate</td><td>Средний</td><td>Intermediate</td></tr><tr><td>4</td><td>2</td><td>beginner</td><td>Начальный</td><td>Beginner</td></tr><tr><td>5</td><td>1</td><td>native</td><td>Родной</td><td>Native</td></tr><tr><td>6</td><td>1</td><td>fluent</td><td>Уверенный</td><td>Fluent</td></tr><tr><td>7</td><td>1</td><td>intermediate</td><td>Средний</td><td>Intermediate</td></tr><tr><td>8</td><td>1</td><td>beginner</td><td>Начальный</td><td>Beginner</td></tr><tr><td>9</td><td>1</td><td>do_not_speak</td><td>Не владею</td><td>Do not speak</td></tr></table></body></html>

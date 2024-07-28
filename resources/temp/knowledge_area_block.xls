@@ -1,0 +1,12 @@
+
+		<html>
+		<head>
+		<title>Records for highload information block "KnowledgeAreaBlock"</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<style>
+			td {mso-number-format:\@;}
+			.number0 {mso-number-format:0;}
+			.number2 {mso-number-format:Fixed;}
+		</style>
+		</head>
+		<body><table border="1"><tr><td>ID</td><td>code</td><td>name</td><td>name_en</td></tr><tr><td>1</td><td>1</td><td>Естественные и точные науки</td><td>Natural sciences</td></tr><tr><td>2</td><td>2</td><td>Техника и технологии</td><td>Engineering and technology</td></tr><tr><td>3</td><td>3</td><td>Медицинские науки и общественное здравоохранение</td><td>Medical and health sciences</td></tr><tr><td>4</td><td>4</td><td>Сельскохозяйственные науки</td><td>Agricultural sciences</td></tr><tr><td>5</td><td>5</td><td>Социальные науки</td><td>Social sciences</td></tr><tr><td>6</td><td>6</td><td>Гуманитарные науки</td><td>Humanities</td></tr></table></body></html>

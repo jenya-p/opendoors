@@ -12,7 +12,10 @@ return [
     'Open detailed schedule' => 'Открыть подробное расписание',
     'Close detailed schedule' => 'Закрыть подробное расписание',
 
-    'FAQ' => 'Часто задаваемые вопросы'
+    'FAQ' => 'Часто задаваемые вопросы',
 
+    'registration' => [
+        'title' => 'Registration'
+    ]
 
 ];

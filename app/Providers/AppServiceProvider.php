@@ -10,6 +10,8 @@ use App\Models\User;
 use App\Policies\Quiz\QuestionPolicy;
 use App\Policies\Quiz\QuizPolicy;
 use App\Policies\UserPolicy;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Blade;
@@ -47,6 +49,15 @@ class AppServiceProvider extends ServiceProvider
                     }
                 }
             } ?>';
+        });
+
+        Collection::macro('translate', function(){
+            $this->each(function(Model $model){
+                if(method_exists($model, 'translate')){
+                    $model->translate();
+                }
+            });
+            return $this;
         });
 
         Arr::macro('assocToOptions', function ($src) {

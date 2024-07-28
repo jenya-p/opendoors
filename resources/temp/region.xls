@@ -1,0 +1,12 @@
+
+		<html>
+		<head>
+		<title>Records for highload information block "Region"</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<style>
+			td {mso-number-format:\@;}
+			.number0 {mso-number-format:0;}
+			.number2 {mso-number-format:Fixed;}
+		</style>
+		</head>
+		<body><table border="1"><tr><td>ID</td><td>name</td><td>name_en</td><td>code</td></tr><tr><td>1</td><td>Россия</td><td>Russian</td><td>russian</td></tr><tr><td>2</td><td>Австралия и Океания</td><td>Australia and Oceania</td><td>australia</td></tr><tr><td>3</td><td>Азия</td><td>Asia</td><td>asia</td></tr><tr><td>4</td><td>Америка</td><td>America</td><td>america</td></tr><tr><td>5</td><td>Африка</td><td>Africa</td><td>africa</td></tr><tr><td>6</td><td>Европа</td><td>Europe</td><td>europe</td></tr><tr><td>7</td><td>СНГ</td><td>CIS</td><td>sng</td></tr></table></body></html>

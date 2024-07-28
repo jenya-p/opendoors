@@ -1,0 +1,49 @@
+<?php
+
+namespace App\Http\Controllers\Admin{Namespace};
+
+use App\Http\Controllers\Controller;
+use App\Http\Requests{Namespace}\{Name}Request;
+use App\Models{Namespace}\{Name};
+use Inertia\Inertia;
+
+class {Name}Controller extends Controller {
+
+    public function index() {
+
+        $items = {Name}::all();
+
+        return Inertia::render('Admin{NamespacePath}/{Name}/Index', [
+            'items' => $items
+        ]);
+    }
+
+
+    public function create() {
+         return Inertia::render('Admin{NamespacePath}/{Name}/Edit', ['item' => new {Name}()]);
+    }
+
+
+    public function store({Name}Request $request) {
+        ${name} = {Name}::create($request->validated());
+        return \Redirect::route('admin.{route}.index');
+    }
+
+    public function edit({Name} ${name}) {
+        return Inertia::render('Admin{NamespacePath}/{Name}/Edit', [
+            'item' => ${name},
+        ]);
+    }
+
+
+    public function update({Name}Request $request, {Name} ${name}) {
+        ${name}->update($request->validated());
+        return \Redirect::route('admin.{route}.index');
+    }
+
+
+    public function destroy({Name} ${name}) {
+        ${name}->delete();
+        return ['result' => 'ok'];
+    }
+}

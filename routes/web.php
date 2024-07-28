@@ -91,6 +91,17 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']], 
         Route::resource('profile', \App\Http\Controllers\Admin\ProfileController::class)->except(['show']);
         Route::get('profile/{profile}/status', [\App\Http\Controllers\Admin\ProfileController::class, 'status'])->name('profile.status');
         Route::resource('stage', \App\Http\Controllers\Admin\StageController::class)->except(['show', 'create', 'store']);
+
+        Route::resource('dir-region', \App\Http\Controllers\Admin\Dir\RegionController::class)
+            ->parameters(['dir-region' => 'region'])
+            ->except('show');
+        Route::resource('dir-country', \App\Http\Controllers\Admin\Dir\CountryController::class)
+            ->parameters(['dir-country' => 'country'])
+            ->except('show');
+        Route::resource('dir-citizenship', \App\Http\Controllers\Admin\Dir\CitizenshipController::class)
+            ->parameters(['dir-citizenship' => 'citizenship'])
+            ->except('show');
+
     });
 
     Route::resource('quiz', \App\Http\Controllers\Admin\Quiz\QuizController::class)->except([]);

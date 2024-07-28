@@ -171,6 +171,21 @@ class HandleInertiaRequests extends Middleware {
                         'href' => route('admin.stage.index'),
                         'i' => "fa fa-bars",
                         'label' => 'Этапы',
+                    ], [
+                        'key' => 'region',
+                        'href' => route('admin.dir-region.index'),
+                        'i' => "fa fa-globe",
+                        'label' => 'Регионы',
+                    ], [
+                        'key' => 'country',
+                        'href' => route('admin.dir-country.index'),
+                        'i' => "fa fa-globe",
+                        'label' => 'Страны',
+                    ], [
+                        'key' => 'Гражданство',
+                        'href' => route('admin.dir-citizenship.index'),
+                        'i' => "fa fa-globe",
+                        'label' => 'Гражданство',
                     ]
                 ]
             ];

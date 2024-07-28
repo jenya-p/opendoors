@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -46,4 +47,7 @@ class Track extends Model {
         return $this->belongsToMany(ProfileFileType::class, 'profile_file_tracks', 'track_id', 'type_id');
     }
 
+    public static function scopeActive(Builder $query){
+        return $query->where('status', '=', 'active');
+    }
 }

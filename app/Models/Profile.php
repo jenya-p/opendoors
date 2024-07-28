@@ -70,6 +70,9 @@ class Profile extends Model {
             ->orderBy('profile_file_types.order')->get();
     }
 
+    public static function scopeActive(Builder $query){
+        return $query->where('status', '=', 'active');
+    }
 
     public function scopeAvailable(Builder $query) {
         if(\Gate::check('admin')){
