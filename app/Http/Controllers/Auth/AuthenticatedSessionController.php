@@ -35,14 +35,15 @@ class AuthenticatedSessionController extends Controller
         $request->session()->regenerate();
 
         if (\Auth::user()->can('admin-users')) {
-            return redirect()->intended(route('admin.user.index', absolute: false));
+            return redirect(route('admin.user.index', absolute: false));
         } else if (\Auth::user()->can('admin-site')) {
-            return redirect()->intended(route('admin.widgets.index', absolute: false));
+            return redirect(route('admin.widgets.index', absolute: false));
         } else if (\Auth::user()->can('admin-quiz') ||
             \Auth::user()->hasAnyRoleOf(Quiz::class)) {
-            return redirect()->intended(route('admin.quiz.index', absolute: false));
+            return redirect(route('admin.quiz.index', absolute: false));
         } else {
-            return redirect(route('dashboard', absolute: false));
+            return redirect()->route('admin.user.edit', Auth::user());
+            // return redirect(route('dashboard', absolute: false));
         }
     }
 
