@@ -50,7 +50,7 @@ p{
     max-width: 1460px;margin: 0 auto;
 }
 
-header{
+header.guest-lay-header{
     display: flex;
     color: #141417;
     align-items: center;
@@ -186,7 +186,7 @@ header{
     }
 }
 @media screen and (max-width: 1100px) {
-    header{
+    header.guest-lay-header{
         padding-right: 55px;
         padding-left: 55px;
     }
@@ -199,7 +199,7 @@ header{
 
 }
 @media screen and (max-width: 950px){
-    header{
+    header.guest-lay-header{
         padding-right: 30px;
         padding-left: 30px;
     }
@@ -214,7 +214,7 @@ header{
     }
 }
 @media screen and (max-width: 750px){
-    header{
+    header.guest-lay-header{
         padding-right: 25px;
         padding-left: 25px;
     }
@@ -308,8 +308,6 @@ header{
         padding: 11px 22px 9px;
         font-weight: 600;
     }
-
-
 }
 
 

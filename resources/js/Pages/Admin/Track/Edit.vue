@@ -13,6 +13,10 @@
                     <input class="input" v-model="form.name_en"/>
                 </field>
 
+                <field :errors="form.errors" for="required_edu_level_ids.**" label="Необходимые уровни образования" class="field-checkboxes">
+                    <checkbox v-for="eduLevel of edu_level_options" v-model="form.required_edu_level_ids" :value="eduLevel.id">{{eduLevel.name}}</checkbox>
+                </field>
+
                 <div class="block-footer">
                     <button type="submit" class="btn btn-primary">Сохранить</button>
                     <!--                <History type="user"/>-->
@@ -30,14 +34,17 @@ import Field from "@/Components/Field.vue";
 import AdminLayout from "@/Layouts/AdminLayout.vue";
 import _extend from "lodash/extend";
 import TextareaAutosize from "@/Components/TextareaAutosize.vue";
+import Checkbox from "@/Components/Checkbox.vue";
 
 export default {
     components: {
+        Checkbox,
         TextareaAutosize,
         AdminLayout,
         Field
     },
     props: {
+        edu_level_options: Array,
         item: {
             type: Object,
             default: null
@@ -52,16 +59,14 @@ export default {
             form: useForm(_extend({
                 name: null,
                 name_en: null,
-                url: null
+                required_edu_level_ids: [],
             }, this.item)),
             tabErrors: {
                 info: false, questions: false
             }
         }
     },
-    watch: {
 
-    },
 
     methods: {
         submit() {
@@ -77,6 +82,10 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-
+.field-checkboxes:deep{
+    .field-inner {
+        flex-direction: column;
+    }
+}
 </style>
 

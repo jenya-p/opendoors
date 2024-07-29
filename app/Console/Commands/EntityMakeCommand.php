@@ -19,6 +19,8 @@ class EntityMakeCommand extends Command
     public function handle()
     {
 
+
+
         $this->entity(
             'region', [
             'Name' => 'Region',

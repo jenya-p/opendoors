@@ -6,7 +6,7 @@
             <div class="simple-list-filter-wrp">
                 <input type="text" class="input" placeholder="Поиск по имени и email"
                        v-model.lazy="filter">
-                <Link :href="route('admin.student.create')" class="btn btn-sm btn-primary ">
+                <Link :href="route('admin.participant.create')" class="btn btn-sm btn-primary ">
                     <i class="fa fa-plus" style="font-size: 0.8em; margin-right: 8px"></i>Добавить
                 </Link>
             </div>
@@ -38,10 +38,10 @@
                         <div class="secondary">{{ item.user.email }}</div>
                     </td>
                     <td>
-                        {{item.edu_level.name}}
+                        {{item.edu_levels.map(itm => itm.name).join(', ')}}
                     </td>
                     <td>
-                        {{item.citizenship}}
+                        {{item.citizenship?.name}}
                     </td>
                     <td>
                         {{
@@ -109,11 +109,11 @@ export default {
     },
     methods: {
         itemClick: function (item) {
-            this.$inertia.visit(route('admin.student.edit', {student: item.id}))
+            this.$inertia.visit(route('admin.participant.edit', {participant: item.id}))
         },
         async remove(item) {
             let index = this.items.data.findIndex(itm => itm.id === item.id);
-            let result = await axios.delete(route('admin.student.destroy', {student: item.id}));
+            let result = await axios.delete(route('admin.participant.destroy', {participant: item.id}));
             if (result.data.result == 'ok') {
                 this.items.data.splice(index, 1);
             } else {

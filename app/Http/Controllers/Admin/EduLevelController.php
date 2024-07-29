@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\EduLevelRequest;
 use App\Models\EduLevel;
+use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 
 class EduLevelController extends Controller {
@@ -38,6 +40,16 @@ class EduLevelController extends Controller {
         return \Redirect::route('admin.edu-level.index');
     }
 
+    public function status(EduLevel $eduLevel, Request $request) {
+        $data = $request->validate([
+            'status' => ['required', Rule::in('active', 'disabled')]
+        ]);
+        $eduLevel->update($data);
+        return [
+            'result' => 'ok',
+            'item' => $eduLevel
+        ];
+    }
 
     public function destroy(EduLevel $eduLevel) {
         $eduLevel->delete();

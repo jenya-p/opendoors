@@ -15,7 +15,8 @@
                 <thead class="m-hide">
                 <tr>
                     <th>Название</th>
-                    <th class="buttons"></th>
+                    <th class="table-buttons"></th>
+                    <th class="table-buttons"></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -24,7 +25,10 @@
                         <div class="primary">{{ item.name }}</div>
                         <div class="secondary">{{ item.name_en }}</div>
                     </td>
-                    <td class="buttons">
+                    <td class="table-button">
+                        <a @click.stop="changeStatus(item, $event)" class="item-status" :class="item.status"></a>
+                    </td>
+                    <td class="table-buttons">
                         <a class="fa fa-times btn-remove" @click.stop="remove(item)"></a>
                     </td>
                 </tr>
@@ -56,7 +60,18 @@ export default {
         itemClick: function (item) {
             this.$inertia.visit(route('admin.edu-level.edit', {'edu_level': item.id}))
         },
-
+        async changeStatus(item, ev) {
+            let index = this.items.findIndex(itm => itm.id === item.id);
+            ev.target.classList.add('loading');
+            let status = (item.status === 'active') ? 'disabled': 'active';
+            let result = await axios.get(route('admin.edu-level.status', {edu_level: item.id, status: status}));
+            ev.target.classList.remove('loading');
+            if (result.data.result === 'ok') {
+                this.items[index] = result.data.item
+            } else {
+                alert('Что-то пошло не так. Обновите страницу, пожалуйста, или обратитесь к администратору');
+            }
+        },
         async remove(item) {
             let index = this.items.findIndex(itm => itm.id === item.id);
             let result = await axios.delete(route('admin.edu-level.destroy', {edu_level: item.id}));

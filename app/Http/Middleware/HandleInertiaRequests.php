@@ -89,10 +89,10 @@ class HandleInertiaRequests extends Middleware {
                             'href' => route('admin.university-user.index')
                         ],
                         [
-                            'key' => 'student',
+                            'key' => 'participant',
                             'label' => 'Участники',
                             'i' => 'fa fa-users',
-                            'href' => route('admin.student.index')
+                            'href' => route('admin.participant.index')
                         ]
                     ]
 
@@ -171,7 +171,7 @@ class HandleInertiaRequests extends Middleware {
                         'href' => route('admin.stage.index'),
                         'i' => "fa fa-bars",
                         'label' => 'Этапы',
-                    ], [
+                    ], /*[
                         'key' => 'region',
                         'href' => route('admin.dir-region.index'),
                         'i' => "fa fa-globe",
@@ -181,8 +181,8 @@ class HandleInertiaRequests extends Middleware {
                         'href' => route('admin.dir-country.index'),
                         'i' => "fa fa-globe",
                         'label' => 'Страны',
-                    ], [
-                        'key' => 'Гражданство',
+                    ],*/ [
+                        'key' => 'dir-citizenship',
                         'href' => route('admin.dir-citizenship.index'),
                         'i' => "fa fa-globe",
                         'label' => 'Гражданство',

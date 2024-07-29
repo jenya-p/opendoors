@@ -70,7 +70,7 @@ export default {
                 </ul>
 
             </div>
-            <header>
+            <header class="guest-lay-header">
                 <div class="header-side-placeholder">
                     <Link href="/"><img src="/images/logo.png" class="header-logo" alt="" /></Link>
                 </div>

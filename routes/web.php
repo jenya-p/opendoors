@@ -71,7 +71,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']], 
             ->except(['show']);
         Route::resource('university-user', \App\Http\Controllers\Admin\UniversityUserController::class)
             ->except(['show']);
-        Route::resource('student', \App\Http\Controllers\Admin\StudentController::class)
+        Route::resource('participant', \App\Http\Controllers\Admin\ParticipantController::class)
             ->except(['show']);
     });
 
@@ -86,6 +86,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']], 
 
     Route::group(['middleware' => ['auth', 'can:admin']], function () {
         Route::resource('edu-level', \App\Http\Controllers\Admin\EduLevelController::class)->except(['show']);
+        Route::get('edu-level/{edu_level}/status', [\App\Http\Controllers\Admin\EduLevelController::class, 'status'])->name('edu-level.status');
         Route::resource('university', \App\Http\Controllers\Admin\UniversityController::class)->except(['show']);
         Route::resource('track', \App\Http\Controllers\Admin\TrackController::class)->except(['show']);
         Route::resource('profile', \App\Http\Controllers\Admin\ProfileController::class)->except(['show']);

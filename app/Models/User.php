@@ -3,10 +3,9 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Participant\Participant;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Concerns\HasRelationships;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -22,11 +21,10 @@ use Illuminate\Notifications\Notifiable;
  *
  * @property-read $display_name
  * @property-read $role_names
-
  *
  * @property-read Admin $admin
  * @property-read UniversityUser[] $universityUsers
- * @property-read Student[] $students
+ * @property-read Participant[] $participants
  * @property-read Attachment[] $userpick
  *
  * @mixin \Eloquent
@@ -86,8 +84,8 @@ class User extends Authenticatable
         return $this->hasOne(UniversityUser::class, 'user_id', 'id');
     }
 
-    public function students(){
-        return $this->hasOne(Student::class, 'user_id', 'id');
+    public function participants(){
+        return $this->hasOne(Participant::class, 'user_id', 'id');
     }
 
     public function userpick(){
@@ -100,11 +98,11 @@ class User extends Authenticatable
         if($this->admin()->exists()){
             $ret['admin'] = 'Администратор';
         }
-        if(($count = $this->universityUsers()->count()) > 0){
-            $ret['university-user'] = 'Представитель ВУЗ (' . $count . ')';
-        }
-        if(($count = $this->students()->count()) > 0){
-            $ret['student'] = 'Соискатель (' . $count . ')';
+//        if(($count = $this->universityUsers()->count()) > 0){
+//            $ret['university-user'] = 'Представитель ВУЗ' . ($count > 1 ? (' (' . $count . ')'): '');
+//        }
+        if(($count = $this->participants()->count()) > 0){
+            $ret['participant'] = 'Участник' . ($count > 1 ? (' (' . $count . ')'): '');
         }
 
         return $ret;

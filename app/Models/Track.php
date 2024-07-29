@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Participant\Member;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -18,8 +19,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property Carbon $deleted_at
+ * @property int[] $required_edu_level_ids
  *
- * @property-read StudentProfile[] $studentProfiles
+ * @property-read EduLevel[] $required_edu_levels
+ * @property-read Member[] $members
  *
  * @mixin \Eloquent
  */
@@ -28,7 +31,7 @@ class Track extends Model {
 
     protected $table = 'tracks';
 
-    protected $fillable = ['status', 'name','name_en', 'created_at', 'updated_at'];
+    protected $fillable = ['status', 'name', 'name_en', 'required_edu_level_ids', 'created_at', 'updated_at'];
 
     protected $translable = ['name'];
 
@@ -39,15 +42,27 @@ class Track extends Model {
     ];
 
 
-    public function studentProfiles(){
-        return $this->hasMany(StudentProfile::class, 'student_id', 'id');
+    public function members() {
+        return $this->hasMany(Member::class, 'participant_id', 'id');
     }
 
-    public function profileFileTypes(){
+    public function profileFileTypes() {
         return $this->belongsToMany(ProfileFileType::class, 'profile_file_tracks', 'track_id', 'type_id');
     }
 
-    public static function scopeActive(Builder $query){
+    public function requiredEduLevels() {
+        return $this->belongsToMany(EduLevel::class, 'track_edu_levels', 'track_id', 'edu_level_id');
+    }
+
+    public function getRequiredEduLevelIdsAttribute() {
+        return $this->requiredEduLevels()->pluck('id');
+    }
+
+    public function setRequiredEduLevelIdsAttribute($values) {
+        $this->requiredEduLevels()->sync($values);
+    }
+
+    public static function scopeActive(Builder $query) {
         return $query->where('status', '=', 'active');
     }
 }

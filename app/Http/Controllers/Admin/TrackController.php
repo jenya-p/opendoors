@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TrackRequest;
+use App\Models\EduLevel;
 use App\Models\Track;
 use Inertia\Inertia;
 
@@ -17,7 +18,11 @@ class TrackController extends Controller {
 
 
     public function create() {
-         return Inertia::render('Admin/Track/Edit', ['item' => new Track()]);
+        $item = new Track();
+        return Inertia::render('Admin/Track/Edit', [
+            'edu_level_options' => EduLevel::get(['id', 'name'])->toArray(),
+            'item' => $item
+        ]);
     }
 
 
@@ -27,7 +32,9 @@ class TrackController extends Controller {
     }
 
     public function edit(Track $track) {
+        $track->append('required_edu_level_ids');
         return Inertia::render('Admin/Track/Edit', [
+            'edu_level_options' => EduLevel::get(['id', 'name'])->toArray(),
             'item' => $track,
         ]);
     }

@@ -1,5 +1,6 @@
 <script>
 import {isString, isArray, isObject, isEmpty} from "lodash"
+import _isArray from "lodash/isArray";
 
 export default {
     props: ['errors', 'label', 'for', 'description'],
@@ -29,7 +30,13 @@ export default {
                     reg = new RegExp(reg);
                     for (const key in errors) {
                         if (reg.test(key) && !isEmpty(errors[key])) {
-                            e.push(errors[key]);
+                            if(_isArray(errors[key])){
+                                for (const err of errors[key]) {
+                                    e.push(err);
+                                }
+                            } else {
+                                e.push(errors[key]);
+                            }
                         }
                     }
                 }
