@@ -2,14 +2,14 @@
     <AdminLayout :title="$t('Университеты')">
         <form @submit.prevent="submit" class="block">
 
-            <h2>Приоритетные университеты для поступления</h2>
-            <p>Выберите от 1 до 6 вузов-организаторов Олимпиады в порядке приоритета.</p>
+            <h2>{{$t('HEADING1')}}</h2>
+            <p>{{$t('HEADING2')}}</p>
 
             <table class="table weight-table">
                 <tr>
                     <th></th>
-                    <th class="order">Приоритет</th>
-                    <th class="name">Название вуза</th>
+                    <th class="order">{{$t('Приоритет')}}</th>
+                    <th class="name">{{$t('Название вуза')}}</th>
                     <th class="remove"></th>
                 </tr>
                 <draggable
@@ -185,6 +185,8 @@ export default {
 <i18n>
 {
     "ru": {
+        "Приоритет": "Приоритет",
+        "Название вуза": "Название вуза",
         "Университеты": "Университеты",
         "HEADING1": "Приоритетные университеты для поступления",
         "HEADING2": "Выберите от 1 до 6 вузов-организаторов Олимпиады в порядке приоритета.",
@@ -193,6 +195,8 @@ export default {
         "Список университетов сохранен": "Список университетов сохранен"
     },
     "en": {
+        "Приоритет": "Priority",
+        "Название вуза": "University name",
         "Университеты": "Universities",
         "HEADING1": "Priority universities for admission",
         "HEADING2": "Select from 1 to 6 universities hosting the Olympiad in order of priority.",
