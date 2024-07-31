@@ -67,7 +67,7 @@ class HandleInertiaRequests extends Middleware {
         }
 
         $sidebar = [];
-        if (\Auth::user()->can('admin')) {
+
             if (\Gate::check('admin-users')) {
                 $sidebar[] =
                     [
@@ -292,7 +292,7 @@ class HandleInertiaRequests extends Middleware {
             }
 
 
-        } else if (\Auth::user()->can('participant')) {
+        if (\Auth::user()->can('participant')) {
 
             $sidebar[] = [
                 'key' => 'participant',
