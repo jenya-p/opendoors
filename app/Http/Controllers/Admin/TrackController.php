@@ -11,8 +11,10 @@ use Inertia\Inertia;
 class TrackController extends Controller {
 
     public function index() {
+        $items = Track::all();
+        $items->append('max_edu_level');
         return Inertia::render('Admin/Track/Index', [
-            'items' => Track::all()
+            'items' => $items
         ]);
     }
 

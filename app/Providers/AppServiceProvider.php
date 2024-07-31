@@ -35,9 +35,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        \Gate::define('admin', function ($user) {
-            return $user instanceof User && true;
-        });
 
         Blade::directive('translate', function (string $expression) {
             return '<?php if(' . $expression . ' instanceof \Illuminate\Database\Eloquent\Model && method_exists(' . $expression . ', \'translate\')){
@@ -104,6 +101,10 @@ class AppServiceProvider extends ServiceProvider
 
         Gate::define('admin-portfolio', function (User $user) {
             return $user->admin && $user->admin->hasRole(Admin::ROLE_MANAGE_PORTFOLIOS);
+        });
+
+        Gate::define('participant', function (User $user) {
+            return $user->participant()->exists();
         });
 
         Gate::policy(Question::class, QuestionPolicy::class);

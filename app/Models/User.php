@@ -25,6 +25,7 @@ use Illuminate\Notifications\Notifiable;
  * @property-read Admin $admin
  * @property-read UniversityUser[] $universityUsers
  * @property-read Participant[] $participants
+ * @property-read Participant $participant
  * @property-read Attachment[] $userpick
  *
  * @mixin \Eloquent
@@ -42,6 +43,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'locale'
     ];
 
     protected $appends = [
@@ -81,12 +83,17 @@ class User extends Authenticatable
     }
 
     public function universityUsers(){
-        return $this->hasOne(UniversityUser::class, 'user_id', 'id');
+        return $this->hasMany(UniversityUser::class, 'user_id', 'id');
     }
 
     public function participants(){
-        return $this->hasOne(Participant::class, 'user_id', 'id');
+        return $this->hasMany(Participant::class, 'user_id', 'id');
     }
+
+    public function participant(){
+        return $this->hasOne(Participant::class, 'user_id', 'id')->orderBy('id', 'desc');
+    }
+
 
     public function userpick(){
         return $this->hasOne(Attachment::class, 'item_id')

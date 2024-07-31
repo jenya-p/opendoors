@@ -9,7 +9,7 @@ use App\Models\Quiz\Quiz;
 use PHPUnit\Util\Json;
 use Tests\TestCase;
 
-class TranslablesTest extends TestCase {
+class MiscTest extends TestCase {
     /**
      * A basic test example.
      */
@@ -30,4 +30,6 @@ class TranslablesTest extends TestCase {
 
 
     }
+
+
 }

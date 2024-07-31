@@ -12,30 +12,25 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 
 /**
- * @property int $id
- * @property int $user_id               // Пользователь
+ * @property int        $id
+ * @property int        $participant_id         // Участник
+ * @property int        $edu_level_id           // Уровень образования
+ * @property int        $country_id             // Страна
+ * @property string     $name                   // Наименование учебного заведения
+ * @property int        $graduation_year        // Год выпуска
+ * @property string     $diploma_title          // Тема диплома
+ * @property boolean    $is_study_russian       // Обучение на русском языке
+ * @property boolean    $is_study_english       // Обучение на английском языке
  *
- * @property int    $citizenship_id     // Гражданство
- * @property string $last_name          // Имя
- * @property string $first_name         // Фамилия
- * @property string $sex                // Пол
- * @property Carbon $birthdate          // Дата рождения
- * @property string $phone              // Телефон
- *
- * @property int[] $edu_level_ids
- *
- * @property-read User $user
- * @property-read Citizenship $citizenship
- * @property-read EduLevel[] $eduLevels
- * @property-read Member[] $members
- * @property-read University[] $universities
+ * @property-read Participant   $participant
+ * @property-read EduLevel      $edu_level
  *
  * @mixin \Eloquent
  */
-class Participant extends Model {
-    use HasFactory, SoftDeletes;
+class Education extends Model {
+    use SoftDeletes;
 
-    protected $table = 'participants';
+    protected $table = 'participant_education';
 
     protected $fillable = ['user_id', 'citizenship_id',
         'last_name',
@@ -59,10 +54,6 @@ class Participant extends Model {
 
     public function members(){
         return $this->hasMany(Member::class);
-    }
-
-    public function universities(){
-        return $this->hasMany(University::class);
     }
 
     public function getEduLevelIdsAttribute() {

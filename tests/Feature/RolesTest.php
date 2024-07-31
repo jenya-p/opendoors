@@ -22,8 +22,14 @@ class RolesTest extends TestCase {
         if( \Auth::user()->can('viewAny', Quiz::class)){
             echo 'Доступно';
         };
-die;
+    }
 
+
+    public function testUserParticipants(){
+        $user = \App\Models\User::find(278);
+
+        dd($user->participant()->exists());
 
     }
+
 }

@@ -31,7 +31,6 @@
                              sex_options="{{ strip_tags(json_encode($sex_options)) }}"
                              track_options="{{ strip_tags(json_encode($track_options)) }}"
                              profile_options="{{ strip_tags(json_encode($profile_options)) }}"
-                             csrf="{{csrf_token()}}"
                         />
                     </div>
                 </div>

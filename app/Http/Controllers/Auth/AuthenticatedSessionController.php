@@ -34,7 +34,9 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        if (\Auth::user()->can('admin-users')) {
+        if (\Auth::user()->can('participant')) {
+            return redirect(route('lk.dashboard', absolute: false));
+        } else if (\Auth::user()->can('admin-users')) {
             return redirect(route('admin.user.index', absolute: false));
         } else if (\Auth::user()->can('admin-site')) {
             return redirect(route('admin.widgets.index', absolute: false));

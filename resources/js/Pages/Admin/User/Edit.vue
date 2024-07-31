@@ -42,11 +42,11 @@
 </template>
 
 <script>
-import {Head, Link, useForm} from '@inertiajs/vue3';
+import {useForm} from '@inertiajs/vue3';
 import Authenticated from '@/Layouts/AdminLayout.vue';
+import AdminLayout from '@/Layouts/AdminLayout.vue';
 import Field from "@/Components/Field.vue";
 import Password from "@/Pages/Admin/User/Password.vue";
-import AdminLayout from "@/Layouts/AdminLayout.vue";
 
 export default {
     components: {AdminLayout, Password, Field, Authenticated},

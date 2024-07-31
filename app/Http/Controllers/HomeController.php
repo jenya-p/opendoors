@@ -21,10 +21,6 @@ class HomeController extends Controller {
         $top = Widget::findByKey('home.top')->translate();
         $partners = Widget::findByKey('home.partners')->translate();
 
-        FaqCategory::addGlobalScope(Active::class);
-        Faq::addGlobalScope(Active::class);
-        Profile::addGlobalScope(Active::class);
-
         return view('pages.home', [
             'top' => $top->data,
             'profiles' => Profile::all(),
@@ -60,7 +56,6 @@ class HomeController extends Controller {
 
 
     public function profile(Profile $profile){
-        Profile::addGlobalScope(Active::class);
 
         $locale = app()->getLocale();
 

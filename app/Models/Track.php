@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 
 
 /**
@@ -22,6 +24,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property int[] $required_edu_level_ids
  *
  * @property-read EduLevel[] $required_edu_levels
+ * @property-read EduLevel  $max_edu_level
  * @property-read Member[] $members
  *
  * @mixin \Eloquent
@@ -55,11 +58,16 @@ class Track extends Model {
     }
 
     public function getRequiredEduLevelIdsAttribute() {
-        return $this->requiredEduLevels()->pluck('id');
+        return $this->requiredEduLevels()->pluck('id')->toArray();
     }
 
     public function setRequiredEduLevelIdsAttribute($values) {
         $this->requiredEduLevels()->sync($values);
+    }
+
+    public function getMaxEduLevelAttribute() {
+        $id = $this->requiredEduLevels()->active()->pluck('id')->last();
+        return EduLevel::find($id);
     }
 
     public static function scopeActive(Builder $query) {

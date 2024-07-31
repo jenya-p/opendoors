@@ -14,16 +14,28 @@
             <table class="table">
                 <thead class="m-hide">
                 <tr>
+                    <th class="order">Номер п/п</th>
                     <th>Название</th>
+                    <th class="booleans">Многократное</th>
+                    <th class="booleans">Диплом</th>
                     <th class="table-buttons"></th>
                     <th class="table-buttons"></th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr v-for="item of lItems.items" @click="itemClick(item)" class="cursor-pointer">
+                    <td class="order">
+                        {{item.order}}
+                    </td>
                     <td class="m-title">
                         <div class="primary">{{ item.name }}</div>
                         <div class="secondary">{{ item.name_en }}</div>
+                    </td>
+                    <td class="booleans">
+                        {{item.multiple ? 'Да' : ''}}
+                    </td>
+                    <td class="booleans">
+                        {{item.diploma ? 'Да' : ''}}
                     </td>
                     <td class="table-button">
                         <a @click.stop="changeStatus(item, $event)" class="item-status" :class="item.status"></a>
@@ -96,6 +108,12 @@ table.table{
     @include mobile{
         td.count .ttd-label {width: 150px}
     }
+
+    td,th{
+        &.booleans{width: 120px; text-align: center}
+        &.order{width: 50px; text-align: center}
+    }
+
 }
 
 </style>

@@ -41,13 +41,9 @@
                 <input type="date" class="input" v-model="form.birthdate" />
             </field>
 
-
-
             <field :errors="form.errors" for="required_edu_level_ids.**" label="Уровни образования" class="field-checkboxes">
                 <checkbox v-for="eduLevel of edu_level_options" v-model="form.edu_level_ids" :value="eduLevel.id">{{eduLevel.name}}</checkbox>
             </field>
-
-
 
             <div class="block-footer">
                 <button type="submit" class="btn btn-primary">Сохранить</button>

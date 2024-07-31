@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Profile\InfoController;
 use App\Http\Controllers\Profile\PaymentController;
+use App\Models\Quiz\Quiz;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/set-locale/{locale}', function ($locale) {
@@ -27,7 +29,18 @@ Route::group(['as' => 'public.', 'middleware' => []], function () {
 
 
 Route::get('/dashboard', function () {
-    return redirect()->route('admin.user.index');
+    if (\Auth::user()->can('participant')) {
+        return redirect(route('lk.dashboard', absolute: false));
+    } else if (\Auth::user()->can('admin-users')) {
+        return redirect(route('admin.user.index', absolute: false));
+    } else if (\Auth::user()->can('admin-site')) {
+        return redirect(route('admin.widgets.index', absolute: false));
+    } else if (\Auth::user()->can('admin-quiz') ||
+        \Auth::user()->hasAnyRoleOf(Quiz::class)) {
+        return redirect(route('admin.quiz.index', absolute: false));
+    } else {
+        return redirect()->route('admin.user.edit', Auth::user());
+    }
 })->name('dashboard');
 
 Route::get('/{slug}', [\App\Http\Controllers\HomeController::class, 'content'])
@@ -118,6 +131,22 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']], 
 
 //    Route::resource('backfeed', \App\Http\Controllers\Admin\BackfeedController::class)
 //        ->except(['show', 'create', 'store']);
+
+
+});
+
+
+Route::group(['prefix' => 'lk', 'as' => 'lk.', 'middleware' => ['auth', 'can:participant']], function () {
+
+    Route::get('/', [\App\Http\Controllers\Lk\ParticipantController::class, 'dashboard'])->name('dashboard');
+
+    Route::get('/me', [\App\Http\Controllers\Auth\RegisteredUserController::class, 'edit'])->name('participant.edit');
+    Route::put('/me', [\App\Http\Controllers\Auth\RegisteredUserController::class, 'update'])->name('participant.update');
+
+    Route::get('/universities', [\App\Http\Controllers\Lk\ParticipantController::class, 'universitiesEdit'])->name('universities.edit');
+    Route::put('/universities', [\App\Http\Controllers\Lk\ParticipantController::class, 'universitiesUpdate'])->name('universities.update');
+
+    Route::resource('education', \App\Http\Controllers\Lk\EducationController::class)->only('index', 'edit', 'update', 'delete');
 
 
 });

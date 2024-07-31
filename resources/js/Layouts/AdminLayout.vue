@@ -17,6 +17,7 @@ export default {
         <Sidebar />
         <main>
             <h1 class="page-title" v-if="!isMobile">{{title}}</h1>
+
             <div class="breadcrumb-wrapper">
                 <ol class="breadcrumb" style="background: transparent"  v-if="breadcrumb && breadcrumb.length > 1 && !isMobile">
                     <template v-for="item of breadcrumb">

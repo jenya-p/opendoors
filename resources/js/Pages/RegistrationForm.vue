@@ -1,5 +1,5 @@
 <template>
-    <form action="/register" @submit="submit" method="post" class="block">
+    <form action="/register" @submit.prevent.stop="submit" method="post" class="block">
         <input type="hidden" name="_token" :value="csrf">
         <h1>{{ $t('Регистрация участника олимпиады') }}</h1>
         <field for="locale" :label="$t('Язык участия в олимпиаде')">
@@ -58,16 +58,16 @@
                         <input type="password" v-model="form.password" class="input" :placeholder="$t('Пароль')"/>
                     </field>
 
-                    <field :errors="errors" for="confirm" :label="$t('Подтверждение пароля')">
-                        <input type="password" v-model="form.confirm" class="input"
+                    <field :errors="errors" for="password_confirmation" :label="$t('Подтверждение пароля')">
+                        <input type="password" v-model="form.password_confirmation" class="input"
                                :placeholder="$t('Повторите ввод пароля')"/>
                     </field>
 
                     <h2>{{ $t('SUBTITLE_2') }}</h2>
 
-                    <field :errors="errors" for="edu_levels.*" :label="$t('Уровень образования')"
-                           class="field-checkboxes">
-                        <checkbox v-for="edu_level of edu_level_options" v-model="form.edu_levels"
+                    <field :errors="errors" for="edu_level_ids.**" :label="$t('Уровень образования')"
+                           class="field-checkboxes field-edu_level">
+                        <checkbox v-for="edu_level of edu_level_options" v-model="form.edu_level_ids"
                                   :value="edu_level.id">
                             {{ edu_level.name }}
                         </checkbox>
@@ -150,9 +150,9 @@ export default {
             phone: null,
             email: '',
             password: '',
-            confirm: '',
-            edu_levels: [],
-            membership: [],
+            password_confirmation: '',
+            edu_level_ids: [],
+            members: [],
         }, data);
 
 
@@ -203,18 +203,18 @@ export default {
                     _isEmpty(this.form.phone) ||
                     _isEmpty(this.form.email) ||
                     _isEmpty(this.form.password) ||
-                    _isEmpty(this.form.confirm)
+                    _isEmpty(this.form.password_confirmation)
                 ) {
                     this.hint = this.$t('HINT_1');
                     return false;
                 }
 
-                if (this.form.edu_levels.length == 0) {
+                if (this.form.edu_level_ids.length == 0) {
                     this.hint = this.$t('HINT_2');
                     return false;
                 }
 
-                if (this.form.membership.length == 0) {
+                if (this.form.members.length == 0) {
                     this.hint = this.$t('HINT_3');
                     return false;
                 }
@@ -227,11 +227,9 @@ export default {
                 this.hint = null;
                 return true;
             } catch (e) {
-                console.error(e);
                 this.hint = null;
                 return false;
             }
-
         },
         submit(event) {
             event.preventDefault();
@@ -240,14 +238,11 @@ export default {
             }
             var $v = this;
             axios.post('/register', this.form).then(function(resp){
-                console.log(resp);
+                document.location = '/lk';
             }).catch(function(error){
                 if (error.response) {
                     if (error.response.data && error.response.data.errors && typeof error.response.data.errors == 'object') {
                         $v.errors = error.response.data.errors;
-                        Object.keys(error.response.data.errors).forEach(function (fieldName) {
-                            console.log(fieldName + ': ' + error.response.data.errors[fieldName][0]);
-                        })
                     }
                 } else {
                     console.log(error, this);
@@ -258,25 +253,11 @@ export default {
 
         profilesChange(trackId){
 
-            // Удаляем выбранный профиль из других треков
-            let selectedProfileIds = this.profiles[trackId].map(itm => itm.id);
-            for (const trackId2 in this.profiles) {
-                if(trackId2 != trackId){
-                    let newProfiles = [];
-                    for (const index in this.profiles[trackId2]) {
-                        if(!selectedProfileIds.includes(this.profiles[trackId2][index].id)){
-                            newProfiles.push(this.profiles[trackId2][index]);
-                        }
-                    }
-                    this.profiles[trackId2] = newProfiles;
-                }
-            }
-
-            // Переносим данные о треках и профилях в form.membership для отправки на сервер
-            this.form.membership.length = 0;
+            // Переносим данные о треках и профилях в form.members для отправки на сервер
+            this.form.members.length = 0;
             for (const trackId in this.profiles) {
                 for (const profile of this.profiles[trackId]) {
-                    this.form.membership.push({
+                    this.form.members.push({
                         track_id: trackId,
                         profile_id: profile.id
                     });
@@ -289,7 +270,7 @@ export default {
             for (const track of this.track_options) {
                 track.available = true;
                 for (const levelId of track.required_edu_level_ids) {
-                    if (this.form.edu_levels.indexOf(levelId) == -1) {
+                    if (this.form.edu_level_ids.indexOf(levelId) == -1) {
                         this.profiles[track.id].length = 0;
                         track.available = false;
                         this.availableTrackCount --;
@@ -308,7 +289,7 @@ export default {
                 localStorage.setItem('participant_registration', JSON.stringify(this.form));
             }
         },
-        'form.edu_levels'() {
+        'form.edu_level_ids'() {
             this.updateAvailableTracks()
         },
         phone_is_valid(val) {
@@ -327,14 +308,14 @@ export default {
 
         this.track_options = JSON.parse(this.$el.parentElement.getAttribute('track_options'));
         this.profile_options = JSON.parse(this.$el.parentElement.getAttribute('profile_options'));
-        this.csrf = this.$el.parentElement.getAttribute('csrf');
+        this.csrf = document.querySelector('[name="csrf-token"]').getAttribute('content');
 
         this.profiles = {};
         for (const track of this.track_options) {
             this.profiles[track.id] = [];
-            for (const membership of this.form.membership) {
-                if (membership.track_id == track.id) {
-                    let index = this.profile_options.findIndex(itm => itm.id == membership.profile_id);
+            for (const member of this.form.members) {
+                if (member.track_id == track.id) {
+                    let index = this.profile_options.findIndex(itm => itm.id == member.profile_id);
                     this.profiles[track.id].push(this.profile_options[index]);
                 }
             }

@@ -34,5 +34,7 @@
     "Track: ": "Трек: ",
     "Registration": "Регистрация",
     "Female":  "Женский",
-    "Male": "Мужской"
+    "Male": "Мужской",
+    "Анкета участника сохранена": "The participant's profile has been saved",
+    "Список университетов сохранен": "The list of universities has been saved"
 }

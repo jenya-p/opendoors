@@ -5,12 +5,25 @@
 
             <form method="post" @submit.prevent="submit" class="block" v-field-container>
                 <h2>Основная информация</h2>
+
+                <field :errors="form.errors" for="title" label="Номер п/п" class="field-short">
+                    <input type="number" min="0" class="input" v-model="form.order"/>
+                </field>
+
                 <field :errors="form.errors" for="title" label="Название">
                     <input class="input" v-model="form.name"/>
                 </field>
 
                 <field :errors="form.errors" for="title" label="Название (EN)">
                     <input class="input" v-model="form.name_en"/>
+                </field>
+
+                <field :errors="form.errors" for="multiple" label="" class="field-checkboxes">
+                    <checkbox v-model="form.multiple">Допускается многократное получение</checkbox>
+                </field>
+
+                <field :errors="form.errors" for="diploma" label="" class="field-checkboxes">
+                    <checkbox v-model="form.diploma">Дипломная работа по завершению</checkbox>
                 </field>
 
                 <div class="block-footer">
@@ -30,9 +43,11 @@ import Field from "@/Components/Field.vue";
 import AdminLayout from "@/Layouts/AdminLayout.vue";
 import _extend from "lodash/extend";
 import TextareaAutosize from "@/Components/TextareaAutosize.vue";
+import Checkbox from "@/Components/Checkbox.vue";
 
 export default {
     components: {
+        Checkbox,
         TextareaAutosize,
         AdminLayout,
         Field
@@ -50,9 +65,11 @@ export default {
         }
         return {
             form: useForm(_extend({
+                order: null,
                 name: null,
                 name_en: null,
-                url: null
+                diploma: false,
+                multiple: false,
             }, this.item)),
             tabErrors: {
                 info: false, questions: false
@@ -72,7 +89,7 @@ export default {
                 }
             }
             if (this.item.id) {
-                this.form.put(route('admin.edu-level.update', {university: this.item.id}));
+                this.form.put(route('admin.edu-level.update', {edu_level: this.item.id}));
             } else {
                 this.form.post(route('admin.edu-level.store'));
             }

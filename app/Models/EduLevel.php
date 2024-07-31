@@ -15,7 +15,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property int        $order          Порядок
  * @property string     $name           Название
  * @property string     $name_en        Название (En)
- * @property boolean    $multiple      Множественность
+ * @property boolean    $multiple       Множественность
+ * @property boolean    $diploma        Есть тема выпускной работы
  *
  * @property Carbon $created_at
  * @property Carbon $updated_at
@@ -32,10 +33,11 @@ class EduLevel extends Model {
 
     protected $table = 'edu_levels';
 
-    protected $fillable = ['status','order','name','name_en', 'multiple', 'created_at', 'updated_at'];
+    protected $fillable = ['status','order','name','name_en', 'multiple', 'diploma', 'created_at', 'updated_at'];
 
     protected $casts = [
         'multiple' => 'boolean',
+        'diploma' => 'boolean',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
         'deleted_at' => 'datetime'

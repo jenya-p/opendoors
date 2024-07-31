@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\ParticipantRegistrationRequest;
+use App\Http\Requests\Lk\ParticipantRequest;
 use App\Models\Content\FaqCategory;
 use App\Models\Content\Schedule;
 use App\Models\Dir\Citizenship;
@@ -30,11 +31,30 @@ class RegisteredUserController extends Controller {
      */
     public function create() {
 
-        EduLevel::addGlobalScope(Active::class);
-        Profile::addGlobalScope(Active::class);
-        Track::addGlobalScope(Active::class);
+        return view('pages.register', $this->getFormOptions());
 
-        return view('pages.register', [
+    }
+
+
+    public function edit(Request $request) {
+        $user = Auth()->user();
+        /** @var Participant $item */
+        $item = $user->participant;
+        $item->load([
+            'members:id,participant_id,profile_id,track_id',
+        ])->append('edu_level_ids');
+        $item->email = $user->email;
+        $item->locale = $user->locale;
+
+        return Inertia::render('Lk/Participant',
+            $this->getFormOptions() + [
+                'item' => $item
+            ]
+        );
+    }
+
+    public function getFormOptions() {
+        return [
             'edu_level_options' => EduLevel::get()->translate(),
             'citizenship_options' => Citizenship::all(['id', 'name', 'name_en', 'code'])->translate(),
             'locale_options' => \Arr::assocToOptions(['ru' => 'Русский', 'en' => 'English']),
@@ -43,33 +63,27 @@ class RegisteredUserController extends Controller {
                 ->append('required_edu_level_ids')
                 ->translate(),
             'profile_options' => Profile::get(['id', 'name', 'name_en'])->translate(),
-        ]);
-//
-//        return Inertia::render('Auth/Register', [
-//            'user' => Auth::user()
-//        ]);
+        ];
     }
 
-    /**
-     * Handle an incoming registration request.
-     *
-     * @throws \Illuminate\Validation\ValidationException
-     */
-    public function store(ParticipantRegistrationRequest $request): RedirectResponse {
+
+
+    public function store(ParticipantRegistrationRequest $request) {
 
         $user = User::create([
             'name' => $request->last_name . ' ' . $request->first_name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'locale' => $request->getLocale('locale'),
+            'locale' => $request->get('locale'),
         ]);
 
         $participant = $user->participants()
-            ->create($request->only(['citizenship_id','last_name','first_name','sex','birthdate','phone','email']));
+            ->create($request->only(['citizenship_id', 'last_name', 'first_name', 'sex', 'birthdate', 'phone', 'email']));
 
-        $participant->edu_level_ids = $request->edu_levels;
+        $participant->edu_level_ids = $request->edu_level_ids;
+        $participant->save();
 
-        foreach ($participant->members as $memberData){
+        foreach ($request->members as $memberData) {
             $member = $participant->members()->create($memberData);
         }
 
@@ -77,6 +91,55 @@ class RegisteredUserController extends Controller {
 
         Auth::login($user);
 
-        return redirect(route('dashboard', absolute: false));
+        if(\request()->isXmlHttpRequest()){
+            return ['result' => 'ok'];
+        } else {
+            return redirect(route('lk.dashboard', absolute: false));
+        }
+
     }
+
+
+
+    public function update(ParticipantRequest $request): RedirectResponse {
+
+
+        /** @var User $user */
+        $user = Auth::user();
+        $user->update([
+            'name' => $request->last_name . ' ' . $request->first_name,
+            'email' => $request->email,
+            'locale' => $request->get('locale'),
+        ]);
+
+
+        $user->participant
+            ->update($request->only(['citizenship_id', 'last_name', 'first_name', 'sex', 'birthdate', 'phone', 'email', 'edu_level_ids']));
+
+        $savedMembers = $user->participant->members()->get(['id', 'track_id','profile_id'])->toArray();
+
+        foreach ($request->members as $requestItem) {
+            $finded = false;
+            foreach ($savedMembers as $index => $savedItem){
+                if($savedItem['track_id'] == $requestItem['track_id'] && $savedItem['profile_id'] == $requestItem['profile_id']){
+                    $finded = true;
+                    unset($savedMembers[$index]);
+                    break;
+                }
+            }
+            if(!$finded){
+                $user->participant->members()->create([
+                    'track_id' => $requestItem['track_id'],
+                    'profile_id' => $requestItem['profile_id']
+                ]);
+            }
+        }
+        foreach ($savedMembers as $index => $savedItem){
+            Member::find($savedItem['id'])->delete();
+        }
+
+        return redirect()->back()->with('message', _('Анкета участника сохранена'));
+    }
+
+
 }

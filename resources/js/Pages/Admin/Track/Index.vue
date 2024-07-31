@@ -15,6 +15,7 @@
                 <thead class="m-hide">
                 <tr>
                     <th>Название</th>
+                    <th>Уровень обр.</th>
                     <th class="buttons"></th>
                 </tr>
                 </thead>
@@ -23,6 +24,9 @@
                     <td class="m-title">
                         <div class="primary">{{ item.name }}</div>
                         <div class="secondary">{{ item.name_en }}</div>
+                    </td>
+                    <td>
+                        {{item.max_edu_level?.name}}
                     </td>
                     <td class="buttons">
                         <a class="fa fa-times btn-remove" @click.stop="remove(item)"></a>

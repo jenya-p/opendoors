@@ -52,6 +52,10 @@ export function SimpleList(vueComponent, options) {
                         return res * desc;
                     }
                 }
+                if(itm1.hasOwnProperty('order') && itm2.hasOwnProperty('order')
+                    && itm1.order != itm2.order){
+                    return (itm1.order - itm2.order) * desc;
+                }
                 return (itm1.id - itm2.id) * desc;
             }).map(function (itm) {
                 that.items.push(itm);

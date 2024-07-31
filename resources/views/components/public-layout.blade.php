@@ -8,7 +8,7 @@
 
     <link rel="icon" href="/favicon.ico" type="image/x-icon" sizes="48x48" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@300..600&family=Jura:wght@700&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap"
         rel="stylesheet">
