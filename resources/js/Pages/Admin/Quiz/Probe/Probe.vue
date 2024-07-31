@@ -150,6 +150,11 @@ export default {
         if (window.MathJax){
             MathJax.Hub.Typeset();
         }
+    },
+    updated() {
+        if (window.MathJax){
+            MathJax.Hub.Typeset();
+        }
     }
 }
 </script>
