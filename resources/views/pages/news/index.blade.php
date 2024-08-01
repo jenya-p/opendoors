@@ -32,7 +32,7 @@
               class="col-span-2 row-start-2 mx-auto whitespace-nowrap text-balance md:col-span-1 md:row-start-auto"
             >
                 <a
-                href="http://globaluni.ru/#/news/?utm_source=od&utm_campaign=news"
+                href="http://globaluni.ru/#/news/"
                 title="{{__('More news')}}"
                 class="text-[0.75rem] font-semibold uppercase text-blue transition-colors hover:text-black"
                 >{{__('More news on the website of the Association')}}</a>
