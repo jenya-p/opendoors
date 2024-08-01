@@ -231,6 +231,7 @@ export default {
     .question-image-wrapper{
         img{
             max-width: 100%;
+            max-height: 50vh;
         }
     }
     .question-text {
