@@ -106,7 +106,7 @@ export default {
                     'superscript',
                     // 'code',
                     'math',
-                    // 'removeFormat',
+                    'removeFormat',
                     '|',
                     //'horizontalLine',
                     'link',
@@ -122,7 +122,7 @@ export default {
                     'numberedList',
                     'outdent',
                     'indent',
-                    'htmlEmbed'
+                    'htmlEmbed',
                     // 'sourceEditing'
                     //'mediaEmbed'
                     // '|',
