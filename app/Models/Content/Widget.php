@@ -2,6 +2,7 @@
 
 namespace App\Models\Content;
 
+use App\Models\HasAttachments;
 use App\Models\Translable;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -23,7 +24,7 @@ use PHPUnit\Util\Json;
  */
 class Widget extends Model {
 
-    use SoftDeletes, Translable;
+    use SoftDeletes, Translable, HasAttachments;
 
     protected $table = 'content_widgets';
 
@@ -51,5 +52,6 @@ class Widget extends Model {
     public static function findByKey($key){
         return self::where('key', '=', $key)->first();
     }
+
 
 }

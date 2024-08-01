@@ -29,6 +29,10 @@ class AttachmentController extends Controller
 
 	}
 
+    public function show(Attachment $attachment){
+        return $attachment;
+    }
+
 	public function store(Request $request){
 
         $request->validate([

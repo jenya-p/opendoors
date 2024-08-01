@@ -9,7 +9,7 @@ class WidgetRequest extends FormRequest {
 
     public function rules(): array {
         return [
-            'data' => 'nullable|json'
+            'content' => 'nullable'
         ];
     }
 }
