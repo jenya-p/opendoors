@@ -32,7 +32,7 @@ class UserController extends \Illuminate\Routing\Controller
         $filter = trim($request->filter);
         if(!empty($filter)){
             $lcQuery = '%' . mb_strtolower(trim($filter)) . '%';
-            $query->whereRaw('name like ? or email like ?', [$lcQuery,$lcQuery]);
+            $query->whereRaw('(name like ? or email like ?)', [$lcQuery,$lcQuery]);
         }
 
         if(!empty($request->sort)){
@@ -121,7 +121,7 @@ class UserController extends \Illuminate\Routing\Controller
         $filter = trim($request->get('query'));
         if(!empty($filter)){
             $lcQuery = '%' . mb_strtolower($filter) . '%';
-            $query->whereRaw('name like ? or email like ?', [$lcQuery,$lcQuery]);
+            $query->whereRaw('(name like ? or email like ?)', [$lcQuery,$lcQuery]);
         }
 
         $query->orderBy('name', 'asc')->limit(10);

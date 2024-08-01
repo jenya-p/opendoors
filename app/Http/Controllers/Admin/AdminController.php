@@ -27,7 +27,7 @@ class AdminController extends Controller
             $lcQuery = '%' . mb_strtolower(trim($filter)) . '%';
             $query->whereIn('id', function(Builder $subQuery) use ($lcQuery){
                 return $subQuery->select('id')->from('users')
-                    ->whereRaw('users.name like ? or users.email like ?', [$lcQuery,$lcQuery]);
+                    ->whereRaw('(users.name like ? or users.email like ?)', [$lcQuery,$lcQuery]);
             });
         }
 

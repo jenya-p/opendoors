@@ -37,6 +37,10 @@ class QuestionPolicy {
         return $user->hasAnyRoleOf($question->quiz, [Quiz::ROLE_EDITOR, Quiz::ROLE_MANAGER]);
     }
 
+    public function probe(User $user, Question $question){
+        return $this->view($user, $question);
+    }
+
     public function restore(User $user, Question $question){
 
     }

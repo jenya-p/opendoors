@@ -7,17 +7,17 @@
                 <p>{{$t('greeting')}}</p>
                 <countdown :time="time"/>
             </div>
-            <!-- <h1>Предпросмотр задания №{{ question.id }}</h1> -->
-
             <div class="to-right">
                 <Locale />
-                <Link :href="route('admin.quiz-question.edit', {question: question.id})" class="btn btn-default">
+
+                <Link :href="route('admin.quiz-question.edit', {question: question.id})" class="btn btn-default" v-if="question.can.update">
+                    {{ $t('done') }}</Link>
+                <Link :href="route('admin.quiz-question.show', {question: question.id})" class="btn btn-default" v-else>
                     {{ $t('done') }}</Link>
             </div>
         </div>
         <div class="solve-page-main">
             <h2>{{$t('header')}}</h2>
-
             <form class="block" @submit="submit">
                 <div class="question-image-wrapper">
                     <img v-for="itm of question.images" :src="itm.download_url" alt="" class="">

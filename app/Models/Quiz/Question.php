@@ -187,12 +187,12 @@ class Question extends Model
             if(is_numeric($filter['query'])){
                 $query->where(function(Builder $query) use ($filter, $lcQuery){
                     $query->where('id', $filter)
-                        ->orWhereRaw('text like ? or text_en like ?', [$lcQuery,$lcQuery])
+                        ->orWhereRaw('(text like ? or text_en like ?)', [$lcQuery,$lcQuery])
                         ->orderByRaw('id = ? DESC', $filter);
                 });
             } else {
                 $query
-                    ->whereRaw('text like ? or text_en like ?', [$lcQuery,$lcQuery]);
+                    ->whereRaw('(text like ? or text_en like ?)', [$lcQuery,$lcQuery]);
             }
         }
 
@@ -213,6 +213,7 @@ class Question extends Model
         return [
             'view'   => \Gate::check('view', $this),
             'update' => \Gate::check('update', $this),
+            'probe' => \Gate::check('probe', $this),
             'delete' => \Gate::check('delete', $this),
         ];
     }

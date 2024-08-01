@@ -18,8 +18,12 @@ use Inertia\Inertia;
 
 class QuestionController extends Controller
 {
+
+
+
     public function index(Request $request)
     {
+        \Gate::authorize('viewAny', Question::class);
 
         $query = Question::available()
             ->select('quiz_questions.*')
@@ -94,6 +98,8 @@ class QuestionController extends Controller
     }
 
     public function create() {
+        \Gate::authorize('create', Question::class);
+
         return Inertia::render('Admin/Quiz/Question/Edit', [
             'type_options' => $this->getAvailableTypeOptions(),
             'status_options' => $this->getAvailableStatusOptions(),
@@ -103,6 +109,8 @@ class QuestionController extends Controller
     }
 
     public function store(QuestionRequest $request) {
+        \Gate::authorize('create', Question::class);
+
         $question = Question::create($request->validated());
 
         Attachment::updateItemId($request->get('images'), $question->id);
@@ -117,6 +125,7 @@ class QuestionController extends Controller
     }
 
     public function show(Question $question) {
+        \Gate::authorize('view', $question);
         $question->load(['images','images_en', 'quiz', 'group', 'group.theme']);
         $question->append('type_name', 'can');
         return Inertia::render('Admin/Quiz/Question/Show', [
@@ -125,6 +134,7 @@ class QuestionController extends Controller
     }
 
     public function edit(Question $question) {
+        \Gate::authorize('update', $question);
         $question->load(['images','images_en']);
         return Inertia::render('Admin/Quiz/Question/Edit', [
             'type_options' => $this->getAvailableTypeOptions(),
@@ -136,6 +146,7 @@ class QuestionController extends Controller
 
 
     public function update(QuestionRequest $request, Question $question) {
+        \Gate::authorize('update', $question);
         $question->update($request->validated());
         if(request('preview')){
             return \Redirect::route('admin.quiz-probe.probe', ['question' => $question]);
@@ -146,6 +157,7 @@ class QuestionController extends Controller
 
 
     public function destroy(Question $question) {
+        \Gate::authorize('delete', $question);
         $question->delete();
         return ['result' => 'ok'];
     }

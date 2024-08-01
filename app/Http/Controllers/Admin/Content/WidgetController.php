@@ -22,8 +22,17 @@ class WidgetController extends Controller {
      * Show the form for editing the specified resource.
      */
     public function edit(Widget $widget) {
+
+
         $widget->append('name');
-        return Inertia::render('Admin/Content/Widget/Edit', ['item' => $widget]);
+        return Inertia::render('Admin/Content/Widget/Edit', [
+            'item' => $widget,
+            'schema' => $this->getSchema($widget->key)
+        ]);
+    }
+
+    public function getSchema($key){
+        return config('widgets')[$key];
     }
 
     /**

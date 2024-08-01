@@ -12,7 +12,11 @@ use Inertia\Inertia;
 class ProbeController extends Controller {
 
     public function probe(Request $request, Question $question) {
+
+        \Gate::authorize('probe', $question);
+
         $question->load('images', 'images_en');
+        $question->append('can');
         $question->translate();
         return Inertia::render('Admin/Quiz/Probe/Probe', [
             'question' => $question,
@@ -23,6 +27,7 @@ class ProbeController extends Controller {
     public function check(ProbeRequest $request){
 
         $question = Question::find($request->question);
+        \Gate::authorize('probe', $question);
 
         $solution = $request->solution;
 

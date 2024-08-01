@@ -85,6 +85,8 @@
             <table-bottom align="left">
                 <a @click="close()" class="btn btn-primary btn-editor-close fa fa-chevron-left" title="Закрыть"/>
 
+                <Link :href="route('admin.quiz-probe.probe', {'question': item.id} )" style="margin-left: auto; margin-right: 0">Предпросмотр</Link>
+
                 <!-- <a v-if="item.id" @click="submit('preview')" class="btn btn-gray"
                     style="margin-left: auto; margin-right: 0">Предпросмотр</a>
                                  <History type="user"/>-->
