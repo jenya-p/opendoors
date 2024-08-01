@@ -118,9 +118,9 @@ return [
                             'label' => 'Описание',
                             'translable' => true
                         ],
-                        'image_id' => [
+                        'file_id' => [
                             'type' => 'attachment',
-                            'label' => 'Изображение',
+                            'label' => 'Файл для скачивания',
                             'translable' => true,
                         ]
                     ]
