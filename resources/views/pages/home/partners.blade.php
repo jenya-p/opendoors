@@ -8,7 +8,7 @@
 
         <div class="mt-6 md:mt-[2.125rem]">
             <ul class="grid gap-6 sm:grid-cols-3">
-                @foreach(array_splice($partners, 0, 3) as $partner)
+                @foreach($partners as $partner)
                     @php
                         $image = \App\Models\Attachment::find($partner['image_id']);
                     @endphp
