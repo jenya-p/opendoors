@@ -69,10 +69,6 @@ export default {
 
         let editorConfig = {
             width: "100%",
-            htmlSupport: {
-                allow: [ 'iframe' ],
-                disallow: [ /* HTML features to disallow. */ ]
-            },
             simpleUpload: {
                 uploadUrl: uploadUrl
             },
