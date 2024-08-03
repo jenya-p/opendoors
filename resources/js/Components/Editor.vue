@@ -72,7 +72,15 @@ export default {
             simpleUpload: {
                 uploadUrl: uploadUrl
             },
-            // ...
+            htmlSupport: {
+                // allow: [ 'iframe' ],
+                disallow: [ {
+                    name: /[\s\S]+/,    // For every HTML feature,
+                    attributes: {
+                        key: /^style$/ // disable 'on*' attributes, like 'onClick', 'onError' etc.
+                    }
+                } ]
+            },
             math: {
                 engine: 'mathjax', // or katex or function. E.g. (equation, element, display) => { ... }
                 lazyLoad: undefined, // async () => { ... }, called once before rendering first equation if engine doesn't exist. After resolving promise, plugin renders equations.
@@ -127,12 +135,15 @@ export default {
                 shouldNotGroupWhenFull: false
             },
             fontFamily: {
-                supportAllValues: true
+                supportAllValues: false
             },
             fontSize: {
-                options: [10, 12, 14, 'default', 18, 20, 22],
-                supportAllValues: true
+                options: ['default'],
+                supportAllValues: false
             },
+            // fontBackgroundColor:{
+            //     documentColors: 0
+            // },
             heading: {
                 options: [
                     {
