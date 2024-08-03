@@ -16,7 +16,7 @@
         <!--<link rel="stylesheet" href="/layout/dev.css"> -->
 
         <!-- Scripts -->
-        <script type="text/javascript" src="/assets/ckeditor/ckeditor.js"></script>
+        <script type="text/javascript" src="/assets/ckeditor/ckeditor.js?t=1"></script>
 
         @include('components.layout.equation-support');
 
