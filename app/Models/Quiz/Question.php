@@ -159,13 +159,13 @@ class Question extends Model
             !empty($filter['stage'])){
 
             $quizQuery = Quiz::select('id')->filter(\Arr::only($filter, ['track', 'profile_id', 'stage']));
-            $query->whereIn('quiz_id', $quizQuery);
+            $query->whereIn('quiz_questions.quiz_id', $quizQuery);
         }
 
 
         if(!empty($filter['theme_id'])){
             $groupQuery = Group::select('id')->filter(\Arr::only($filter, ['theme_id']));
-            $query->whereIn('group_id', $groupQuery);
+            $query->whereIn('quiz_questions.group_id', $groupQuery);
         }
 
         $filterByIds = function ($key) use ($query, $filter) {
@@ -187,12 +187,12 @@ class Question extends Model
             if(is_numeric($filter['query'])){
                 $query->where(function(Builder $query) use ($filter, $lcQuery){
                     $query->where('id', $filter)
-                        ->orWhereRaw('(text like ? or text_en like ?)', [$lcQuery,$lcQuery])
+                        ->orWhereRaw('(quiz_questions.text like ? or quiz_questions.text_en like ?)', [$lcQuery,$lcQuery])
                         ->orderByRaw('id = ? DESC', $filter);
                 });
             } else {
                 $query
-                    ->whereRaw('(text like ? or text_en like ?)', [$lcQuery,$lcQuery]);
+                    ->whereRaw('(quiz_questions.text like ? or quiz_questions.text_en like ?)', [$lcQuery,$lcQuery]);
             }
         }
 

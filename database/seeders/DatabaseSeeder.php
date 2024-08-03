@@ -81,7 +81,7 @@ class DatabaseSeeder extends Seeder {
     }
 
 
-    public function exl($name){
+     public function exl($name){
 
         $excel = IOFactory::load(resource_path('temp/' . $name . '.xls'));
         $sheet = $excel->getActiveSheet();

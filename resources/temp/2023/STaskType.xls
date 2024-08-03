@@ -1,0 +1,12 @@
+
+		<html>
+		<head>
+		<title>Records for highload information block "STaskType"</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<style>
+			td {mso-number-format:\@;}
+			.number0 {mso-number-format:0;}
+			.number2 {mso-number-format:Fixed;}
+		</style>
+		</head>
+		<body><table border="1"><tr><td>ID</td><td>code</td><td>name</td><td>short_name</td></tr><tr><td>1</td><td>auto_check</td><td>С автоматической проверкой</td><td>АП</td></tr><tr><td>3</td><td>multiple_choice</td><td>Задача с возможностью добавления нескольких ответов и автопроверкой</td><td>АПМВ</td></tr></table></body></html>
