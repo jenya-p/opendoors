@@ -1,5 +1,5 @@
 <template>
-    <AdminLayout :title="item.id ? 'Задание ' + item.id + ' ' + item.year + 'г.': 'Новый вариант задания'"
+    <AdminLayout :title="item.id ? 'Задание ' + item.id: 'Новый вариант задания'"
                  :breadcrumb="[{link: route('admin.quiz-question.index'), label: 'Задания'}, item.id ? item.id: 'Новый вариант задания']">
         <form method="post" @submit.prevent="submit(null)" class="block" v-field-container>
             <h2>Основная информация</h2>
