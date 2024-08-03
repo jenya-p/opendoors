@@ -131,6 +131,11 @@ class Question extends Model
         return \Arr::iif(self::TYPE_NAMES, $this->type);
     }
 
+    public function getYearAttribute(){
+        return $this->created_at->format('Y');
+    }
+
+
     public function getOptionCountAttribute(){
         if(($this->type == self::TYPE_ONE || $this->type == self::TYPE_MANY || $this->type == self::TYPE_MULTI)
             && is_array($this->options)

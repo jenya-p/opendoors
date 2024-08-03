@@ -65,6 +65,9 @@
                     <th class="weight">
                         <sort name="weight" v-model="lFilter.sort">Макс. балл</sort>
                     </th>
+                    <th class="year">
+                        <sort name="year" v-model="lFilter.sort">Год</sort>
+                    </th>
                     <th class="buttons"></th>
                 </tr>
                 </thead>
@@ -94,6 +97,9 @@
 
                     <td class="weight">
                         {{ item.group.weight }}
+                    </td>
+                    <td class="year">
+                        {{ item.year }}
                     </td>
                     <td class="buttons">
                         <a class="fa fa-times btn-remove" @click.stop="remove(item)" v-if="item.can.delete"></a>
@@ -280,7 +286,10 @@ table.table {
                 width: 50px;
                 text-align: center;
             }
-
+            &.year {
+                width: 80px;
+                text-align: right;
+            }
 
             &.buttons {
                 width: 50px;

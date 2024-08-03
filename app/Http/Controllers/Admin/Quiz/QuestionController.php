@@ -41,7 +41,9 @@ class QuestionController extends Controller
             list($name, $dir) = explode(':', $request->sort);
             $sort = ['name' => $name, 'dir' => $dir];
 
-            if($name == 'quiz'){
+            if($name == 'year'){
+                $query->orderByRaw('YEAR(quiz_questions.created_at) ' . $dir );
+            } else if($name == 'quiz'){
                 $query->leftJoin('quizzes', 'quizzes.id', '=', 'quiz_questions.quiz_id');
                 $query->orderBy('quizzes.name', $dir);
             } else if($name == 'order' or $name == 'weight'){
@@ -59,7 +61,7 @@ class QuestionController extends Controller
 
         $items = $query->paginate(10);
 
-        $items->append(['snippet', 'option_count', 'status_name', 'can']);
+        $items->append(['snippet', 'option_count', 'status_name', 'can', 'year']);
 
         if(!$request->inertia() && $request->isXmlHttpRequest()){
             return [
@@ -127,7 +129,7 @@ class QuestionController extends Controller
     public function show(Question $question) {
         \Gate::authorize('view', $question);
         $question->load(['images','images_en', 'quiz', 'group', 'group.theme']);
-        $question->append('type_name', 'can');
+        $question->append('type_name', 'can', 'year');
         return Inertia::render('Admin/Quiz/Question/Show', [
             'item' => $question,
         ]);
@@ -136,6 +138,7 @@ class QuestionController extends Controller
     public function edit(Question $question) {
         \Gate::authorize('update', $question);
         $question->load(['images','images_en']);
+        $question->append(['year']);
         return Inertia::render('Admin/Quiz/Question/Edit', [
             'type_options' => $this->getAvailableTypeOptions(),
             'status_options' => $this->getAvailableStatusOptions(),

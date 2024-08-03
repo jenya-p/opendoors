@@ -1,5 +1,5 @@
 <template>
-    <AdminLayout :title="item.id ? 'Задание ' + item.id : 'Новый вариант задания'"
+    <AdminLayout :title="item.id ? 'Задание ' + item.id + ' ' + item.year + 'г.': 'Новый вариант задания'"
                  :breadcrumb="[{link: route('admin.quiz-question.index'), label: 'Задания'}, item.id ? item.id: 'Новый вариант задания']">
         <form method="post" @submit.prevent="submit(null)" class="block" v-field-container>
             <h2>Основная информация</h2>
@@ -18,7 +18,8 @@
             <div class="field-row" v-if="quiz">
                 <field :errors="form.errors" for="order" label="Номер задания в тесте" class="field-short">
                     <VueMultiselect :options="group_options" v-model="group" trackBy="id" label="order"
-                                    :allow-empty="false"/>
+                                    :allow-empty="false">
+                    </VueMultiselect>
                 </field>
             </div>
 
@@ -31,7 +32,9 @@
                     <i v-else>не указано</i>
                 </field>
             </div>
-
+            <field :errors="form.errors" for="weight" label="Год" class="field-display">
+                {{ item.year }}
+            </field>
             <field :errors="form.errors" for="type" label="Тип задания">
                 <VueMultiselect :options="type_options" v-model="type" trackBy="id" label="name" :allow-empty="false"/>
             </field>
