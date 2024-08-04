@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Models\Quiz\Question;
+use App\Models\Quiz\Quiz;
 use Heriw\LaravelSimpleHtmlDomParser\HtmlDomParser;
 use Illuminate\Console\Command;
 use simplehtmldom\simple_html_dom_node;
@@ -21,7 +22,7 @@ class CleanupStyles extends Command {
     private $tagsToRemove = ['strong', 'span'];
 
     public function handle() {
-        $questions = Question::all();
+        $questions = Question::whereIn('quiz_id', Quiz::select('id')->where('stage', '=', 3))->get(); // all();
         foreach ($questions as $question){
             $question->text = $this->cleanup($question->text);
             $question->text_en = $this->cleanup($question->text_en);

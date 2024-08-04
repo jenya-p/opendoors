@@ -22,18 +22,13 @@ use simplehtmldom\simple_html_dom_node;
 class Import2023 extends Command {
     protected $signature = 'app:import-2023';
 
-    // https://od.globaluni.ru/bitrix/admin/perfmon_row_edit.php?lang=en&table_name=b_file&pk%5BID%5D=915369
 
 
     public function handle() {
-        /** @var Quiz[] $quizes */
-
-
-        $this->createEnvs();
 
         $quizes = Quiz::where('stage' , '3')->get();
 
-        foreach ($quizes as $quiz){
+        foreach ($quizes as $quiz) {
             $this->importQuiz($quiz);
         }
 
@@ -41,22 +36,20 @@ class Import2023 extends Command {
     }
 
 
-    public function importQuiz(Quiz $quiz){
+    public function importQuiz(Quiz $quiz) {
 
-        $preprocessHtml = function($text){
+        $preprocessHtml = function ($text) {
             $text = htmlspecialchars_decode($text);
             return str_replace(['<strong>', '</strong>'], '', $text);
         };
 
         $this->info($quiz->name);
 
-        $quiz->questions()->delete();
-        $quiz->groups()->delete();
-
         $iContest = DB::table('import_subject_area')->whereRaw('od_id = ?', $quiz->profile_id)->first('ID');
 
         $iTasks = DB::table('import_task')
-            ->whereRaw('season_id = 2 AND contest_id = ?', $iContest->ID)->orderBy('number')->get();
+            ->whereRaw('season_id = 2 AND contest_id = ?', $iContest->ID)
+            ->orderBy('number')->get();
 
         foreach ($iTasks as $iTask) {
             $iBlockTitle = DB::table('import_task_block')->find($iTask->block_id)->title;
@@ -74,6 +67,9 @@ class Import2023 extends Command {
                 'theme_id' => $theme->id,
             ]);
 
+            DB::table('import_task')->where('ID', '=', $iTask->ID)->update([
+                'od_id' => $group->id
+            ]);
 
             $iTaskOptionIds = DB::table('import_task_option')->whereRaw('task_id = ?', $iTask->ID)->orderBy('id')->pluck('ID');
 
@@ -118,7 +114,7 @@ class Import2023 extends Command {
                             'text_en' => $optEn = htmlspecialchars_decode($iOptionsEn[$i]->value),
                         ];
 
-                        if(trim($optRu) != $i + 1 && trim($optEn) != $i + 1){
+                        if (trim($optRu) != $i + 1 && trim($optEn) != $i + 1) {
                             $isNums = false;
                         }
                     }
@@ -127,20 +123,20 @@ class Import2023 extends Command {
                         $warns[] = ('Не указаны верные ответы');
                     }
 
-                    if($isNums) {
+                    if ($isNums) {
 
                         $htmlRu = HtmlDomParser::str_get_html("<div>" . $iTaskContentRu->text . "</div>");
                         $htmlEn = HtmlDomParser::str_get_html("<div>" . $iTaskContentEn->text . "</div>");
                         $htmlOlRu = $htmlRu->find('ol', 0);
                         $htmlOlEn = $htmlEn->find('ol', 0);
 
-                        if($htmlOlRu && $htmlOlEn){
+                        if ($htmlOlRu && $htmlOlEn) {
 
                             $htmlLisRu = $htmlOlRu->find('li');
                             $htmlLisEn = $htmlOlEn->find('li');
 
-                            if (count($htmlLisRu) == count($options) && count($htmlLisEn) == count($options)){
-                                for ($i = 0; $i < count($options); $i++){
+                            if (count($htmlLisRu) == count($options) && count($htmlLisEn) == count($options)) {
+                                for ($i = 0; $i < count($options); $i++) {
                                     $options[$i] = [
                                         'text' => $htmlLisRu[$i]->innertext(),
                                         'text_en' => $htmlLisEn[$i]->innertext(),
@@ -153,7 +149,7 @@ class Import2023 extends Command {
                                 $isNums = false;
                             }
                         }
-                        if($isNums){
+                        if ($isNums) {
                             $warns[] = ('Не удалось корректно импортировать пронумерованные ответы');
                         }
                     }
@@ -193,27 +189,32 @@ class Import2023 extends Command {
                     'group_id' => $group->id,
                     'status' => 'active',
                     'type' => $type,
-                    'text' =>       $iTaskContentRu->text,
-                    'text_en' =>    $iTaskContentEn->text,
+                    'text' => $iTaskContentRu->text,
+                    'text_en' => $iTaskContentEn->text,
                     'options' => $options,
                     'verification' => $verification,
                     'created_at' => '2023-01-01 00:00:00'
                 ]);
 
-                $importFiles = function($iContent, $locale) use ($question, &$warns){
+
+                DB::table('import_task_option')->where('ID', '=', $iTaskOptionId)->update([
+                    'od_id' => $question->id
+                ]);
+
+                $importFiles = function ($iContent, $locale) use ($question, &$warns) {
                     $iFiles = DB::table('import_task_file')->where('task_content_id', '=', $iContent->ID)->get();
-                    foreach ($iFiles as $iFile){
+                    foreach ($iFiles as $iFile) {
 
                         $tempImage = tempnam(sys_get_temp_dir(), uniqid());
                         copy($iFile->url, $tempImage);
                         $file = \Storage::putFile(Attachment::ITEM_TYPE_QUESTION, $tempImage);
 
                         $attachmentRu = Attachment::create([
-                            'item_type'=> Attachment::ITEM_TYPE_QUESTION,
-                            'item_id'=> $question->id,
-                            'file'=> $file,
-                            'type'=> $locale,
-                            'name'=> $iFile->name
+                            'item_type' => Attachment::ITEM_TYPE_QUESTION,
+                            'item_id' => $question->id,
+                            'file' => $file,
+                            'type' => $locale,
+                            'name' => $iFile->name
                         ]);
 
                         $warns[] = 'Импорт файла ' . $iFile->name;
@@ -222,25 +223,24 @@ class Import2023 extends Command {
                 $importFiles($iTaskContentRu, 'ru');
                 $importFiles($iTaskContentEn, 'en');
 
-                $processHtml = function($text, $imageType){
+                $processHtml = function ($text, $imageType) {
                     /** @var simple_html_dom_node $html */
                     $html = HtmlDomParser::str_get_html("<div>" . $text . "</div>");
                     $htmlImgs = $html->find('img[src]');
-                    foreach ($htmlImgs as &$htmlImg){
+                    foreach ($htmlImgs as &$htmlImg) {
                         echo "IMG: " . $htmlImg->src;
                     }
 
                     return $html->firstChild()->innertext();
                 };
-                $question->text =       $processHtml($question->text, 'text');
-                $question->text_en =    $processHtml($question->text_en, 'text_en');
+                $question->text = $processHtml($question->text, 'text');
+                $question->text_en = $processHtml($question->text_en, 'text_en');
 
                 $question->save();
 
-                foreach ($warns as $warn){
-                    $this->info($question->id . "\t" . $warn . "\thttps://od.globaluni.ru/admin/simulator/edit/task/" . $iTask->ID . '/' . $iTaskOptionId);
+                foreach ($warns as $warn) {
+                    $this->info($question->id . ",\t" . $warn . ",\thttps://od.globaluni.ru/admin/simulator/edit/task/" . $iTask->ID . '/' . $iTaskOptionId);
                 }
-
             }
         }
     }
@@ -309,6 +309,48 @@ class Import2023 extends Command {
 
     }
 
+    public function clean(Quiz $quiz) {
+        $quiz->questions()->forceDelete();
+        $quiz->groups()->forceDelete();
+    }
+
+
+    public function reImportContent() {
+
+        $cookieJar = CookieJar::fromArray([
+            'BITRIX_SM_LAST_SETTINGS' => '',
+            'BITRIX_SM_LOGIN' => 'burovenko.dv@mipt.ru',
+            'BITRIX_SM_NCC' => 'Y',
+            'BITRIX_SM_NEED_RUSSIAN' => '0',
+            'BITRIX_SM_SOUND_LOGIN_PLAYED' => 'Y',
+            'BITRIX_SM_UIDH' => 'JUjz85fZYXfumBpAunL44TAEC9NioXth',
+            'BITRIX_SM_UIDL' => 'burovenko.dv%40mipt.ru',
+            'PHPSESSID' => 'i3tc5kI0f4FeHeMliC8Y1UgfiU5nmijl',
+        ], 'od.globaluni.ru');
+        $client = new Client(['cookies' => $cookieJar]);
+
+        $iContents = DB::table('import_task_content')
+            // ->where('ID', 9795)
+            ->get();
+
+        $progressBar = $this->output->createProgressBar($iContents->count());
+        $progressBar->start();
+
+        foreach ($iContents as $iContent) {
+            $progressBar->advance();
+            $resp = $client->request('GET', 'https://od.globaluni.ru/bitrix/admin/highloadblock_row_edit.php?ENTITY_ID=168&ID=' . $iContent->ID);
+
+            $htmlRu = HtmlDomParser::str_get_html($resp->getBody()->getContents());
+            DB::table('import_task_content')->where('ID', '=', $iContent->ID)
+                ->update([
+                'text' =>
+                    htmlspecialchars_decode(
+                        str_replace('&amp;', '&', $htmlRu->find('input[name=text]', 0)->value)
+                    ),
+            ]);
+        }
+        $progressBar->finish();
+    }
 
     public function getFile($id) {
 
