@@ -5,16 +5,20 @@
 
             <form method="post" @submit.prevent="submit" class="block" v-field-container>
                 <h2>Основная информация</h2>
-                <field :errors="form.errors" for="title" label="Название">
+                <field :errors="form.errors" for="name" label="Название">
                     <textarea-autosize class="input" v-model="form.name"/>
                 </field>
 
-                <field :errors="form.errors" for="title" label="Название (EN)">
+                <field :errors="form.errors" for="name_en" label="Название (EN)">
                     <textarea-autosize class="input" v-model="form.name_en"/>
                 </field>
 
-                <field :errors="form.errors" for="title" label="Ссылка">
+                <field :errors="form.errors" for="url" label="Ссылка">
                     <input class="input" v-model="form.url"/>
+                </field>
+
+                <field :errors="form.errors" for="url_en" label="Ссылка (En)">
+                    <input class="input" v-model="form.url_en"/>
                 </field>
 
                 <field :errors="form.errors" for="logo" label="Лого">
@@ -67,6 +71,7 @@ export default {
                 name: null,
                 name_en: null,
                 url: null,
+                url_en: null,
                 logo: null,logo_en: null,
             }, this.item)),
             tabErrors: {

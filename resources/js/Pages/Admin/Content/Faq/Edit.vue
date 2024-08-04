@@ -1,7 +1,10 @@
 
 <template>
-    <AdminLayout :title="item.id ? item.title : 'Новый вопрос-ответ'"
-                 :breadcrumb="[{link: route('admin.faq.index'), label: 'FAQ'}, item.id ? item.question: 'Новый вопрос-ответ']">
+    <AdminLayout :title="item.id ? 'FAQ' : 'Новый вопрос-ответ'"
+                 :breadcrumb="[
+                     {link: route('admin.faq-category.index'), label: 'FAQ'},
+                     item.category ? {link: route('admin.faq-category.edit', item.category.id) + '#faqs', label: item.category.name} : null,
+                    item.id ? item.question: 'Новый вопрос-ответ']">
 
         <form method="post" @submit.prevent="submit" class="block" v-field-container>
             <h2>Основная информация</h2>
@@ -18,11 +21,11 @@
             </field>
 
             <field :errors="form.errors" for="answer" label="Ответ">
-                <editor v-model="form.answer" :editor="editor"  :item="['faq', item.id, 'answer']"/>
+                <editor v-model="form.answer" :item="['faq', item.id, 'answer']"/>
             </field>
 
             <field :errors="form.errors" for="answer_en" label="Ответ (Англ. )">
-                <editor v-model="form.answer_en" :editor="editor" :item="['faq', item.id, 'answer']"/>
+                <editor v-model="form.answer_en" :item="['faq', item.id, 'answer']"/>
             </field>
 
             <div class="block-footer">

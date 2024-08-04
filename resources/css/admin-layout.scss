@@ -1261,6 +1261,18 @@ button.btn-a {
         color: $dark-shadow-color;
         cursor: default;
     }
+
+    &.loading{
+        color: #6bb3e9;
+        &:before{
+            display: inline-block;
+            animation: spinner 1000ms linear infinite;
+            content: "\f110";
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+        }
+    }
+
 }
 .btn-editor-close{
     width: 50px; padding-left: 0; padding-right: 0

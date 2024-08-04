@@ -7,6 +7,7 @@ use App\Models\Translable;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Query\Builder;
 
 /**
@@ -31,9 +32,9 @@ use Illuminate\Database\Query\Builder;
  */
 class Faq extends Model
 {
-    use HasFactory, Translable, Ordered;
+    use HasFactory, Translable, Ordered, SoftDeletes;
 
-    protected $fillable = ['status', 'category_id','question','question_en','answer','answer_en',
+    protected $fillable = ['order', 'status', 'category_id','question','question_en','answer','answer_en',
         'created_at','updated_at',];
 
     protected $casts = [

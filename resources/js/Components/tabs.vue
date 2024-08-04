@@ -60,6 +60,20 @@ export default {
             if (activeTab !== null) {
                 this.selectTab(activeTab);
             }
+        } else if(this.$page.props.tab) {
+            let activeTab = this.tabs[0];
+            for (let tab of this.tabs) {
+                if ('#' + this.$page.props.tab == tab.href) {
+                    activeTab = tab;
+                    break;
+                }
+            }
+            if (activeTab !== null) {
+                this.selectTab(activeTab);
+            }
+
+            // TODO Рефакторинг
+
         } else {
             this.selectTab(this.tabs[0]);
         }

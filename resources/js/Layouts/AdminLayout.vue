@@ -24,7 +24,7 @@ export default {
                         <li class="breadcrumb-item" v-if="typeof(item) == 'object' && item && item != null && item.link">
                             <a :href="item.link" >{{ item.label}}</a>
                         </li>
-                        <li class="breadcrumb-item active" v-else>{{ item }}</li>
+                        <li class="breadcrumb-item active" v-else-if="item != null">{{ item }}</li>
                     </template>
                 </ol>
                 <div class="breadcrumb" v-else-if="breadcrumb && isMobile">

@@ -92,7 +92,16 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']], 
         Route::resource('widget', \App\Http\Controllers\Admin\Content\WidgetController::class)->except(['show', 'create', 'store', 'delete']);
         // Route::resource('profile-file', \App\Http\Controllers\Admin\Content\ProfileFileController::class)->except(['show']);
         Route::resource('schedule', \App\Http\Controllers\Admin\Content\ScheduleController::class)->except(['show']);
-        Route::resource('faq', \App\Http\Controllers\Admin\Content\FaqController::class)->except(['show']);
+
+        Route::put('faq/update-order', [\App\Http\Controllers\Admin\Content\FaqController::class, 'updateOrder'])->name('faq.update-order');
+        Route::resource('faq', \App\Http\Controllers\Admin\Content\FaqController::class)->except(['show', 'index']);
+        Route::get('faq/{faq}/status', [\App\Http\Controllers\Admin\Content\FaqController::class, 'status'])->name('faq.status');
+
+        Route::put('faq-category/update-order', [\App\Http\Controllers\Admin\Content\FaqCategoryController::class, 'updateOrder'])->name('faq-category.update-order');
+        Route::resource('faq-category', \App\Http\Controllers\Admin\Content\FaqCategoryController::class)->except(['show']);
+        Route::get('faq-category/{faq_category}/status', [\App\Http\Controllers\Admin\Content\FaqCategoryController::class, 'status'])->name('faq-category.status');
+
+
         Route::resource('profile-file-type', \App\Http\Controllers\Admin\Content\ProfileFileTypeController::class)->except(['show']);
     });
 

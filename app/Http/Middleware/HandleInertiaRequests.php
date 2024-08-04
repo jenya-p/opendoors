@@ -56,6 +56,7 @@ class HandleInertiaRequests extends Middleware {
         $ret['sidebar'] = $this->buildSidebar();
 
         $ret['message'] = \Session::get('message');
+        $ret['tab'] = \Session::get('tab');
 
         return $ret;
 
@@ -131,7 +132,7 @@ class HandleInertiaRequests extends Middleware {
                         ],
                         [
                             'key' => 'faq',
-                            'href' => route('admin.faq.index'),
+                            'href' => route('admin.faq-category.index'),
                             'i' => "fa fa-question-circle",
                             'label' => "FAQ",
                         ],

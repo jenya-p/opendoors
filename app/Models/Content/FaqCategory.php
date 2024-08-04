@@ -7,6 +7,7 @@ use App\Models\Translable;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Query\Builder;
 
 /**
@@ -20,12 +21,13 @@ use Illuminate\Database\Query\Builder;
  * @property Carbon $deleted_at
  *
  * @property-read Faq[] $faqs
+ * @property-read int $faqs_count
  *
  * @mixin \Eloquent
  */
 class FaqCategory extends Model
 {
-    use HasFactory, Translable, Ordered;
+    use HasFactory, Translable, Ordered, SoftDeletes;
 
     protected $fillable = [
         'status', 'order', 'name','name_en', 'created_at','updated_at',];
@@ -40,6 +42,10 @@ class FaqCategory extends Model
 
     public function faqs(){
         return $this->hasMany(Faq::class, 'category_id');
+    }
+
+    public function getFaqsCountAttribute(){
+        return $this->faqs()->count();
     }
 
 }

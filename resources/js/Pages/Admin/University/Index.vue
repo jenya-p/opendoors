@@ -15,8 +15,8 @@
                 <tr>
                     <th class="handler-td"></th>
                     <th>Название</th>
-                    <th class="table-buttons"></th>
-                    <th class="table-buttons"></th>
+                    <th class="table-button"></th>
+                    <th class="table-button"></th>
                 </tr>
                 </thead>
                 <tbody v-if="lItems.filter">
@@ -27,7 +27,7 @@
                         <div class="secondary">{{ element.name_en }}</div>
                     </td>
                     <td class="table-button">
-                        <a @click.stop="changeStatus(item, $event)" class="item-status" :class="item.status"></a>
+                        <a @click.stop="changeStatus(element, $event)" class="item-status" :class="element.status"></a>
                     </td>
                     <td class="table-button">
                         <a class="fa fa-times btn-remove" @click.stop="remove(element)"></a>

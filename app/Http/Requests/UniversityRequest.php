@@ -11,7 +11,8 @@ class UniversityRequest extends FormRequest {
         return [
             'name' => 'required|string|max:255',
             'name_en' => 'nullable|string|max:255',
-            'url' => 'nullable|string:512'
+            'url' => 'nullable|string:512',
+            'url_en' => 'nullable|string:512'
         ];
     }
 }
