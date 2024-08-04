@@ -99,7 +99,11 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']], 
     Route::group(['middleware' => ['auth', 'can:admin']], function () {
         Route::resource('edu-level', \App\Http\Controllers\Admin\EduLevelController::class)->except(['show']);
         Route::get('edu-level/{edu_level}/status', [\App\Http\Controllers\Admin\EduLevelController::class, 'status'])->name('edu-level.status');
+
+        Route::put('university/update-order', [\App\Http\Controllers\Admin\UniversityController::class, 'updateOrder'])->name('university.update-order');
         Route::resource('university', \App\Http\Controllers\Admin\UniversityController::class)->except(['show']);
+        Route::get('university/{university}/status', [\App\Http\Controllers\Admin\UniversityController::class, 'status'])->name('university.status');
+
         Route::resource('track', \App\Http\Controllers\Admin\TrackController::class)->except(['show']);
         Route::resource('profile', \App\Http\Controllers\Admin\ProfileController::class)->except(['show']);
         Route::get('profile/{profile}/status', [\App\Http\Controllers\Admin\ProfileController::class, 'status'])->name('profile.status');

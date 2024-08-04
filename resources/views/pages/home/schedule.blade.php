@@ -87,9 +87,7 @@
                         </h4>
 
                         <div class="text-[0.875rem] font-medium leading-6">
-                            <p>
-                                {{$item->summary}}
-                            </p>
+                            {!! $item->summary !!}
                         </div>
 
                         @if($item->details)

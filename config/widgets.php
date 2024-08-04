@@ -32,7 +32,7 @@ return [
                 'translable' => true,
             ],
             'description' => [
-                'type' => 'editor',
+                'type' => 'ml-string',
                 'label' => 'Текст',
                 'translable' => true,
             ],

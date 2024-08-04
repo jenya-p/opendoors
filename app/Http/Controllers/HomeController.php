@@ -24,9 +24,7 @@ class HomeController extends Controller {
         return view('pages.home', [
             'top' => $top->data,
             'profiles' => Profile::all(),
-            'universities' => University::orderBy(app()->getLocale() == 'en' ? 'name_en' : 'name')
-                ->whereNotNull('url')
-                ->get(),
+            'universities' => University::whereNotNull('url')->get(),
             'schedule' => Schedule::orderBy('date_from')->get(),
             'partners' => $partners->data,
             'faqCategories' => FaqCategory::all()

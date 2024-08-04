@@ -18,8 +18,8 @@
                     <th>Название</th>
                     <th class="booleans">Многократное</th>
                     <th class="booleans">Диплом</th>
-                    <th class="table-buttons"></th>
-                    <th class="table-buttons"></th>
+                    <th class="table-button"></th>
+                    <th class="table-button"></th>
                 </tr>
                 </thead>
                 <tbody>

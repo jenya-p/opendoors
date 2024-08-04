@@ -943,6 +943,23 @@ table.table {
                 }
             }
 
+            &.handler-td{
+                cursor: grab;
+                color: $dark-shadow-color;
+                &:active{
+                    cursor: grab;
+                }
+                &.dirty {
+                    color: $fore-color;
+
+                }
+            }
+        }
+
+        td, th{
+            &.handler-td{
+                width: 25px;
+            }
         }
     }
 
@@ -1033,6 +1050,12 @@ table.table {
 .highlight {
     animation: blink 0.2s 3 ease;
 }
+
+.ghost {
+    border-color: #ccc;
+    opacity: 0.5;
+}
+
 @keyframes blink {
     from {
         transform: none

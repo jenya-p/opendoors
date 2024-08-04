@@ -167,4 +167,8 @@ class Attachment extends Model {
     }
 
 
+    public function unlink(){
+        \Storage::delete($this->file);
+    }
+
 }

@@ -28,11 +28,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @mixin \Eloquent
  */
 class University extends Model {
-    use HasFactory, SoftDeletes, Translable, HasAttachments;
+    use HasFactory, SoftDeletes, Translable, HasAttachments, Ordered;
 
     protected $table = 'universities';
 
-    protected $fillable = ['name','name_en', 'url', 'url_en', 'created_at', 'updated_at'];
+    protected $fillable = ['order', 'status', 'name','name_en', 'url', 'url_en', 'created_at', 'updated_at'];
 
     public $translable = ['name', 'url', 'logo'];
 

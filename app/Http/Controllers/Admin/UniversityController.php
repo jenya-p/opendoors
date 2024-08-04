@@ -4,7 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UniversityRequest;
+use App\Models\EduLevel;
 use App\Models\University;
+use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 
 class UniversityController extends Controller {
@@ -41,9 +44,40 @@ class UniversityController extends Controller {
         return \Redirect::route('admin.university.index');
     }
 
+    public function status(University $university, Request $request) {
+        $data = $request->validate([
+            'status' => ['required', Rule::in('active', 'disabled')]
+        ]);
+        $university->update($data);
+        return [
+            'result' => 'ok',
+            'item' => $university
+        ];
+    }
+
+    public function updateOrder(Request $request) {
+        $request->validate([
+            'orders' => ['required', 'array'],
+            'orders.*' => ['required', 'integer', 'exists:universities,id'],
+        ]);
+
+        foreach ($request->orders as $index => $universityId){
+            University::find($universityId)->update([
+                'order' => (int)$index + 1
+            ]);
+        }
+
+        return [
+            'result' => 'ok',
+            'items' => University::all()
+        ];
+
+    }
 
     public function destroy(University $university) {
         $university->delete();
-        return ['result' => 'ok'];
+        return ['result' => 'ok',
+            'items' => University::all()
+        ];
     }
 }

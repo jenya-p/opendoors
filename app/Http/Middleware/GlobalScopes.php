@@ -8,6 +8,7 @@ use App\Models\EduLevel;
 use App\Models\Profile;
 use App\Models\Scopes\Active;
 use App\Models\Track;
+use App\Models\University;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,6 +27,7 @@ class GlobalScopes {
             Profile::addGlobalScope(Active::class);
             EduLevel::addGlobalScope(Active::class);
             Track::addGlobalScope(Active::class);
+            University::addGlobalScope(Active::class);
         }
 
 
