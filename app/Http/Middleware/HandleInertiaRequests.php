@@ -141,6 +141,11 @@ class HandleInertiaRequests extends Middleware {
                             'href' => route('admin.profile-file-type.index'),
                             'i' => "fa fa-folder-open",
                             'label' => "Типы файлов",
+                        ],[
+                            'key' => 'university',
+                            'href' => route('admin.university.index'),
+                            'i' => "fa fa-bars",
+                            'label' => 'Университеты',
                         ],
                     ]
                 ];
@@ -157,11 +162,6 @@ class HandleInertiaRequests extends Middleware {
                             'href' => route('admin.edu-level.index'),
                             'i' => "fa fa-bars",
                             'label' => 'Уровни образования',
-                        ], [
-                            'key' => 'university',
-                            'href' => route('admin.university.index'),
-                            'i' => "fa fa-bars",
-                            'label' => 'Университеты',
                         ], [
                             'key' => 'track',
                             'href' => route('admin.track.index'),
