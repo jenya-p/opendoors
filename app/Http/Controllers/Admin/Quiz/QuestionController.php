@@ -33,7 +33,7 @@ class QuestionController extends Controller
                 'group.theme:id,name',
             ]);
 
-        $filter = $request->only('track', 'profile_id', 'stage', 'theme_id', 'status','query');
+        $filter = $request->only('track', 'profile_id', 'stage', 'theme_id', 'status','query', 'year');
         $themeOptions = $this->getThemeOptions($filter);
         $query->filter($filter);
         $sort = null;
@@ -76,6 +76,7 @@ class QuestionController extends Controller
                 'track_options' => Arr::assocToOptions(Quiz::TRACK_NAMES),
                 'stage_options' => Arr::assocToOptions(Quiz::STAGE_NAMES),
                 'status_options' => $this->getAvailableStatusOptions(),
+                'year_options' => $this->getYearOptions(),
                 'filter' => $filter + ['sort' => $sort],
                 'items' => $items
             ]);
@@ -173,6 +174,17 @@ class QuestionController extends Controller
             Question::TYPE_NUMBER => 1,
             Question::TYPE_FREE => 1,
         ]));
+
+    }
+
+    public function getYearOptions(){
+        $years = \DB::table('quiz_questions')->selectRaw('YEAR(created_at) as year')
+            ->whereNull('deleted_at')
+            ->groupByRaw('YEAR(created_at)')
+            ->pluck('year');
+        return $years->map(fn($y) => [
+            'id' => $y, 'name' => $y
+        ]);
 
     }
 

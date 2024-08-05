@@ -35,6 +35,15 @@
                 <checkbox v-for="(stage) of stage_options" v-model="lFilter.stage" :value="stage.id">{{ stage.name }}
                 </checkbox>
             </field>
+
+            <field label="Год">
+                <VueMultiselect :options="year_options" v-model="year" trackBy="id"
+                                style="width: 200px"
+                                placeholder="Все"
+                                label="name"/>
+            </field>
+
+
             <!-- <field label="Статус">
                 <div style="display:flex;">
                     <VueMultiselect :options="status_options" v-model="statuses" :multiple="true" trackBy="id" label="name" placeholder="Все"/>
@@ -73,7 +82,8 @@
                 </thead>
                 <tbody>
 
-                <tr v-for="item of items.data" @click="itemClick(item, $event)" class="cursor-pointer" :class="{highlight: item.highlight}">
+                <tr v-for="item of items.data" @click="itemClick(item, $event)" class="cursor-pointer"
+                    :class="{highlight: item.highlight}">
                     <td class="code">{{ item.id }}</td>
                     <!-- <td class="status">
                         <span class="badge" :class="'badge-' + item.status">{{ item.status_name }}</span>
@@ -122,7 +132,7 @@ import _debounce from "lodash/debounce.js";
 import Sort from "@/Components/Sort.vue";
 import Pagination from "@/Components/Paginator.vue";
 import TableBottom from "@/Components/TableBottom.vue";
-import {countNotEmpty, openEditor, paramsToUrl, selectables} from "@/Components/utils.js";
+import {countNotEmpty, openEditor, paramsToUrl, selectable, selectables} from "@/Components/utils.js";
 import _extend from "lodash/extend.js";
 import Checkbox from "@/Components/Checkbox.vue";
 import Field from "@/Components/Field.vue";
@@ -144,6 +154,7 @@ class Filter {
         this.stage = [];
         this.theme_id = [];
         this.status = [];
+        this.year = [];
         this.sort = null;
         if (defaults) {
             _extend(this, defaults);
@@ -177,11 +188,12 @@ export default {
         stage_options: Array,
         theme_options: Array,
         status_options: Array,
+        year_options: Array
     },
     data() {
         return {
             lFilter: new Filter(this.filter),
-            page:    this.items.current_page,
+            page: this.items.current_page,
         };
     },
     methods: {
@@ -204,8 +216,8 @@ export default {
                 for (const theme of response.data.theme_options) {
                     $v.theme_options.push(theme);
                 }
-                params.theme_id = _intersection($v.lFilter.theme_id, $v.theme_options.map(itm =>itm.id));
-                if(params.theme_id.length != $v.lFilter.theme_id.length){
+                params.theme_id = _intersection($v.lFilter.theme_id, $v.theme_options.map(itm => itm.id));
+                if (params.theme_id.length != $v.lFilter.theme_id.length) {
                     $v.lFilter.theme_id = params.theme_id;
                 }
 
@@ -245,7 +257,8 @@ export default {
     computed: {
         profiles: selectables('profile_options', 'lFilter', 'profile_id'),
         themes: selectables('theme_options', 'lFilter', 'theme_id'),
-        statuses: selectables('status_options', 'lFilter', 'status')
+        statuses: selectables('status_options', 'lFilter', 'status'),
+        year: selectable('year_options', 'lFilter', 'year')
     }
 }
 </script>
@@ -286,6 +299,7 @@ table.table {
                 width: 50px;
                 text-align: center;
             }
+
             &.year {
                 width: 80px;
                 text-align: right;
@@ -294,9 +308,17 @@ table.table {
             &.buttons {
                 width: 50px;
             }
-            .badge{
-                &-active{background: $success-color ; color: white}
-                &-draft{background: red; color: white}
+
+            .badge {
+                &-active {
+                    background: $success-color;
+                    color: white
+                }
+
+                &-draft {
+                    background: red;
+                    color: white
+                }
             }
         }
     }

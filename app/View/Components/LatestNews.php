@@ -12,6 +12,6 @@ class LatestNews extends Component {
     public function __construct(public string $title = '123123') {}
 
     public function render(): View|Closure|string {
-        return view('components.latest-news', ['items' => News::active()->limit(5)->get()]);
+        return view('components.latest-news', ['items' => News::limit(5)->orderByDesc('date')->get()]);
     }
 }

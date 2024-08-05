@@ -201,6 +201,9 @@ class Question extends Model
             }
         }
 
+        if(!empty($filter['year'])){
+            $query->whereRaw('YEAR(created_at) = ?', $filter['year']);
+        }
 
         return $query;
     }

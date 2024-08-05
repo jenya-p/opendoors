@@ -123,7 +123,7 @@ export default {
         },
         async remove(item) {
             let index = this.items.data.findIndex(itm => itm.id === item.id);
-            let result = await axios.delete(route('admin.news.destroy', {question: item.id}));
+            let result = await axios.delete(route('admin.news.destroy', {news: item.id}));
             if (result.data.result == 'ok') {
                 this.items.data.splice(index, 1);
             } else {
