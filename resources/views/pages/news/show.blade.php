@@ -53,7 +53,7 @@
         </div>
     </div>
 
-    <x-latest-news title="{{ __('Latest News') }}"/>
+    <x-latest-news title="{{ __('Latest News') }}" except-ids="{{ $item->id }}"/>
 </main>
 
 

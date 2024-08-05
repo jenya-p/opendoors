@@ -39,7 +39,7 @@ class AuthenticatedSessionController extends Controller
         } else if (\Auth::user()->can('admin-users')) {
             return redirect(route('admin.user.index', absolute: false));
         } else if (\Auth::user()->can('admin-site')) {
-            return redirect(route('admin.widgets.index', absolute: false));
+            return redirect(route('admin.widget.index', absolute: false));
         } else if (\Auth::user()->can('admin-quiz') ||
             \Auth::user()->hasAnyRoleOf(Quiz::class)) {
             return redirect(route('admin.quiz.index', absolute: false));
