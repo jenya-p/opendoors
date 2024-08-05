@@ -131,7 +131,7 @@ class HandleInertiaRequests extends Middleware {
                             'label' => "График",
                         ],
                         [
-                            'key' => 'faq',
+                            'key' => 'faq-category',
                             'href' => route('admin.faq-category.index'),
                             'i' => "fa fa-question-circle",
                             'label' => "FAQ",
