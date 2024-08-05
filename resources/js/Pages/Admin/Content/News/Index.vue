@@ -14,23 +14,29 @@
             <table class="table">
                 <thead class="m-hide">
                 <tr>
-                    <th class="code"><sort name="id" v-model="sort" >№</sort></th>
-                    <th class="quiz"><sort name="date" v-model="sort" >Дата</sort></th>
+                    <th class="date"><sort name="date" v-model="sort" >Дата</sort></th>
                     <th class="type"><sort name="title" v-model="sort" >Заголовок</sort></th>
-                    <th class="buttons"></th>
+                    <th class="date"><sort name="created_at" v-model="sort" >Добавлено</sort></th>
+                    <th class="table-button"></th>
+                    <th class="table-button"></th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr v-for="item of items.data" @click="itemClick(item)" class="cursor-pointer">
-                    <td class="id">{{item.id}}</td>
                     <td class="date">
                         {{ $filters.date(item.date, 'dd MMM yyyy')}}
                     </td>
-
                     <td class="title">
                         {{item.title}}
                     </td>
-                    <td class="buttons">
+                    <td class="date">
+                        {{ $filters.date(item.created_at, 'dd MMM yyyy')}}
+                    </td>
+                    <td class="table-button">
+                        <a @click.stop="changeStatus(item, $event)"
+                           class="item-status" :class="item.status"></a>
+                    </td>
+                    <td class="table-button">
                         <a class="fa fa-times btn-remove" @click.stop="remove(item)"></a>
                     </td>
                 </tr>
@@ -103,6 +109,18 @@ export default {
                 }
             });
         }),
+        async changeStatus(item, ev) {
+            let index = this.items.data.findIndex(itm => itm.id === item.id);
+            ev.target.classList.add('loading');
+            let status = (item.status === 'active') ? 'disabled' : 'active';
+            let result = await axios.get(route('admin.news.status', {news: item.id, status: status}));
+            ev.target.classList.remove('loading');
+            if (result.data.result === 'ok') {
+                this.items.data[index] = result.data.item
+            } else {
+                alert('Что-то пошло не так. Обновите страницу, пожалуйста, или обратитесь к администратору');
+            }
+        },
         async remove(item) {
             let index = this.items.data.findIndex(itm => itm.id === item.id);
             let result = await axios.delete(route('admin.news.destroy', {question: item.id}));

@@ -17,6 +17,7 @@
 
     <script src="/static/scripts/application.js" defer></script>
     <link rel="stylesheet" href="/static/css/styles.css" />
+    <link rel="stylesheet" href="/static/css/extras.css" />
 
 </head>
 <body class="__variable_904c5e flex min-h-screen flex-col bg-[image:var(--background)] bg-cover bg-top font-sans text-gray-dark"

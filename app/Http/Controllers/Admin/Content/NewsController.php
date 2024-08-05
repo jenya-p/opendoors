@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Content\NewsRequest;
 use App\Models\Attachment;
 use App\Models\Content\News;
+use App\Models\University;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 
 class NewsController extends Controller {
@@ -25,7 +27,7 @@ class NewsController extends Controller {
             list($name, $dir) = explode(':', $request->sort);
             $query->orderBy($name, $dir);
         }
-        $query->orderBy('id', 'asc');
+        $query->orderBy('id', 'desc');
         $items = $query->paginate(50);
 
         return Inertia::render('Admin/Content/News/Index', [
@@ -62,4 +64,16 @@ class NewsController extends Controller {
         $news->delete();
         return ['result' => 'ok'];
     }
+
+    public function status(News $news, Request $request) {
+        $data = $request->validate([
+            'status' => ['required', Rule::in('active', 'disabled')]
+        ]);
+        $news->update($data);
+        return [
+            'result' => 'ok',
+            'item' => $news
+        ];
+    }
+
 }

@@ -53,7 +53,7 @@
         </div>
     </div>
 
-    <x-latest-news title="All News"/>
+    <x-latest-news title="{{ __('Latest News') }}"/>
 </main>
 
 

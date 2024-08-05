@@ -9,7 +9,7 @@ class NewsRequest extends FormRequest {
 
     public function rules(): array {
         return [
-            'date' => 'nullable|date_format:Y-m-d',
+            'date' => 'required|date_format:Y-m-d',
             'title' => 'required|string|max:512',
             'title_en' => 'nullable|string|max:512',
             'summary' => 'required|string',

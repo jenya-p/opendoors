@@ -47,7 +47,7 @@ return [
             ],
             'telegram' => [
                 'type' => 'url',
-                'label' => 'Ссылка на Телеграмм',
+                'label' => 'Ссылка на Телеграм',
             ],
             'email' => [
                 'type' => 'email',
@@ -104,7 +104,7 @@ return [
             ],
             'blocks' => [
                 'type' => 'array',
-                'label' => 'Блоки',
+                'label' => 'Карточки',
                 'items' => [
                     'type' => 'object',
                     'properties' => [

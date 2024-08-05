@@ -89,6 +89,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']], 
 
     Route::group(['middleware' => ['auth', 'can:admin-site']], function () {
         Route::resource('news', \App\Http\Controllers\Admin\Content\NewsController::class)->except(['show']);
+        Route::get('news/{news}/status', [\App\Http\Controllers\Admin\Content\NewsController::class, 'status'])->name('news.status');
         Route::resource('widget', \App\Http\Controllers\Admin\Content\WidgetController::class)->except(['show', 'create', 'store', 'delete']);
         // Route::resource('profile-file', \App\Http\Controllers\Admin\Content\ProfileFileController::class)->except(['show']);
         Route::resource('schedule', \App\Http\Controllers\Admin\Content\ScheduleController::class)->except(['show']);

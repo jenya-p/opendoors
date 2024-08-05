@@ -1,0 +1,26 @@
+.pagination{
+    display: flex;
+    justify-content: end;
+    gap: 8px;
+}
+.pagination .page-item.active .page-link{
+    z-index: 3;
+    color: #fff !important  ;
+    background-color: rgb(228 47 128 / var(--tw-text-opacity)) !important;
+    border-color: rgb(228 47 128 / var(--tw-text-opacity)) !important;
+}
+.pagination .page-item .page-link{
+    z-index: 3;
+    background-color: #fff;
+    border-radius: 50%;
+    display: inline-block;
+    width: 35px;
+    height: 35px;
+    text-align: center;
+    line-height: 35px;
+}
+
+.pagination .disabled .page-link{
+    color: #212529 !important;
+    opacity: 0.5 !important;
+}

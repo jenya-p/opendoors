@@ -42,8 +42,8 @@ class Widget extends Model {
             case('footer'): return "Футер";
             case( 'home.partners'): return "Партнеры";
             case('home.top'): return "Главная. Верхняя часть";
-            case( 'rules'): return "Страница \"Правила\"";
-            case( 'tracks'): return "Страница \"Треки\"";
+            case( 'rules'): return "Правила";
+            case( 'tracks'): return "Треки";
             default: return $this->key;
         }
 

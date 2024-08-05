@@ -48,22 +48,16 @@ export default {
         }
     },
     mounted() {
+        let activeTabName = null;
         if (document.location.hash) {
-            let hash = document.location.hash;
-            let activeTab = this.tabs[0];
-            for (let tab of this.tabs) {
-                if (hash == tab.href) {
-                    activeTab = tab;
-                    break;
-                }
-            }
-            if (activeTab !== null) {
-                this.selectTab(activeTab);
-            }
+            let activeTabName = document.location.hash
         } else if(this.$page.props.tab) {
+            let activeTabName = '#' + this.$page.props.tab;
+        }
+        if(activeTabName){
             let activeTab = this.tabs[0];
             for (let tab of this.tabs) {
-                if ('#' + this.$page.props.tab == tab.href) {
+                if (activeTabName == tab.href) {
                     activeTab = tab;
                     break;
                 }
@@ -71,9 +65,6 @@ export default {
             if (activeTab !== null) {
                 this.selectTab(activeTab);
             }
-
-            // TODO Рефакторинг
-
         } else {
             this.selectTab(this.tabs[0]);
         }

@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use App\Models\Content\Faq;
 use App\Models\Content\FaqCategory;
+use App\Models\Content\News;
 use App\Models\EduLevel;
 use App\Models\Profile;
 use App\Models\Scopes\Active;
@@ -28,6 +29,7 @@ class GlobalScopes {
             EduLevel::addGlobalScope(Active::class);
             Track::addGlobalScope(Active::class);
             University::addGlobalScope(Active::class);
+            News::addGlobalScope(Active::class);
         }
 
 

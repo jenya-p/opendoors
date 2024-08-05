@@ -52,7 +52,7 @@
           </div>
 
           <ul class="mt-12 flex flex-col gap-4">
-              @foreach($items as $item)
+              @foreach($items->items() as $item)
                 @translate($item)
             <li>
               <span
@@ -99,7 +99,14 @@
             </li>
               @endforeach
           </ul>
+
+          <div class="mt-12">
+              {{ $items->links('commons.pagination')}}
+
+          </div>
+
         </div>
+
       </div>
     </main>
 

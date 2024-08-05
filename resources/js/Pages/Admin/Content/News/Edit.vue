@@ -25,11 +25,11 @@
                 <editor v-model="form.summary_en" :item="['news', item.id, 'summary_en']"/>
             </field>
 
-            <field :errors="form.errors" for="content" label="Краткое содержание">
+            <field :errors="form.errors" for="content" label="Полное содержание">
                 <editor v-model="form.content" :item="['news', item.id, 'content']"/>
             </field>
 
-            <field :errors="form.errors" for="content_en" label="Краткое содержание (Англ. )">
+            <field :errors="form.errors" for="content_en" label="Полное содержание (Англ. )">
                 <editor v-model="form.content_en" :item="['news', item.id, 'content_en']"/>
             </field>
 
