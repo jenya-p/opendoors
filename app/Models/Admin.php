@@ -30,13 +30,15 @@ class Admin extends Model {
     const ROLE_MANAGE_QUIZZES = 'manage_quizzes';
     const ROLE_MANAGE_PORTFOLIOS = 'manage_portfolios';
     const ROLE_MANAGE_INTERVIEW = 'manage_interview';
+    const ROLE_MANAGE_DIRS = 'manage_dirs';
 
     const ROLES = [
         self::ROLE_MANAGE_USERS => 'Управление пользователями',
         self::ROLE_MANAGE_SITE => 'Управление сайтом',
         self::ROLE_MANAGE_QUIZZES => 'Управление тестами',
         self::ROLE_MANAGE_PORTFOLIOS => 'Управление портфолио',
-        self::ROLE_MANAGE_INTERVIEW => 'Управление интервью'
+        self::ROLE_MANAGE_INTERVIEW => 'Управление интервью',
+        self::ROLE_MANAGE_DIRS => 'Управление справочниками'
     ];
 
     protected $table = 'user_admins';

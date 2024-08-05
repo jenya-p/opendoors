@@ -146,7 +146,7 @@ class HandleInertiaRequests extends Middleware {
                 ];
             }
 
-            if (\Gate::check('admin')) {
+            if (\Gate::check('admin-dirs')) {
                 $sidebar[] = [
                     'key' => 'opendoors',
                     'label' => 'Open Doors',

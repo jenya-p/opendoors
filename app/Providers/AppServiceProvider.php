@@ -91,6 +91,11 @@ class AppServiceProvider extends ServiceProvider
             return $user->admin && $user->admin->hasRole(Admin::ROLE_MANAGE_SITE);
         });
 
+        Gate::define('admin-dirs', function (User $user) {
+            return $user->admin && $user->admin->hasRole(Admin::ROLE_MANAGE_DIRS);
+        });
+
+
         Gate::define('admin-quiz', function (User $user) {
             return $user->admin && $user->admin->hasRole(Admin::ROLE_MANAGE_QUIZZES);
         });
