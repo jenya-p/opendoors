@@ -18,11 +18,15 @@ export default {
     methods:{
       set(v){
           this.locale = v;
-          this.$i18n.locale = v;
           let $v = this;
 
           axios.get(route('set-locale', v)).then(function(){
-              $v.$inertia.reload();
+              $v.$inertia.reload({
+                  onSuccess(){
+                      console.log(1111);
+                      $v.$i18n.locale = v;
+                  }
+              });
           });
 
       }

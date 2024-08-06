@@ -1,8 +1,6 @@
-
-
 <template>
     <AdminLayout :breadcrumb="['Личный кабинет']" title="Личный кабинет">
-        <h1>{{ $t('h1') }}</h1>
+        <h1>{{ $t('WELCOME') }}</h1>
     </AdminLayout>
 </template>
 <script>
@@ -14,13 +12,4 @@ export default {
 
 </script>
 
-<i18n>
-{
-    "ru": {
-        "h1": "Добро пожаловать в личный кабинет участника"
-    },
-    "en": {
-        "h1": "Welcome to the participant's personal account"
-    }
-}
-</i18n>
+<i18n src="/resources/js/Pages/Lk/translations.json"/>

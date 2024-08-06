@@ -159,7 +159,8 @@ Route::group(['prefix' => 'lk', 'as' => 'lk.', 'middleware' => ['auth', 'can:par
     Route::get('/universities', [\App\Http\Controllers\Lk\ParticipantController::class, 'universitiesEdit'])->name('universities.edit');
     Route::put('/universities', [\App\Http\Controllers\Lk\ParticipantController::class, 'universitiesUpdate'])->name('universities.update');
 
-    Route::resource('education', \App\Http\Controllers\Lk\EducationController::class)->only('index', 'edit', 'update', 'delete');
+    Route::resource('degree', \App\Http\Controllers\Lk\DegreeController::class);
+    Route::resource('statement', \App\Http\Controllers\Lk\StatementController::class);
 
 
 });

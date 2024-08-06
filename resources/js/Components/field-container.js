@@ -2,22 +2,42 @@
 
 
 let refresh = function (el) {
-    let p = el.clientWidth >= 800;
-    if(p){
-        el.classList.remove('vertical');
-    } else {
+    let p = null;
+    if (el.clientWidth < 800) {
         el.classList.add('vertical');
+        el.classList.remove('wide');
+        p = 1;
+
+    } else if (el.clientWidth > 1200) {
+        el.classList.add('wide');
+        el.classList.remove('vertical');
+        p = 2;
+
+    } else {
+        el.classList.remove('vertical');
+        el.classList.remove('wide');
+        p = 3;
+
     }
-    return function(){
+
+    return function () {
         if (el.clientWidth < 800) {
-            if (p) {
+            if (p !== 1) {
                 el.classList.add('vertical');
-                p = false;
+                el.classList.remove('wide');
+                p = 1;
+            }
+        } else if (el.clientWidth > 1200) {
+            if (p !== 2) {
+                el.classList.add('wide');
+                el.classList.remove('vertical');
+                p = 2;
             }
         } else {
-            if (!p) {
+            if (p !== 3) {
                 el.classList.remove('vertical');
-                p = true;
+                el.classList.remove('wide');
+                p = 3;
             }
         }
     }

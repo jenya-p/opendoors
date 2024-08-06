@@ -3,6 +3,7 @@
 namespace App\Models\Participant;
 
 use App\Models\Dir\Citizenship;
+use App\Models\Dir\KnowledgeArea;
 use App\Models\EduLevel;
 use App\Models\User;
 use Carbon\Carbon;
@@ -29,6 +30,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read EduLevel[] $eduLevels
  * @property-read Member[] $members
  * @property-read University[] $universities
+ *
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
+ * @property Carbon $deleted_at
  *
  * @mixin \Eloquent
  */
@@ -63,6 +68,10 @@ class Participant extends Model {
 
     public function universities(){
         return $this->hasMany(University::class);
+    }
+
+    public function degrees(){
+        return $this->hasMany(Degree::class);
     }
 
     public function getEduLevelIdsAttribute() {

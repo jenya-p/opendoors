@@ -10,6 +10,7 @@ use App\Models\Content\Schedule;
 use App\Models\Content\Widget;
 use App\Models\Dir\Citizenship;
 use App\Models\Dir\Country;
+use App\Models\Dir\KnowledgeArea;
 use App\Models\Dir\Region;
 use App\Models\EduLevel;
 use App\Models\Profile;
@@ -40,13 +41,54 @@ class DatabaseSeeder extends Seeder {
      */
     public function run(): void {
 
-        $this->countries();
+        $data = $this->areas();
+
+        // $this->countries();
 //        $this->methhodists();
 //        $this->partners();
 //
 //        $this->profileFileTypes();
 //
 //        $this->profileFiles();
+
+    }
+
+
+    public function areas(){
+
+        \DB::statement('SET FOREIGN_KEY_CHECKS = 0;');
+        DB::table('dir_knowledge_areas')->truncate();
+        DB::table('profile_areas')->truncate();
+        \DB::statement('SET FOREIGN_KEY_CHECKS = 1;');
+
+        $profileIdsMap = DB::table('import_subject_area')->pluck('od_id', 'ID')->toArray();
+
+        $ids = [];
+        $data = $this->exl('knowledge_area_block');
+        foreach ($data as $datum){
+            $ids[$datum['ID']] = KnowledgeArea::create($datum)->id;
+        }
+        $ids2 = [];
+        $data = $this->exl('knowledge_area');
+        foreach ($data as $datum){
+            $ids2[$datum['ID']] =
+                KnowledgeArea::create(\Arr::only($datum, ['name', 'name_en', 'code']) + [
+                    'parent_id' => $ids[$datum['block_id']]
+                ])->id;
+        }
+
+        $data = $this->exl('knowledge_directions');
+        foreach ($data as $datum){
+            $area = KnowledgeArea::create(\Arr::only($datum, ['name', 'name_en', 'code']) + [
+                        'parent_id' => $ids2[$datum['area_id']]
+                    ]);
+
+            if(!empty($datum['selected_profiles'])){
+                $profileIds = json_decode($datum['selected_profiles']);
+                $profileIds = array_map(fn($id) => $profileIdsMap[$id], $profileIds);
+                $area->profiles()->sync($profileIds);
+            }
+        }
 
     }
 

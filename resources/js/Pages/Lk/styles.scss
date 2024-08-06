@@ -1,0 +1,19 @@
+@import "resources/css/admin-vars";
+.info {
+    font-size: 1.2em;
+    margin: 2em 0;
+}
+
+.items-table {
+    td{vertical-align: middle}
+    td.label {
+        padding: 1em 4em 1em 0;
+        font-size: 1.1em
+    }
+    td.button {
+    }
+
+    tr.disabled td.label{
+        color: $dark-shadow-color
+    }
+}

@@ -4,6 +4,7 @@ namespace App\Models\Participant;
 
 use App\Models\Profile;
 use App\Models\Track;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -19,6 +20,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read Track $track
  * @property-read Profile $profile
  *
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
+ * @property Carbon $deleted_at
+ *
  * @mixin \Eloquent
  */
 class Member extends Model {
@@ -26,7 +31,7 @@ class Member extends Model {
 
     protected $table = 'members';
 
-    protected $fillable = ['participant_id', 'track_id', 'profile_id'];
+    protected $fillable = ['participant_id', 'track_id', 'profile_id','created_at','updated_at'];
 
     protected $casts = [
         'roles' => 'array'
@@ -42,6 +47,10 @@ class Member extends Model {
 
     public function track(){
         return $this->belongsTo(Track::class);
+    }
+
+    public function statement(){
+        return $this->hasOne(Statement::class);
     }
 
 }

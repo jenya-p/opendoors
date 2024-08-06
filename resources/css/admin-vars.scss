@@ -6,6 +6,7 @@ $light-fore-color: lighten($fore-color, 15);
 $shadow-color: #E7E7E7;
 $dark-shadow-color: darken($shadow-color, 15);
 $success-color: #116c59;
+$danger-color: #F14336;
 
 @mixin green-box {
     background: linear-gradient(0deg, #1994ce 0%, #1ba2e0 100%);

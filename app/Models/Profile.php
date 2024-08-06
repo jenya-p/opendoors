@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Dir\KnowledgeArea;
 use App\Models\Quiz\Quiz;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
@@ -27,6 +28,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read University $coordinator
  * @property-read Stage[] $stages
  * @property-read UniversityProfile[] $universityProfiles
+ * @property-read KnowledgeArea[] $areas
  *
  * @mixin \Eloquent
  */
@@ -55,6 +57,10 @@ class Profile extends Model {
 
     public function universityProfiles(){
         return $this->hasMany(UniversityProfile::class, 'profile_id', 'id');
+    }
+
+    public function areas(){
+        return $this->belongsToMany(KnowledgeArea::class, 'profile_areas', 'profile_id', 'area_id');
     }
 
     public function files(){

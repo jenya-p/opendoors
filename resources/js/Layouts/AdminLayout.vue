@@ -1,12 +1,18 @@
 <script>
-import {Link} from '@inertiajs/vue3';
+import {Link, router} from '@inertiajs/vue3';
 import {Head} from "@inertiajs/vue3";
 import Sidebar from "@/Layouts/Admin/Sidebar.vue";
+import Locale from "@/Components/Locale.vue";
 export default {
-    components: {Link, Head, Sidebar},
+    components: {Link, Head, Sidebar, Locale},
     props: ["title", "wrapperClass", 'breadcrumb'],
+    data(){
+      return {isLk: false};
+    },
     mounted() {
-
+        if(route().current().startsWith('lk.')){
+            this.isLk = true;
+        }
     }
 }
 </script>
@@ -16,7 +22,10 @@ export default {
         <Head :title="title" />
         <Sidebar />
         <main>
-            <h1 class="page-title" v-if="!isMobile">{{title}}</h1>
+            <div class="page-title">
+                <h1 v-if="!isMobile">{{title}}</h1>
+                <Locale class="locale-switcher" v-if="isLk"/>
+            </div>
 
             <div class="breadcrumb-wrapper">
                 <ol class="breadcrumb" style="background: transparent"  v-if="breadcrumb && breadcrumb.length > 1 && !isMobile">

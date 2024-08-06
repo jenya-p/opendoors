@@ -18,7 +18,7 @@
         <!-- Scripts -->
         <script type="text/javascript" src="/assets/ckeditor/ckeditor.js?t=1"></script>
 
-        @include('components.layout.equation-support');
+        @include('components.layout.equation-support')
 
         @routes
         @vite(['resources/js/admin.js', "resources/js/Pages/{$page['component']}.vue"])

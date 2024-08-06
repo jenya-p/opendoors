@@ -312,25 +312,25 @@ class HandleInertiaRequests extends Middleware {
                 'label' => 'Первый этап',
                 'i' => 'fa-solid fa-list-check',
                 'items' => [[
-                        'key' => 'user',
+                        'key' => 'degree',
                         'label' => 'Образование',
                         'i' => 'fa-solid fa-graduation-cap',
-                        'href' => route('lk.education.index')
+                        'href' => route('lk.degree.index')
                     ],
                     [
-                        'key' => 'user',
+                        'key' => 'statement',
                         'label' => 'Мотивационное письмо',
                         'i' => 'fa fa-feather',
-                        //'href' => route('lk.letters')
+                        'href' => route('lk.statement.index')
                     ],
                     [
-                        'key' => 'user',
+                        'key' => 'achivements',
                         'label' => 'Достижения',
                         'i' => 'fa fa-trophy',
                         //'href' => route('lk.achivements')
                     ],
                     [
-                        'key' => 'user',
+                        'key' => 'entrance-test',
                         'label' => 'Входное тестирование',
                         'i' => 'fa fa-clipboard-check',
                         //'href' => route('lk.entrance-test')
