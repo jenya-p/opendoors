@@ -161,6 +161,7 @@ Route::group(['prefix' => 'lk', 'as' => 'lk.', 'middleware' => ['auth', 'can:par
 
     Route::resource('degree', \App\Http\Controllers\Lk\DegreeController::class);
     Route::resource('statement', \App\Http\Controllers\Lk\StatementController::class);
+    Route::resource('achievement', \App\Http\Controllers\Lk\AchievementController::class);
 
 
 });

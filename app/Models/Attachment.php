@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Content\Content;
 use App\Models\Content\News;
 use App\Models\Content\Widget;
+use App\Models\Participant\Achievement;
 use App\Models\Participant\Degree;
 use App\Models\Quiz\Question;
 use App\Models\Quiz\Quiz;
@@ -70,7 +71,8 @@ class Attachment extends Model {
     const ITEM_TYPE_WIDGET =            'widget';
     const ITEM_TYPE_NEWS =              'news';
     const ITEM_TYPE_CONTENT =           'content';
-    const ITEM_TYPE_DEGREE =        'degree';
+    const ITEM_TYPE_DEGREE =            'degree';
+    const ITEM_TYPE_ACHIEVEMENT =       'achievement';
 
     const ITEM_CLASSES = [
         self::ITEM_TYPE_USER =>         User::class,
@@ -82,6 +84,7 @@ class Attachment extends Model {
         self::ITEM_TYPE_CONTENT =>      Content::class,
         self::ITEM_TYPE_QUIZ =>         Quiz::class,
         self::ITEM_TYPE_DEGREE =>       Degree::class,
+        self::ITEM_TYPE_ACHIEVEMENT =>  Achievement::class,
     ];
 
     /**

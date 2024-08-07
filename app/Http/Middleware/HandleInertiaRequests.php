@@ -324,10 +324,10 @@ class HandleInertiaRequests extends Middleware {
                         'href' => route('lk.statement.index')
                     ],
                     [
-                        'key' => 'achivements',
+                        'key' => 'achievement',
                         'label' => 'Достижения',
                         'i' => 'fa fa-trophy',
-                        //'href' => route('lk.achivements')
+                        'href' => route('lk.achievement.index')
                     ],
                     [
                         'key' => 'entrance-test',

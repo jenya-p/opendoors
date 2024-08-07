@@ -8,6 +8,7 @@ use App\Models\Content\FaqCategory;
 use App\Models\Content\News;
 use App\Models\Content\Schedule;
 use App\Models\Content\Widget;
+use App\Models\Dir\Achievement;
 use App\Models\Dir\Citizenship;
 use App\Models\Dir\Country;
 use App\Models\Dir\KnowledgeArea;
@@ -31,6 +32,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Reader\Xls;
+use PHPUnit\Util\Json;
 use simplehtmldom\simple_html_dom_node;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -41,7 +43,7 @@ class DatabaseSeeder extends Seeder {
      */
     public function run(): void {
 
-        $data = $this->areas();
+        $data = $this->achievements();
 
         // $this->countries();
 //        $this->methhodists();
@@ -53,6 +55,98 @@ class DatabaseSeeder extends Seeder {
 
     }
 
+    public function achievements(){
+        \DB::statement('SET FOREIGN_KEY_CHECKS = 0;');
+        DB::table('dir_achievements')->truncate();
+        \DB::statement('SET FOREIGN_KEY_CHECKS = 1;');
+
+        $items = $this->exl('activity');
+
+        $fields = $this->exl('fields');
+
+/*
+            1	text
+            2	textarea
+            3	select
+            6	file
+            7	date
+            8	directory
+*/
+
+
+
+        $schemas = [];
+
+
+        foreach ($items as $item){
+            if($item['ID'] <= 2){ continue;}
+
+
+
+            $schema = [];
+            foreach ($fields as $field){
+                if($field['activity_id'] == $item['ID']){
+
+                    $field['key'] = strtolower($field['key']);
+
+                    $schemaItem = [
+                        'label' => $field['name'],
+                        'required' => $field['is_required'] == 'yes',
+                    ];
+                    if($field['is_naming'] == 'yes'){
+                        $schemaItem['naming'] = true;
+                    }
+
+                    if($field['type_id'] == 1){
+                        $schemaItem['type'] = 'string';
+                    } else if($field['type_id'] == 2){
+                        $schemaItem['type'] = 'ml-string';
+                    } else if($field['type_id'] == 3){
+                        if($field['key'] == 'year'){
+                            $schemaItem['type'] = 'select';
+                            $schemaItem['options'] = 'years';
+                        } else if($field['key'] == 'speak' || $field['key'] == 'certificate'){
+                            $schemaItem['type'] = 'boolean';
+                        } else if($field['key'] == 'level'){
+                            $schemaItem['type'] = 'select';
+                            $schemaItem['options'] = 'language_levels';
+                        } else if($field['key'] == 'level'){
+                            $schemaItem['type'] = 'select';
+                            if($item['activity_id'] == 3){
+                                $schemaItem['options'] = 'language_levels_ru';
+                            } else {
+                                $schemaItem['options'] = 'language_levels_en';
+                            }
+                        }
+                    } else if($field['type_id'] == 6){
+                        $schemaItem['type'] = 'attachment';
+                    } else if($field['type_id'] == 7){
+                        $schemaItem['type'] = 'date';
+                    }
+
+                    $schema[$field['key']] = $schemaItem;
+                }
+            }
+
+            Achievement::create([
+               'name' => $item['name'],
+               'name_en' => $item['name_en'],
+                'key' => $item['code'],
+                'short_name' => $item['short_name'],
+                'required' => $item['is_required'] == 'yes',
+                'single' => $item['is_single'] == 'yes',
+            ]);
+            $schemas[$item['code']] = [
+                'type' => 'object',
+                'properties' => $schema
+            ];
+        }
+
+        // file_put_contents(app_path('../config/achievements.json'), Json::prettify(json_encode($schemas)));
+
+
+
+    }
 
     public function areas(){
 
@@ -140,7 +234,16 @@ class DatabaseSeeder extends Seeder {
             $item = [];
             foreach ($keys as $j => $key){
                 $item[$key] = $sheet->getCell([$j, $i])->getValue();
+                if(\Str::endsWith($key, '_id')){
+                    $mathches = [];
+                    if(preg_match('/\[(\d+)\]$/m', $item[$key], $mathches)){
+                        $item[$key] = (int)$mathches[1];
+                    }
+                }
             }
+
+
+
             $data[] = $item;
         }
 

@@ -74,6 +74,10 @@ class Participant extends Model {
         return $this->hasMany(Degree::class);
     }
 
+    public function achievements(){
+        return $this->hasMany(Achievement::class);
+    }
+
     public function getEduLevelIdsAttribute() {
         return $this->eduLevels()->pluck('id');
     }

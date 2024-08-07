@@ -17,7 +17,7 @@ class MiscTest extends TestCase {
      */
     public function testKnowledgeArea(): void {
 
-        KnowledgeArea::tree(Profile::find(47));
+        dd(config('achievements'));
 
     }
 

@@ -1,5 +1,5 @@
 <template>
-    <attachment v-model:item="proxy" v-bind="schema.params"/>
+    <vue-multiselect :options="schema.options" v-model="proxy" track-by="id" label="name"/>
 </template>
 
 <script>
@@ -7,9 +7,11 @@ import Field from "@/Components/Field.vue";
 import Attachment from "@/Components/Attachment.vue";
 import Editor from "@/Components/Editor.vue";
 import TextareaAutosize from "@/Components/TextareaAutosize.vue";
+import VueMultiselect from "vue-multiselect";
+import {isArray} from "lodash";
 
 export default {
-    components: {Attachment},
+    components: {VueMultiselect},
     props: {
         modelValue: {
             default: null
@@ -17,8 +19,10 @@ export default {
         schema: {
             type: Object,
             default: null
-        },
-        attachment_ids: []
+        }
+    },
+    data() {
+
     },
     emits: ['update:modelValue'],
     computed: {
@@ -31,8 +35,8 @@ export default {
             },
             set(value) {
                 if (value) {
-                    if(this.schema?.options?.findIndex(itm => itm.id == this.modelValue) === -1){
-                        this.schema?.options?.push(value);
+                    if(this.schema.options.findIndex(itm => itm.id == this.modelValue) === -1){
+                        this.schema.options.push(value);
                     }
                     this.$emit('update:modelValue', value.id);
                 } else {

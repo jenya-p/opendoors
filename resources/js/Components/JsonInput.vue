@@ -60,6 +60,15 @@
     <field v-else-if="schema.type=='ml-string'" :label="label()">
         <textarea-autosize type="text" v-model="proxy" class="input"/>
     </field>
+    <field v-else-if="schema.type=='boolean'" label="">
+        <checkbox v-model="proxy">{{label()}}</checkbox>
+    </field>
+    <field v-else-if="schema.type=='select'" :label="label()">
+        <json-select :schema="schema" v-model="proxy" />
+    </field>
+    <field v-else-if="schema.type=='year'" :label="label()">
+        <json-year :schema="schema" v-model="proxy" />
+    </field>
     <field v-else-if="schema.type=='editor'" :label="label()">
         <editor v-model="proxy"/>
     </field>
@@ -81,9 +90,12 @@ import draggable from "vuedraggable";
 import _isObject from "lodash/isObject";
 import _isArray from "lodash/isArray";
 import _isUndefined from "lodash/isUndefined";
+import Checkbox from "@/Components/Checkbox.vue";
+import JsonSelect from "@/Components/JsonSelect.vue";
+import JsonYear from "@/Components/JsonYear.vue";
 
 export default {
-    components: {JsonAttachment, TextareaAutosize, Editor, Attachment, Field, draggable},
+    components: {JsonYear, JsonSelect, Checkbox, JsonAttachment, TextareaAutosize, Editor, Attachment, Field, draggable},
     props: {
         modelValue: {
             default: null
@@ -92,7 +104,8 @@ export default {
             type: Object,
             default: null
         },
-        lang: null
+        lang: null,
+        attachment_ids: []
     },
     methods: {
         addItem(){
